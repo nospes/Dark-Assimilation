@@ -53,7 +53,7 @@ public class Hero
         else 
             _anims.Update(0);
     }
-
+//possível forma de solução para problema de como encaixar animação de atacar: colocar no else if a animação de atacar e condições nas outras
     public void Draw()
     {
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
