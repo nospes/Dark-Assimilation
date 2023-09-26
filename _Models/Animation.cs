@@ -58,7 +58,7 @@ public class Animation
 
     public void Update()
     {
-        //Se não está ativo, não desenha o sprite
+        //Se não está ativo, não atualiza o sprite
         if(!_active) return;
 
         //Tempo da animação é reduzida pelo tempo de jogo
