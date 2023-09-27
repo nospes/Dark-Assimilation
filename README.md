@@ -9,5 +9,5 @@ versão 0.1- foi implementado os inputs de movimento(WASD), controladores básic
 
 versão 0.2- foi implementado o input de ataque básico(K), animação de soco, sistema para alternar entre golpes e movimento, primeiro inimigo(ainda sem animação) e uma lista para poder adicionar diversos inimigos do mesmo tipo.
 
-versãp 0.2.1- Atualizando alguns parametros para poder utilizar em outras máquinas, agora posso mexer no código e no repositorio remotamente de outros pontos.
+versão 0.2.1- Atualizando alguns parametros para poder utilizar em outras máquinas, agora posso mexer no código e no repositorio remotamente de outros pontos.
 
