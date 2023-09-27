@@ -6,6 +6,8 @@ public class Hero
     private readonly AnimationManager _anims = new();
     private static Texture2D _textureIdle;
     private static Texture2D _textureMove;
+    private static Texture2D _textureJab;
+
 
     // Atributos
     private Vector2 _position;
@@ -18,10 +20,13 @@ public class Hero
         //Definindo texturas
         _textureMove ??= Globals.Content.Load<Texture2D>("Player/run cycle 48x48");
         _textureIdle ??= Globals.Content.Load<Texture2D>("Player/PlayerIdle_spr");
+        _textureJab ??= Globals.Content.Load<Texture2D>("Player/Player Jab 48x48");
+
 
         //Definindo area dos sprites sheets para fazer a animação
-        _anims.AddAnimation(0, new(_textureIdle, 10, 1, 0.1f, 1));
-        _anims.AddAnimation(1, new(_textureMove, 8, 1, 0.1f, 1));
+        _anims.AddAnimation(0, new(_textureIdle, 10, 1, 0.1f, 1, true));
+        _anims.AddAnimation(1, new(_textureMove, 8, 1, 0.1f, 1, true));
+        _anims.AddAnimation(2, new(_textureJab, 10, 1, 0.09f, 1, true));
 
         //Define a posição
         _position = pos;
@@ -31,29 +36,33 @@ public class Hero
     public void Update()
     {
         //Movimenta o jogador com os comandos dado pelo Inputmanager.cs
-        if (InputManager.Moving)
+        if (InputManager.Moving&&!InputManager._attacking)
         {
             _position += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
         }
 
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
-        if (InputManager.Direction.X > 0)
-        {
-            _anims.Update(1);
-            //Espelha o spritesheet de acordo com a ultima direção andada
-            _mirror = false;
-        }
+        if(InputManager._attacking) _anims.Update(2);
         else if(InputManager.Direction.X < 0)
         {
             _anims.Update(1);
             _mirror = true;
+        }
+        else if (InputManager.Direction.X > 0)
+        {
+            _anims.Update(1);
+            //Espelha o spritesheet de acordo com a ultima direção andada
+            _mirror = false;
         }
         else if(InputManager.Direction.Y > 0 || InputManager.Direction.Y < 0) 
             _anims.Update(1);
         else 
             _anims.Update(0);
     }
-//possível forma de solução para problema de como encaixar animação de atacar: colocar no else if a animação de atacar e condições nas outras OU dar um return ao final do update em animation.cs e colocar alguma trava que só libere o sprite ao receber o RETURN do fim da animação é talvez colocar uma trava bool no animation Manager 
+//possível forma de solução para problema de como encaixar animação de atacar: colocar no else if a animação 
+//de atacar e condições nas outras OU dar um return ao final do update em animation.cs e colocar alguma 
+//trava que só libere o sprite ao receber o RETURN do fim da animação é talvez colocar uma trava 
+//bool no animation Manager 
     public void Draw()
     {
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs

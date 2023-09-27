@@ -15,15 +15,17 @@ public class Animation
     private readonly float _frameTime;
     private float _frameTimeLeft;
     private bool _active = true;
+    private bool _isaplayer = false;
 
 
-    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1)
+    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1, bool isaplayer = false)
     {
         //Aplicando Valores a um objeto único pra criação de sprites com a mesma solução
         _texture = texture;
         _frameTime = frameTime;
         _frameTimeLeft = _frameTime;
         _frames = framesX;
+        _isaplayer = isaplayer;
 
         //Definindo área do sprite para animação
         var frameWidth = _texture.Width / framesX;
@@ -54,6 +56,7 @@ public class Animation
         //reinicia a animação
         _frame = 0;
         _frameTimeLeft = _frameTime;
+
     }
 
     public void Update()
@@ -64,12 +67,14 @@ public class Animation
         //Tempo da animação é reduzida pelo tempo de jogo
         _frameTimeLeft -= Globals.TotalSeconds;
 
-        //Caso tempo da animação termine ela retorna ao começo do spritesheet
+        //Utiliza o tempo de jogo para avançar de sprite para sprite no spritesheet
         if(_frameTimeLeft <= 0)
         {
             _frameTimeLeft += _frameTime;
             _frame = (_frame + 1) % _frames;
         }
+
+        if(_isaplayer&&_frame==_frames-1&&InputManager._attacking) InputManager._attacking = false;
 
     }
 
