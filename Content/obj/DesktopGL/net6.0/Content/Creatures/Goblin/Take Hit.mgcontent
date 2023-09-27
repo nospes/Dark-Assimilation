@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Goblin/Take Hit.png</SourceFile>
-  <SourceTime>2020-02-07T22:50:49.4805136-03:00</SourceTime>
-  <DestFile>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Content/Creatures/Goblin/Take Hit.xnb</DestFile>
-  <DestTime>2023-09-15T16:08:44.5556018-03:00</DestTime>
+  <SourceFile>C:/Users/jose_/Desktop/Game Dev/Monogame/MyGame/Monogame/Content/Creatures/Goblin/Take Hit.png</SourceFile>
+  <SourceTime>2023-09-27T15:35:20.4645663-03:00</SourceTime>
+  <DestFile>C:/Users/jose_/Desktop/Game Dev/Monogame/MyGame/Monogame/Content/bin/DesktopGL/Content/Creatures/Goblin/Take Hit.xnb</DestFile>
+  <DestTime>2023-09-27T15:54:10.9746452-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T08:44:56-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
