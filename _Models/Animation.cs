@@ -39,6 +39,8 @@ public class Animation
         }
     }
 
+    
+
     public void Stop()
     {
         // Para a animação / Desativa
@@ -75,6 +77,7 @@ public class Animation
         }
 
         if(_isaplayer&&_frame==_frames-1&&InputManager._attacking) InputManager._attacking = false;
+        //if(_frame==_frames)
 
     }
 

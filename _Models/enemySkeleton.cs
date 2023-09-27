@@ -10,25 +10,33 @@ public class enemySkeleton
      // Atributos
     private Vector2 _position;
     private readonly float _speed = 200f;
-    private readonly int _scale = 3;
+    private readonly int _scale = 2;
     private bool _mirror;
 
     public enemySkeleton(Vector2 pos){
          //Definindo texturas
-        _textureIdle ??= Globals.Content.Load<Texture2D>("Creatures/Skeleton/Idle");
+        _textureIdle ??= Globals.Content.Load<Texture2D>("Creatures/Skeleton/Walk");
         _textureHit ??= Globals.Content.Load<Texture2D>("Creatures/Skeleton/Take Hit");
 
         //Definindo area dos sprites sheets para fazer a animação
-        _anims.AddAnimation("skelidle", new(_textureIdle, 4, 1, 0.1f, 1, false));
+        _anims.AddAnimation("skeliidle", new(_textureIdle, 4, 1, 0.1f, 1, false));
         _anims.AddAnimation("skelihurt", new(_textureHit, 4, 1, 0.1f, 1, false));
 
         //Define a posição
         _position = pos;
     }
 
+    public Rectangle GetBounds()
+    {
+        return new Rectangle((int)_position.X+60, (int)_position.Y+50, 40, 54);
+        
+    }
+
         public void Update()
     {
-        _anims.Update(0);
+        _anims.Update("skeliidle");
+
+        
     }
 
     public void Draw()

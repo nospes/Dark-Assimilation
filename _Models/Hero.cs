@@ -9,11 +9,14 @@ public class Hero
     private static Texture2D _textureJab;
 
 
+
     // Atributos
     private Vector2 _position;
     private readonly float _speed = 200f;
     private readonly int _scale = 3;
     private bool _mirror;
+
+
 
     public Hero(Vector2 pos)
     {
@@ -31,6 +34,12 @@ public class Hero
         //Define a posição
         _position = pos;
 
+    }
+
+        public Rectangle GetBounds()
+    {
+        
+        return new Rectangle((int)_position.X+17, (int)_position.Y+16, 15, 25);
     }
 
     public void Update()
@@ -66,6 +75,6 @@ public class Hero
     public void Draw()
     {
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
-        _anims.Draw(_position,_scale,_mirror);
+        _anims.Draw(_position,_scale,_mirror); 
     }
 }

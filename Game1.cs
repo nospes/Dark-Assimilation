@@ -6,6 +6,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
     private GameManager _gameManager;
+    public static Texture2D pixel;
 
 
     public Game1()
@@ -38,6 +39,8 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Globals.SpriteBatch = _spriteBatch;
+        pixel = new Texture2D(GraphicsDevice,1, 1);
+        pixel.SetData(new[] { Color.Red });
 
         // TODO: use this.Content to load your game content here
     }
@@ -66,6 +69,9 @@ public class Game1 : Game
 
         _spriteBatch.Begin();
         _gameManager.Draw();
+
+
+        
         _spriteBatch.End();
 
         base.Draw(gameTime);
