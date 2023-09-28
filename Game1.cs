@@ -4,9 +4,10 @@ public class Game1 : Game
 {
 
     private GraphicsDeviceManager _graphics;
-    private SpriteBatch _spriteBatch;
+    public static SpriteBatch _spriteBatch;
     private GameManager _gameManager;
-    public static Texture2D pixel;
+    
+    
 
 
     public Game1()
@@ -39,8 +40,7 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Globals.SpriteBatch = _spriteBatch;
-        pixel = new Texture2D(GraphicsDevice,1, 1);
-        pixel.SetData(new[] { Color.Red });
+
 
         // TODO: use this.Content to load your game content here
     }
@@ -70,10 +70,17 @@ public class Game1 : Game
         _spriteBatch.Begin();
         _gameManager.Draw();
 
-
-        
+        //Hitbox test
+        Rectangle rect = new Rectangle((int)Hero._posHitbounds.X, (int)Hero._posHitbounds.Y,(int)Hero._hitBounds.X, (int)Hero._hitBounds.Y); // X, Y, largura, altura
+        Rectangle Erect = new Rectangle((int)enemySkeleton._posHitbounds.X, (int)enemySkeleton._posHitbounds.Y,(int)enemySkeleton._hitBounds.X, (int)enemySkeleton._hitBounds.Y); // X, Y, largura, altura
+        Texture2D pixel = new Texture2D(GraphicsDevice, 1, 1);
+        pixel.SetData(new[] { Color.Red });
+        _spriteBatch.Draw(pixel, rect, Color.Red);        
+        _spriteBatch.Draw(pixel, Erect, Color.Red);  
+        //Hitbox test end
+    
         _spriteBatch.End();
-
+    
         base.Draw(gameTime);
     }
 }

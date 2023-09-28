@@ -13,6 +13,11 @@ public class enemySkeleton
     private readonly int _scale = 2;
     private bool _mirror;
 
+    // Atributos do Hitbox
+    private static Vector2 _originHitbounds;
+    public static Vector2 _posHitbounds;
+    public static Vector2 _hitBounds;
+
     public enemySkeleton(Vector2 pos){
          //Definindo texturas
         _textureIdle ??= Globals.Content.Load<Texture2D>("Creatures/Skeleton/Walk");
@@ -24,11 +29,24 @@ public class enemySkeleton
 
         //Define a posição
         _position = pos;
+
+        //Ponto inicial da Hitbox
+        _originHitbounds.X = 60*_scale;
+        _originHitbounds.Y = 50*_scale;
+
+        //60 50
+        //Tamanho da Hitbox
+        _hitBounds.X = 38*_scale;
+        _hitBounds.Y = 52*_scale;
+
+        //38 52
     }
 
     public Rectangle GetBounds()
     {
-        return new Rectangle((int)_position.X+60, (int)_position.Y+50, 40, 54);
+        _posHitbounds.X = _position.X + _originHitbounds.X;
+        _posHitbounds.Y = _position.Y + _originHitbounds.Y;
+        return new Rectangle((int)_posHitbounds.X, (int)_posHitbounds.Y,(int)_hitBounds.X,(int)_hitBounds.Y);
         
     }
 

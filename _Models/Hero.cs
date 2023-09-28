@@ -16,6 +16,11 @@ public class Hero
     private readonly int _scale = 3;
     private bool _mirror;
 
+    //Atributos do hitbox
+    private static Vector2 _originHitbounds;
+    public static Vector2 _posHitbounds;
+    public static Vector2 _hitBounds;
+
 
 
     public Hero(Vector2 pos)
@@ -34,12 +39,23 @@ public class Hero
         //Define a posição
         _position = pos;
 
+        //Ponto inicial da Hitbox
+        _originHitbounds.X = 17*_scale;
+        _originHitbounds.Y = 15*_scale;
+
+        //Tamanho da hitbox
+        _hitBounds.X = 12*_scale;
+        _hitBounds.Y = 24*_scale;
+
+
+
     }
 
         public Rectangle GetBounds()
     {
-        
-        return new Rectangle((int)_position.X+17, (int)_position.Y+16, 15, 25);
+        _posHitbounds.X = _position.X + _originHitbounds.X;
+        _posHitbounds.Y = _position.Y + _originHitbounds.Y;
+        return new Rectangle((int)_posHitbounds.X, (int)_posHitbounds.Y,(int)_hitBounds.X,(int)_hitBounds.Y);
     }
 
     public void Update()
