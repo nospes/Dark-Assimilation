@@ -14,3 +14,5 @@ Versão 0.2.1- Atualizando alguns parametros para poder utilizar em outras máqu
 Versão 0.2.2- esqueletos agora tem animação, foi implementado o lógica básica para detectar colisões(ainda precisa ser aprimorado).
 
 Versão 0.3 - Sistema de detecção e as Areas de colisões foram aprimorados, foi implementado um sistema para ver área de colisões das unidades.
+
+Versão 0.3.1 - Implementação da colisão dos golpes, colisão entre golpes e inimigos.

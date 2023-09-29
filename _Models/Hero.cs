@@ -40,35 +40,47 @@ public class Hero
         _position = pos;
 
         //Ponto inicial da Hitbox
-        _originHitbounds.X = 17*_scale;
-        _originHitbounds.Y = 15*_scale;
+        _originHitbounds.X = 19 * _scale;
+        _originHitbounds.Y = 15 * _scale;
 
         //Tamanho da hitbox
-        _hitBounds.X = 12*_scale;
-        _hitBounds.Y = 24*_scale;
+        _hitBounds.X = 10 * _scale;
+        _hitBounds.Y = 24 * _scale;
 
 
 
     }
 
-        public Rectangle GetBounds()
+    public Rectangle GetBounds()
     {
         _posHitbounds.X = _position.X + _originHitbounds.X;
         _posHitbounds.Y = _position.Y + _originHitbounds.Y;
-        return new Rectangle((int)_posHitbounds.X, (int)_posHitbounds.Y,(int)_hitBounds.X,(int)_hitBounds.Y);
+        return new Rectangle((int)_posHitbounds.X, (int)_posHitbounds.Y, (int)_hitBounds.X, (int)_hitBounds.Y);
     }
+
+    // 28 18 origin
+    // 15 15 size
+    public Rectangle AttackBounds()
+    {
+        if(!_mirror)
+        return new Rectangle((int)_posHitbounds.X+28, (int)_posHitbounds.Y+15, 60, 30); 
+        else
+        return new Rectangle((int)_posHitbounds.X-52, (int)_posHitbounds.Y+15, 60, 30);
+    }
+
+
 
     public void Update()
     {
         //Movimenta o jogador com os comandos dado pelo Inputmanager.cs
-        if (InputManager.Moving&&!InputManager._attacking)
+        if (InputManager.Moving && !InputManager._attacking)
         {
             _position += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
         }
 
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
-        if(InputManager._attacking) _anims.Update(2);
-        else if(InputManager.Direction.X < 0)
+        if (InputManager._attacking) _anims.Update(2);
+        else if (InputManager.Direction.X < 0)
         {
             _anims.Update(1);
             _mirror = true;
@@ -79,18 +91,18 @@ public class Hero
             //Espelha o spritesheet de acordo com a ultima direção andada
             _mirror = false;
         }
-        else if(InputManager.Direction.Y > 0 || InputManager.Direction.Y < 0) 
+        else if (InputManager.Direction.Y > 0 || InputManager.Direction.Y < 0)
             _anims.Update(1);
-        else 
+        else
             _anims.Update(0);
     }
-//possível forma de solução para problema de como encaixar animação de atacar: colocar no else if a animação 
-//de atacar e condições nas outras OU dar um return ao final do update em animation.cs e colocar alguma 
-//trava que só libere o sprite ao receber o RETURN do fim da animação é talvez colocar uma trava 
-//bool no animation Manager 
+    //possível forma de solução para problema de como encaixar animação de atacar: colocar no else if a animação 
+    //de atacar e condições nas outras OU dar um return ao final do update em animation.cs e colocar alguma 
+    //trava que só libere o sprite ao receber o RETURN do fim da animação é talvez colocar uma trava 
+    //bool no animation Manager 
     public void Draw()
     {
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
-        _anims.Draw(_position,_scale,_mirror); 
+        _anims.Draw(_position, _scale, _mirror);
     }
 }

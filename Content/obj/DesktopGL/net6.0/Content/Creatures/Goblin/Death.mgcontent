@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Goblin/Death.png</SourceFile>
-  <SourceTime>2020-02-07T22:51:08.4234316-03:00</SourceTime>
-  <DestFile>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Content/Creatures/Goblin/Death.xnb</DestFile>
-  <DestTime>2023-09-27T18:30:51.5660723-03:00</DestTime>
+  <SourceFile>C:/Users/jose_/Desktop/Game Dev/Monogame/MyGame/Monogame/Content/Creatures/Goblin/Death.png</SourceFile>
+  <SourceTime>2023-09-27T15:35:20.4645663-03:00</SourceTime>
+  <DestFile>C:/Users/jose_/Desktop/Game Dev/Monogame/MyGame/Monogame/Content/bin/DesktopGL/Content/Creatures/Goblin/Death.xnb</DestFile>
+  <DestTime>2023-09-28T20:09:51.0920686-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T08:44:56-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

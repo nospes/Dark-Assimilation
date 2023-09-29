@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <SourceFile>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Player Punch Cross 64x64.png</SourceFile>
-  <SourceTime>2023-06-13T23:32:08-03:00</SourceTime>
-  <DestFile>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Content/Player/Player Punch Cross 64x64.xnb</DestFile>
-  <DestTime>2023-09-27T18:30:52.0319883-03:00</DestTime>
+  <SourceFile>C:/Users/jose_/Desktop/Game Dev/Monogame/MyGame/Monogame/Content/Player/Player Punch Cross 64x64.png</SourceFile>
+  <SourceTime>2023-09-27T15:35:20.4943721-03:00</SourceTime>
+  <DestFile>C:/Users/jose_/Desktop/Game Dev/Monogame/MyGame/Monogame/Content/bin/DesktopGL/Content/Player/Player Punch Cross 64x64.xnb</DestFile>
+  <DestTime>2023-09-28T20:09:55.2554906-03:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2022-07-26T08:44:56-03:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

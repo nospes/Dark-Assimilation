@@ -18,11 +18,11 @@ public static class InputManager
         //Caso o numero de teclas pressionadas seja maior que 0 e seja alguma da lista ele toma ações de acordo com cada caso
         if (keyboardState.GetPressedKeyCount() > 0)
         {
-            if(keyboardState.IsKeyDown(Keys.K)) _attacking = true;
+            if (keyboardState.IsKeyDown(Keys.K)) _attacking = true;
             if (keyboardState.IsKeyDown(Keys.A)) _direction.X--;
             if (keyboardState.IsKeyDown(Keys.D)) _direction.X++;
             if (keyboardState.IsKeyDown(Keys.W)) _direction.Y--;
-            if (keyboardState.IsKeyDown(Keys.S)) _direction.Y++;            
+            if (keyboardState.IsKeyDown(Keys.S)) _direction.Y++;
         }
     }
 }

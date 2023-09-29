@@ -34,6 +34,6 @@ public class AnimationManager
     public void Draw(Vector2 position, int scale, bool mirror)
     {
         //Com as animações devidamente feitas e definidas de acordo com a nescessidade, ele chama o Animation.cs para começar a desenhe-las na tela
-        _anims[_lastKey].Draw(position,scale,mirror);
+        _anims[_lastKey].Draw(position, scale, mirror);
     }
 }

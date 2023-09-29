@@ -39,7 +39,7 @@ public class Animation
         }
     }
 
-    
+
 
     public void Stop()
     {
@@ -64,29 +64,29 @@ public class Animation
     public void Update()
     {
         //Se não está ativo, não atualiza o sprite
-        if(!_active) return;
+        if (!_active) return;
 
         //Tempo da animação é reduzida pelo tempo de jogo
         _frameTimeLeft -= Globals.TotalSeconds;
 
         //Utiliza o tempo de jogo para avançar de sprite para sprite no spritesheet
-        if(_frameTimeLeft <= 0)
+        if (_frameTimeLeft <= 0)
         {
             _frameTimeLeft += _frameTime;
             _frame = (_frame + 1) % _frames;
         }
 
-        if(_isaplayer&&_frame==_frames-1&&InputManager._attacking) InputManager._attacking = false;
+        if (_isaplayer && _frame == _frames - 1 && InputManager._attacking) InputManager._attacking = false;
         //if(_frame==_frames)
 
     }
 
-    public void Draw(Vector2 pos,int scale,bool fliped)
+    public void Draw(Vector2 pos, int scale, bool fliped)
     {
         //Utilizando SpriteBatch localizado em Global.cs ele desenha na tela um sprite com parametros passados pelo Animation Manager.
-        if(!fliped)
-        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame],Color.White, 0, Vector2.Zero, new Vector2(scale,scale), SpriteEffects.None, 1);
+        if (!fliped)
+            Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 1);
         else
-        Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame],Color.White, 0, Vector2.Zero, new Vector2(scale,scale), SpriteEffects.FlipHorizontally, 1);
+            Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.FlipHorizontally, 1);
     }
 }
