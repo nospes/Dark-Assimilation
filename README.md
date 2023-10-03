@@ -16,3 +16,5 @@ Versão 0.2.2- esqueletos agora tem animação, foi implementado o lógica bási
 Versão 0.3 - Sistema de detecção e as Areas de colisões foram aprimorados, foi implementado um sistema para ver área de colisões das unidades.
 
 Versão 0.3.1 - Implementação da colisão dos golpes, colisão entre golpes e inimigos.
+
+Versão 0.3.2 - Movimentação dos inimigos, referencia de posição do heroi para movimento(precisa ser aprimorado)

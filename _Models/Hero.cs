@@ -11,7 +11,7 @@ public class Hero
 
 
     // Atributos
-    private Vector2 _position;
+    public static Vector2 _position;
     private readonly float _speed = 200f;
     private readonly int _scale = 3;
     private bool _mirror;
@@ -66,6 +66,11 @@ public class Hero
         return new Rectangle((int)_posHitbounds.X+28, (int)_posHitbounds.Y+15, 60, 30); 
         else
         return new Rectangle((int)_posHitbounds.X-52, (int)_posHitbounds.Y+15, 60, 30);
+    }
+
+    public Vector2 GetCenter()
+    {
+    return new Vector2(_position.X + _hitBounds.X / 2, _position.Y + _hitBounds.Y / 2);
     }
 
 
