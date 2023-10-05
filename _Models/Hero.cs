@@ -64,10 +64,15 @@ public class Hero : playerBase
     // 15 15 size
     public Rectangle AttackBounds()
     {
+
+        var _hitsize = new Vector2(65,30);
+        float centerX = _position.X + _origin.X * _scale;
+        float centerY = _position.Y + _origin.Y * _scale;
+
         if (!_mirror)
-            return new Rectangle((int)_origin.X + 28, (int)_origin.Y + 15, 60, 30);
+            return new Rectangle((int)centerX, (int)(centerY-_hitsize.Y/2), (int)_hitsize.X, (int)_hitsize.Y);
         else
-            return new Rectangle((int)_origin.X - 52, (int)_origin.Y + 15, 60, 30);
+            return new Rectangle((int)(centerX - _hitsize.X), (int)(centerY-_hitsize.Y/2), (int)_hitsize.X, (int)_hitsize.Y);
     }
 
 
@@ -105,8 +110,8 @@ public class Hero : playerBase
     {
 
         //hitbox
-        //Rectangle rect = GetBounds();
-        //Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
+        Rectangle rect = AttackBounds();
+        Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
         _anims.Draw(_position, _scale, _mirror);
 

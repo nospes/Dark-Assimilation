@@ -25,6 +25,12 @@ namespace MyGame
                     Console.WriteLine("Colisão detectada com inimigo!");
                     // Faça qualquer coisa que você deseja quando houver uma colisão.
                 }
+
+                if (boundsObject3.Intersects(boundsObject2)&&InputManager._attacking)
+                {
+                    Console.WriteLine("Golpe desferido no inimigo!");
+                    // Faça qualquer coisa que você deseja quando houver uma colisão.
+                }
             }
         }
     }
