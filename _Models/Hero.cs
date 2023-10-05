@@ -1,27 +1,19 @@
 namespace MyGame;
 
-public class Hero
+public class Hero : playerBase
 {
     // Animações
     private readonly AnimationManager _anims = new();
     private static Texture2D _textureIdle;
     private static Texture2D _textureMove;
     private static Texture2D _textureJab;
-
-
-
-    // Atributos
-    public static Vector2 _position;
-    private readonly float _speed = 200f;
     private readonly int _scale = 3;
-    private bool _mirror;
+
 
     //Atributos do hitbox
-    private static Vector2 _originHitbounds;
-    public static Vector2 _posHitbounds;
-    public static Vector2 _hitBounds;
+    private Vector2 _baseHitBoxsize;
 
-
+    public static Vector2 _scaledHitBoxsize;
 
     public Hero(Vector2 pos)
     {
@@ -36,41 +28,46 @@ public class Hero
         _anims.AddAnimation(1, new(_textureMove, 8, 1, 0.1f, 1, true));
         _anims.AddAnimation(2, new(_textureJab, 10, 1, 0.09f, 1, true));
 
-        //Define a posição
+        //Define a posição e velocidade
         _position = pos;
-
-        //Ponto inicial da Hitbox
-        _originHitbounds.X = 19 * _scale;
-        _originHitbounds.Y = 15 * _scale;
-
-        //Tamanho da hitbox
-        _hitBounds.X = 10 * _scale;
-        _hitBounds.Y = 24 * _scale;
+        _speed = 200;
 
 
+        // Tamanho base da hitbox
+        _baseHitBoxsize.X = 10;
+        _baseHitBoxsize.Y = 24;
+
+        //Tamanho da Hitbox escalada
+        _scaledHitBoxsize.X = _baseHitBoxsize.X * _scale;
+        _scaledHitBoxsize.Y = _baseHitBoxsize.Y * _scale;
+
+        //Centro do Frame
+        var frameWidth = _textureIdle.Width / 10;
+        var frameHeight = _textureIdle.Height / 1;
+        _origin = new(frameWidth / 2, frameHeight / 2);
 
     }
 
     public Rectangle GetBounds()
     {
-        _posHitbounds.X = _position.X + _originHitbounds.X;
-        _posHitbounds.Y = _position.Y + _originHitbounds.Y;
-        return new Rectangle((int)_posHitbounds.X, (int)_posHitbounds.Y, (int)_hitBounds.X, (int)_hitBounds.Y);
+
+        float centerX = _position.X + _origin.X * _scale;
+        float centerY = _position.Y + _origin.Y * _scale;
+
+        int left = (int)centerX - (int)_scaledHitBoxsize.X / 2;
+        int top = (int)centerY - (int)_scaledHitBoxsize.Y / 2;
+
+        return new Rectangle(left, top, (int)_scaledHitBoxsize.X, (int)_scaledHitBoxsize.Y);
     }
 
     // 28 18 origin
     // 15 15 size
     public Rectangle AttackBounds()
     {
-        if(!_mirror)
-        return new Rectangle((int)_posHitbounds.X+28, (int)_posHitbounds.Y+15, 60, 30); 
+        if (!_mirror)
+            return new Rectangle((int)_origin.X + 28, (int)_origin.Y + 15, 60, 30);
         else
-        return new Rectangle((int)_posHitbounds.X-52, (int)_posHitbounds.Y+15, 60, 30);
-    }
-
-    public Vector2 GetCenter()
-    {
-    return new Vector2(_position.X + _hitBounds.X / 2, _position.Y + _hitBounds.Y / 2);
+            return new Rectangle((int)_origin.X - 52, (int)_origin.Y + 15, 60, 30);
     }
 
 
@@ -82,7 +79,6 @@ public class Hero
         {
             _position += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
         }
-
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
         if (InputManager._attacking) _anims.Update(2);
         else if (InputManager.Direction.X < 0)
@@ -107,7 +103,14 @@ public class Hero
     //bool no animation Manager 
     public void Draw()
     {
+
+        //hitbox
+        //Rectangle rect = GetBounds();
+        //Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
         _anims.Draw(_position, _scale, _mirror);
+
+
+
     }
 }

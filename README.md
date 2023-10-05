@@ -18,3 +18,6 @@ Versão 0.3 - Sistema de detecção e as Areas de colisões foram aprimorados, f
 Versão 0.3.1 - Implementação da colisão dos golpes, colisão entre golpes e inimigos.
 
 Versão 0.3.2 - Movimentação dos inimigos, referencia de posição do heroi para movimento(precisa ser aprimorado)
+
+Versão 0.3.3 - Adicionado Herança para comportamentos, inimigos e jogador. Agora é possivel ter diversos comportamentos e chama-los para objetos com herança 'enemyBase', a herança base para inimigos comuns. Melhorado o sistema de colisões, agora eles calculam com base no centro do sprite reduzindo a quantidade de valores absolutos para formaçao da caixa. Agora é possível desenhar os retangulos de teste de área de colisão diretamente no Draw() das unidades. 
+NOTA: É preciso atualizar a lógica de colisão dos golpes do heroi!

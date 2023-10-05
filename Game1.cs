@@ -6,6 +6,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     public static SpriteBatch _spriteBatch;
     private GameManager _gameManager;
+    public static Texture2D pixel;
 
 
 
@@ -64,19 +65,20 @@ public class Game1 : Game
     protected override void Draw(GameTime gameTime)
     {
         GraphicsDevice.Clear(Color.CornflowerBlue);
-
+        pixel = new Texture2D(GraphicsDevice, 1, 1);
+        pixel.SetData(new[] { Color.Red });
         // TODO: Add your drawing code here
 
         _spriteBatch.Begin();
+
         _gameManager.Draw();
+
 /*
         //Hitbox test
         Rectangle rect = new Rectangle((int)Hero._posHitbounds.X, (int)Hero._posHitbounds.Y, (int)Hero._hitBounds.X, (int)Hero._hitBounds.Y); // X, Y, largura, altura
         Rectangle Erect = new Rectangle((int)enemySkeleton._posHitbounds.X, (int)enemySkeleton._posHitbounds.Y, (int)enemySkeleton._hitBounds.X, (int)enemySkeleton._hitBounds.Y); // X, Y, largura, altura
         Rectangle Arect = new Rectangle((int)Hero._posHitbounds.X+28, (int)Hero._posHitbounds.Y+15, 60, 30); 
         Rectangle ArectM = new Rectangle((int)Hero._posHitbounds.X-52, (int)Hero._posHitbounds.Y+15, 60, 30); 
-        Texture2D pixel = new Texture2D(GraphicsDevice, 1, 1);
-        pixel.SetData(new[] { Color.Red });
         _spriteBatch.Draw(pixel, rect, Color.Red);
         _spriteBatch.Draw(pixel, Erect, Color.Red);
         if(InputManager._attacking)
