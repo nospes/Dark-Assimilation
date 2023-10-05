@@ -6,7 +6,7 @@ public class GameManager
     //Sua propriedade Draw() e Update() é diretamente chamada pelo update do Game1.cs
 
     private Hero _hero;
-    private List<enemySkeleton> inimigos = new List<enemySkeleton>();
+    private List<enemyCollection> inimigos = new List<enemyCollection>();
     private CollisionManager _collisionManager;
 
 

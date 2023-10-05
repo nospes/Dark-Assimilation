@@ -20,7 +20,7 @@ public class Animation
 
     public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1, bool isaplayer = false)
     {
-        //Aplicando Valores a um objeto único pra criação de sprites com a mesma solução
+        //Definição dos parametros para montagem do spritesheet
         _texture = texture;
         _frameTime = frameTime;
         _frameTimeLeft = _frameTime;
@@ -77,7 +77,6 @@ public class Animation
         }
 
         if (_isaplayer && _frame == _frames - 1 && InputManager._attacking) InputManager._attacking = false;
-        //if(_frame==_frames)
 
     }
 

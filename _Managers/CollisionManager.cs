@@ -3,12 +3,12 @@ namespace MyGame
     public class CollisionManager
     {
         private Hero _hero;
-        private List<enemySkeleton> _inimigos;
+        private List<enemyCollection> __inimigos;
 
-        public CollisionManager(Hero hero, List<enemySkeleton> inimigos)
+        public CollisionManager(Hero hero, List<enemyCollection> _inimigos)
         {
             _hero = hero;
-            _inimigos = inimigos;
+            __inimigos = _inimigos;
         }
 
         public void CheckCollisions()
@@ -16,9 +16,9 @@ namespace MyGame
             Rectangle boundsObject1 = _hero.GetBounds();
             Rectangle boundsObject3 = _hero.AttackBounds();
 
-            foreach (var inimigo in _inimigos)
+            foreach (var _inimigo in __inimigos)
             {
-                Rectangle boundsObject2 = inimigo.GetBounds();
+                Rectangle boundsObject2 = _inimigo.GetBounds();
 
                 if (boundsObject1.Intersects(boundsObject2))
                 {
