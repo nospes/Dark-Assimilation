@@ -11,15 +11,15 @@ public interface enemyCollection
 public abstract class enemyBase : enemyCollection
 {
     //Variaveis de estado do sprite
-    public bool _mirror { get; set; }   //Espelhamento 
-    public int _scale { get; set; } //Tamanho
+    public bool Mirror { get; set; }   //Espelhamento 
+    public int Scale { get; set; } //Tamanho
     //Variaveis de posição e movimento
-    public Vector2 _position { get; set; }  //Posição
-    public float _speed { get; set; }   //Velocidade
+    public Vector2 Position { get; set; }  //Posição
+    public float Speed { get; set; }   //Velocidade
 
     //Variaveis de colisão
-    public Vector2 _baseHitBoxsize {get; set;} // Tamanho base do hitbox
-    public Vector2 _origin { get; set; }    //Centro do frame atual no spritesheet
+    public Vector2 baseHitboxSize {get; set;} // Tamanho base do hitbox
+    public Vector2 Origin { get; set; }    //Centro do frame atual no spritesheet
 
 
     //Referencia-se as funções presentes dentro dos portadores dessa herança

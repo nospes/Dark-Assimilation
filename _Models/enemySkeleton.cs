@@ -21,29 +21,29 @@ public class enemySkeleton : enemyBase
         _anims.AddAnimation("skelihurt", new(_textureHit, 4, 1, 0.1f, 1, false));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
-        _position = pos;
-        _speed = 100f;
-        _scale = 2;
+        Position = pos;
+        Speed = 100f;
+        Scale = 2;
 
         //Definição de origem e tamanho da caixa de colisão
-        _baseHitBoxsize = new(38,53); // Tamanho
+        baseHitboxSize = new(38,53); // Tamanho
         var frameWidth = _textureIdle.Width / 4; // Dividindo os frames de acordo com tamanho do spritesheet
         var frameHeight = _textureIdle.Height / 1;
-        _origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
+        Origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
     }
 
     public override Rectangle GetBounds()
     {
         // Definindo o centro do frame de acordo com a posição atual
-        float centerX = _position.X + _origin.X*_scale; 
-        float centerY = _position.Y + _origin.Y*_scale;
+        float centerX = Position.X + Origin.X*Scale; 
+        float centerY = Position.Y + Origin.Y*Scale;
 
         //Limites do topo e da esquerda da caixa de colisão
-        int left = (int)centerX-(int)(_baseHitBoxsize.X*_scale)/2;
-        int top = (int)centerY-(int)(_baseHitBoxsize.Y*_scale)/2;
+        int left = (int)centerX-(int)(baseHitboxSize.X*Scale)/2;
+        int top = (int)centerY-(int)(baseHitboxSize.Y*Scale)/2;
 
         //Com base nas coordenadas Top e Left cria um retangulo de tamanho pré-definido multiplicado pelo scale
-        return new Rectangle(left, top, (int)(_baseHitBoxsize.X*_scale), (int)(_baseHitBoxsize.Y*_scale));
+        return new Rectangle(left, top, (int)(baseHitboxSize.X*Scale), (int)(baseHitboxSize.Y*Scale));
     }
 
     public override void Update()
@@ -62,7 +62,7 @@ public class enemySkeleton : enemyBase
     public override void Draw()
     {
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(_position, _scale, _mirror);
+        _anims.Draw(Position, Scale, Mirror);
 
         //hitbox test
         //Rectangle Erect = GetBounds();

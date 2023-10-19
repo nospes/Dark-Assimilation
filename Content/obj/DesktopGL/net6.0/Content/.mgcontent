@@ -25,22 +25,18 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Skeleton/Shield.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Skeleton/Take Hit.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Skeleton/Walk.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/coin.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/player climb-back 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Player Jab 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/player jump 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/player land 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Player Punch Cross 64x64.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/player shoot 2H 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Player Side-Climb 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/PlayerIdle_spr.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/run cycle 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/wall land 48x48.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Wall Slide 48x48.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile1.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile2.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile3.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile4.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile5.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Attack.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Cast.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Dash.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Idle.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Run.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

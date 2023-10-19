@@ -26,7 +26,7 @@ namespace MyGame
                     // Faça qualquer coisa que você deseja quando houver uma colisão.
                 }
 
-                if (boundsObject3.Intersects(boundsObject2)&&InputManager._attacking)
+                if (boundsObject3.Intersects(boundsObject2)&&Hero.Attacking)
                 {
                     Console.WriteLine("Golpe desferido no inimigo!");
                     // Faça qualquer coisa que você deseja quando houver uma colisão.

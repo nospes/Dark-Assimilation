@@ -25,9 +25,7 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\MyGame.pdb
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\MyGame.genruntimeconfig.cache
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\ref\MyGame.dll
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\Character Idle 48x48.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\player climb-back 48x48.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\Player Jab 48x48.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\player jump 48x48.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\player land 48x48.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\Player Punch Cross 64x64.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\player shoot 2H 48x48.xnb
@@ -56,7 +54,6 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Ske
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Take Hit.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Walk.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\PlayerIdle_spr.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\coin.xnb
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\bin\Debug\net6.0\Content\Player\Character Idle 48x48.xnb
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\bin\Debug\net6.0\Content\ball.xnb
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\bin\Debug\net6.0\Content\Creatures\Eye Fly\Attack.xnb
@@ -116,3 +113,13 @@ C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\obj\Debug\net6.0\refint
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\obj\Debug\net6.0\MyGame.pdb
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\obj\Debug\net6.0\MyGame.genruntimeconfig.cache
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\obj\Debug\net6.0\ref\MyGame.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile1.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile2.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Run.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Cast.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Dash.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile3.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile4.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile5.xnb
