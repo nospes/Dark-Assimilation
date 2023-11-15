@@ -2,37 +2,39 @@ namespace MyGame;
 //Essa AI segue o heroi até certo alcance
 public class GuardMovementAI : MovementAI
 {
-    public Hero Target { get; set; }
-    public Vector2 Guard { get; set; }
-    public float Distance { get; set; }
+    public Hero target { get; set; }
+    public Vector2 guard { get; set; }
+    public float distance { get; set; }
 
     public override void Move(enemyBase enemy)
     {
-        if (Target is null) return;
+        if (target is null || enemy.DANORECEBIDO) return;
 
-        var toTarget = (Guard - Target.Position).Length();
+        var totarget = (guard - target.POSITION).Length();
         Vector2 dir;
 
 
 
-        if (toTarget < Distance)
+        if (totarget < distance)
         {
-            dir = Target.Position - enemy.Position - enemy.Origin;
+            dir = target.CENTER - enemy.center;
         }
         else
         {
-            dir = Guard - enemy.Position - enemy.Origin;
+            dir = guard - enemy.center;
         }
 
         if (dir.X > 0)
-            enemy.Mirror = false;
+            enemy.mirror = false;
         else if (dir.X < 0)
-            enemy.Mirror = true;
+            enemy.mirror = true;
 
-        if (dir.Length() > 4)
+        if (dir.Length() > 4 || dir.Length() < -4)
         {
             dir.Normalize();
-            enemy.Position += dir * enemy.Speed * Globals.TotalSeconds;
+            enemy.position += dir * enemy.speed * Globals.TotalSeconds;
+            enemy.walkState = true;
         }
+        else enemy.walkState = false;
     }
 }

@@ -19,20 +19,22 @@ public class GameManager
 
         inimigos.Add(new enemySkeleton(new(600, 600))
         {
+            ID = 1,
             MoveAI = new GuardMovementAI
             {
-                Target = _hero,
-                Guard = new(600,600),
-                Distance = 300
+                target = _hero,
+                guard = new(600, 600),
+                distance = 300
             }
         });
 
 
         inimigos.Add(new enemySkeleton(new(100, 300))
         {
+            ID = 2,
             MoveAI = new FollowHeroAI
             {
-                Target = _hero
+                target = _hero
             }
         });
 
@@ -40,10 +42,11 @@ public class GameManager
 
         inimigos.Add(new enemySkeleton(new(100, 600))
         {
+            ID =  3,
             MoveAI = new DistanceMovementAI
             {
-                Target = _hero,
-                Distance = 250
+                target = _hero,
+                distance = 250
             }
         });
         _collisionManager = new CollisionManager(_hero, inimigos);
@@ -54,9 +57,9 @@ public class GameManager
 
     private void CalculateTranslation()
     {
-        var dx = (Globals.WindowSize.X / 2) - _hero.Center.X;
+        var dx = (Globals.WindowSize.X / 2) - _hero.CENTER.X;
         dx = MathHelper.Clamp(dx, -_map.MapSize.X + Globals.WindowSize.X + (_map.TileSize.X / 2), _map.TileSize.X / 2);
-        var dy = (Globals.WindowSize.Y / 2) - _hero.Center.Y;
+        var dy = (Globals.WindowSize.Y / 2) - _hero.CENTER.Y;
         dy = MathHelper.Clamp(dy, -_map.MapSize.Y + Globals.WindowSize.Y + (_map.TileSize.Y / 2), _map.TileSize.Y / 2);
         _translation = Matrix.CreateTranslation(dx, dy, 0f);
     }

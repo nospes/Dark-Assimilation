@@ -3,7 +3,6 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\MyGame.GeneratedMSBui
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\MyGame.AssemblyInfoInputs.cache
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\MyGame.AssemblyInfo.cs
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net6.0\MyGame.csproj.CoreCompileInputs.cache
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\ball.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\MyGame.exe
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\MyGame.deps.json
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\MyGame.runtimeconfig.json
@@ -33,26 +32,6 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\Player
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\run cycle 48x48.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\wall land 48x48.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\Wall Slide 48x48.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Eye Fly\Attack.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Eye Fly\Death.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Eye Fly\Idle.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Eye Fly\Take Hit.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Goblin\Attack.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Goblin\Death.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Goblin\Idle.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Goblin\Run.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Goblin\Take Hit.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Mushroom\Attack.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Mushroom\Death.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Mushroom\Idle.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Mushroom\Run.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Mushroom\Take Hit.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Attack.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Death.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Idle.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Shield.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Take Hit.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Skeleton\Walk.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\PlayerIdle_spr.xnb
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\bin\Debug\net6.0\Content\Player\Character Idle 48x48.xnb
 C:\Users\jose_\Desktop\Game Dev\Monogame\MyGame\Monogame\bin\Debug\net6.0\Content\ball.xnb
@@ -123,3 +102,31 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.D
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile3.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile4.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Map\tile5.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\archer_Attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\archer_Dash.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\archer_Death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\archer_Idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\archer_Skill.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\archer_Walk.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Archer\projectile.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Hit.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Walk.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Cast.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Hit.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Walk.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Soldier\soldier_Attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Soldier\soldier_Death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Soldier\soldier_Hit.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Soldier\soldier_Idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Soldier\soldier_Walk.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_blue.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_green.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_purple.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_red.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_yellow.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Preattack.xnb

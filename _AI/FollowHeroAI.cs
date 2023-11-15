@@ -2,24 +2,27 @@ namespace MyGame;
 //Essa AI segue o heroi independente do alcance
 public class FollowHeroAI : MovementAI
 {
-    public Hero Target { get; set; }
+    public Hero target { get; set; }
 
     public override void Move(enemyBase enemy)
     {
-        if (Target is null) return;
+        Vector2 dir;
+        if (target is null || enemy.DANORECEBIDO || enemy.PREATTACKSTATE) return;
 
-        var dir = Target.Position - enemy.Position - enemy.Origin;
+        dir = target.CENTER - enemy.center;
 
         if (dir.X > 0)
-            enemy.Mirror = false;
+            enemy.mirror = false;
         else if (dir.X < 0)
-            enemy.Mirror = true;
+            enemy.mirror = true;
 
-        if (dir.Length() > 4)
+        if (dir.Length() > 4 || dir.Length() < -4)
         {
+            enemy.walkState = true;
             dir.Normalize();
-            enemy.Position += dir * enemy.Speed * Globals.TotalSeconds;
+            enemy.position += dir * enemy.speed * Globals.TotalSeconds;
         }
+        else enemy.walkState = false;
     }
 
 }

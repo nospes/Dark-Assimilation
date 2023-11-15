@@ -78,18 +78,33 @@ public class Animation
 
         if (_isaplayer)
         {
-            //Combo 3 golpes
-            if (_frame == 6 && Hero.Attacking) Hero.Attacking = false;
-            if (_frame == 11 && Hero.Attacking) Hero.Attacking = false;
-            if (_frame == _frames - 1 && Hero.Attacking) Hero.Attacking = false;
+            if (Hero.ATTACKING)
+            {
+                //Gerenciador de animação entre os golpes
+                if (_frame == 6) Hero.ATTACKING = false;
+                if (_frame == 11) Hero.ATTACKING = false;
+                if (_frame == _frames - 1) Hero.ATTACKING = false;
+                //Gerenciador de janela de colisão para os golpes
+                if (_frame == 3) Hero.ATTACKHITTIME = true;
+                if (_frame == 4) Hero.ATTACKHITTIME = false;
+                if (_frame == 7) Hero.ATTACKHITTIME = true;
+                if (_frame == 8) Hero.ATTACKHITTIME = false;
+                if (_frame == 12) Hero.ATTACKHITTIME = true;
+                if (_frame == 13) Hero.ATTACKHITTIME = false;
+
+            }
             //Conjuração
-            if (_frame == _frames - 1 && Hero.Cast) Hero.Cast = false;
+            if (_frame == _frames - 1 && Hero.CAST) Hero.CAST = false;
             //Dash
-            if (_frame == _frames - 1 && Hero.Dash)
+            if (_frame == _frames - 1 && Hero.DASH)
             {
                 Reset();
-                Hero.Dash = false;
+                Hero.DASH = false;
             }
+        }
+        else
+        {
+
         }
 
 
