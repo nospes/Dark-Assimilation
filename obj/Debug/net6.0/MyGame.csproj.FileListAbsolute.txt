@@ -130,3 +130,5 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swa
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_red.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_yellow.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Preattack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Player\hero.Hurt.xnb

@@ -1,4 +1,5 @@
 # Monogame
+
 Monogame + AI
 
 Projeto para desenvolvimento da minha iniciação cientifica: APLICABILIDADE DE INTELIGÊNCIA ARTIFICIAL NA CUSTOMIZAÇÃO DE CENÁRIOS E AGENTES EM JOGOS DIGITAIS
@@ -19,18 +20,22 @@ Versão 0.3.1 - Implementação da colisão dos golpes, colisão entre golpes e 
 
 Versão 0.3.2 - Movimentação dos inimigos, referencia de posição do heroi para movimento(precisa ser aprimorado)
 
-Versão 0.3.3 - Adicionado Herança para comportamentos, inimigos e jogador. Agora é possivel ter diversos comportamentos e chama-los para objetos com herança 'enemyBase', a herança base para inimigos comuns. Melhorado o sistema de colisões, agora eles calculam com base no centro do sprite reduzindo a quantidade de valores absolutos para formaçao da caixa. Agora é possível desenhar os retangulos de teste de área de colisão diretamente no Draw() das unidades. 
+Versão 0.3.3 - Adicionado Herança para comportamentos, inimigos e jogador. Agora é possivel ter diversos comportamentos e chama-los para objetos com herança 'enemyBase', a herança base para inimigos comuns. Melhorado o sistema de colisões, agora eles calculam com base no centro do sprite reduzindo a quantidade de valores absolutos para formaçao da caixa. Agora é possível desenhar os retangulos de teste de área de colisão diretamente no Draw() das unidades.
 
 Versão 0.3.4 - Área e Lógica da coslião dos golpes atualizadas.
 
 Versão 0.3.5 - Heranças de inimigos atualizadas para suportar funções das unidades, agora é possivel colocar todos os inimigos de diferentes tipos mas de heranças compatilhadas na mesma lista e chamar suas funções nos gerenciadores de jogo. Lógica das variaveis de colisão dos inimigos atualizadas. Foi retirada uma condição obsoleta do gerenciador de animações. Diversos códigos tiveram seus comentários atualizados para explicação mais clara do seu funcionamento.
 
 Versão 0.4 - Foi adicionado a animação de 'conjuração', mecanica de 'dash' e tempo de recarga para todas as essas ações, foi corrigida a caixa de colisão para os estados do heroi, incluindo os golpes e movimentações.
-Foi implementado tilesets, camera e limitações do mapa, agora o jogador tem um espaço limitado para se movimentar e a camera o segue enquanto ele explora o ambiente finito. 
+Foi implementado tilesets, camera e limitações do mapa, agora o jogador tem um espaço limitado para se movimentar e a camera o segue enquanto ele explora o ambiente finito.
 Tambem foram adicionados os comportamentos básicos para inimigos e sua herança relacionada, agora inimigos podem ter entre 3 comportamentos pré-definidos, entre eles; 'GuardMovement', que protege uma área especifica e sempre retorna a ela ao sair do alcance, 'FollowHero', que segue inimigo independente do alcance, e 'DistanceMovement', que segue o heroi com uma distancia minima entre eles.
 Por fim algumas partes do código foram simplificadas e compactadas para deixar mais claro ao entendimento e leitura dele.
 
 Versão 0.4.1 - Adicionado nos arquivos do jogo diversos sprites dos futuros inimigos, com isso o 'enemySkeleton' foi alterado para sprite do 'BigSkeleton', uma tropa que tem intuito de ser grande, lenta, resistente e de alto dano. Foi otimizada a lógica do alvo posição para movimentação das IA para alvejar o centro do heroi.
-Inimigos agora perdem vida ao serem atingidos e entram em estado de 'Hit'/'Machucados' parando a ação deles temporariamente. Também foi refinado a lógica na prioridade de ações, caixas e tempo de colisões dos golpes do herói, visando uma jogabilidade mais fluida, além da padronização dos nomes de variáveis. 
-Agora, os inimigos têm uma caixa de colisão de reação fazendo com que ao herói entrar na área eles entram em estado de pré-ataque, com cooldown antes do ataque real. Ainda há ajustes a serem feitos, pois esqueletos, em alguns casos, não saem do estado de pré-ataque como esperado.
-Os tempos de recarga tem implementados em sua lógica 'Action' e 'Invoke', permitindo que ao terminar o CD alguma lógica possa ser aplicada.
+Inimigos agora perdem vida ao serem atingidos e entram em estado de 'Hit'/'Machucados' parando algumas ações deles temporariamente, ao alcançar 0 de vida os inimigos entram na animação de morte e logo depois dela são devidamente deletados.
+Também foi refinado a lógica na prioridade de ações, caixas e tempo de colisões dos golpes do herói, visando uma jogabilidade mais fluida, além da padronização dos nomes de variáveis e simplificação de condições complexas.
+Agora os inimigos têm uma caixa de colisão para reações fazendo com que ao herói entrar na área eles ativam o estado de PRÉ-ATAQUE, caso o ataque esteja fora do tempo de recarga, acionando um intervalo antes do ataque real. Após o intervalo o inimigo entra em estado de ATAQUE criando caixas de colisão em momentos especificos, similar ao sistema implementado no heroi nessa mesma atualização, e caso entre em contato com a caixa de colisão do heroi faz com que o mesmo receba dano.
+Os tempos de recarga tem implementados em sua lógica 'Action' e 'Invoke', permitindo que ao ser chamado ele possa executar alguma ação especifica quando terminar o seu Cooldown.
+Sistema de 'Knockback' foi adicionado ao jogo, quando um inimigo ou jogador entra em estado de 'Hit' ele sofre um leve recuo na direção oposta do atacante e não pode agir temporariamente, foi presenciado um bug que faz com que receber dano em meio a um golpe deixa a caixa de colisão do ataque pra sempre causando danos fenomenais, embora já tenha sido corrigido é preciso ficar de olho em testes futuros.
+Foi adicionado a animação de receber dano ao heroi, ela entra em ação enquanto o jogador recebe knockback.
+Foi adicionado a animação de morte do heroi, quando ele recebe dano suficiente o jogador não pode mais agir e morre.

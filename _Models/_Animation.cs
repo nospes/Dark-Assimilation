@@ -15,17 +15,18 @@ public class Animation
     private readonly float _frameTime;
     private float _frameTimeLeft;
     private bool _active = true;
-    private bool _isaplayer = false;
 
+    //Metodo de acesso de objetos especificos(inimigos)
+    private readonly enemyCollection _enemy;
+    private Type _objType;
 
-    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1, bool isaplayer = false)
+    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1, enemyCollection enemyInstance = null)
     {
         //Definição dos parametros para montagem do spritesheet
         _texture = texture;
         _frameTime = frameTime;
         _frameTimeLeft = _frameTime;
         _frames = framesX;
-        _isaplayer = isaplayer;
 
         //Definindo área do sprite para animação
         var frameWidth = _texture.Width / framesX;
@@ -37,6 +38,12 @@ public class Animation
         {
             _sourceRectangles.Add(new(i * frameWidth, (row - 1) * frameHeight, frameWidth, frameHeight));
         }
+
+        //Salva obj especifico para trabalhar com ele, usado para gerenciar inimigos
+        _enemy = enemyInstance;
+        //Salva o TIPO do objeto, no caso inimigos, para poder comparar condições
+        _objType = enemyInstance?.GetType();
+
     }
 
 
@@ -60,7 +67,6 @@ public class Animation
         _frameTimeLeft = _frameTime;
 
     }
-
     public void Update()
     {
         //Se não está ativo, não atualiza o sprite
@@ -76,21 +82,19 @@ public class Animation
             _frame = (_frame + 1) % _frames;
         }
 
-        if (_isaplayer)
+
+        //GERENCIADOR DE ANIMAÇÕES PARA O PLAYER
+        if (_enemy == null)
         {
-            if (Hero.ATTACKING)
+            if (Hero.ATTACKING && !Hero.RECOIL) //Calculos de frames especificos para janelas de golpes
             {
+                if(Hero.RECOIL) Reset(); //Adicionado RECOIL nas condições para não bugar com ataque infinito
                 //Gerenciador de animação entre os golpes
-                if (_frame == 6) Hero.ATTACKING = false;
-                if (_frame == 11) Hero.ATTACKING = false;
-                if (_frame == _frames - 1) Hero.ATTACKING = false;
+                if (_frame == 6 || _frame == 11 || _frame == _frames - 1) Hero.ATTACKING = false;
                 //Gerenciador de janela de colisão para os golpes
-                if (_frame == 3) Hero.ATTACKHITTIME = true;
-                if (_frame == 4) Hero.ATTACKHITTIME = false;
-                if (_frame == 7) Hero.ATTACKHITTIME = true;
-                if (_frame == 8) Hero.ATTACKHITTIME = false;
-                if (_frame == 12) Hero.ATTACKHITTIME = true;
-                if (_frame == 13) Hero.ATTACKHITTIME = false;
+                if (_frame == 3 || _frame == 7 || _frame == 12) Hero.ATTACKHITTIME = true;
+                else Hero.ATTACKHITTIME = false;
+
 
             }
             //Conjuração
@@ -102,8 +106,35 @@ public class Animation
                 Hero.DASH = false;
             }
         }
-        else
+        else // GERENCIADOR DE ANIMAÇÕES PARA INIMIGOS
         {
+            //Deleta o inimigo do jogo quando animação de morte termina e HP está menor que 0
+            if (_frame == _frames - 1 && _enemy.HP <= 0)
+            {
+                _enemy.DEATHSTATE = true;
+            }
+            //Reseta a animação e retorna da animação de ataque após completar a animação
+            else if (_frame == _frames - 1 && _enemy.ATTACKSTATE)
+            {
+                Reset();
+                _enemy.ATTACKSTATE = false;
+                _enemy.PREATTACKHITCD = true;
+            }
+            //Caso o inimigo seja do tipo enemySkeleton...
+            if (_objType == typeof(enemySkeleton) && _enemy.ATTACKSTATE && _enemy.HP > 0)
+            {
+                if (_frame == 1) //Mesma lógica do heroi, calculos de frames especificos para janelas de golpes
+                {
+                    _enemy.ATTACKHITTIME = true;
+                    _enemy.ATTACKTYPE = 1;
+                }
+                else if (_frame == 5) //Parte 2 do golpe pois esse inimigo tem duas caixas de colisão
+                {
+                    _enemy.ATTACKHITTIME = true;
+                    _enemy.ATTACKTYPE = 2;
+                }
+                else _enemy.ATTACKHITTIME = false; //Caso não esteja nesses frames, o golpe não tem hitbox
+            }
 
         }
 

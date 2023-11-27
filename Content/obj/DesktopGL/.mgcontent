@@ -40,10 +40,14 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Cast.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Dash.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Run.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

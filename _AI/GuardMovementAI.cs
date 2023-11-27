@@ -8,7 +8,7 @@ public class GuardMovementAI : MovementAI
 
     public override void Move(enemyBase enemy)
     {
-        if (target is null || enemy.DANORECEBIDO) return;
+        if (target is null || enemy.actionstate) return;
 
         var totarget = (guard - target.POSITION).Length();
         Vector2 dir;
@@ -17,11 +17,11 @@ public class GuardMovementAI : MovementAI
 
         if (totarget < distance)
         {
-            dir = target.CENTER - enemy.center;
+            dir = target.CENTER - enemy.CENTER;
         }
         else
         {
-            dir = guard - enemy.center;
+            dir = guard - enemy.CENTER;
         }
 
         if (dir.X > 0)

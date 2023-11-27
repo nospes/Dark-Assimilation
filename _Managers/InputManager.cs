@@ -20,8 +20,9 @@ public static class InputManager
         var keyboardState = Keyboard.GetState();
 
         //Caso o numero de teclas pressionadas seja maior que 0 e seja alguma da lista ele toma ações de acordo com cada caso
-        if (keyboardState.GetPressedKeyCount() > 0 && !Hero.CAST && !Hero.ATTACKING)
+        if (keyboardState.GetPressedKeyCount() > 0 && !Hero.CAST && !Hero.ATTACKING && !Hero.RECOIL && !Hero.DEATH)
         {
+
 
             if (!Hero.DASH)
             {
@@ -47,8 +48,8 @@ public static class InputManager
                 }
             }
         }
-
-
-
     }
+
+
+
 }

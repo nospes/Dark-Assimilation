@@ -3,7 +3,7 @@ namespace MyGame;
 public class GameManager
 {
     //Em geral esse código serve apenas para adicionar, remover e atualizar coisas dentro do jogo
-    //Sua propriedade Draw() e Update() é diretamente chamada pelo update do Game1.cs
+    //Suas funções são diretamente chamadas pelo update do Game1.cs
 
     private Hero _hero;
     private Map _map;
@@ -14,9 +14,13 @@ public class GameManager
 
     public void Init()
     {
+        //Cria o mapa
         _map = new();
+
+        //Cria o heroi
         _hero = new(new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2));
 
+        //Cria o inimigo e define algumas variaveis, como ID e tipo de AI
         inimigos.Add(new enemySkeleton(new(600, 600))
         {
             ID = 1,
@@ -42,20 +46,20 @@ public class GameManager
 
         inimigos.Add(new enemySkeleton(new(100, 600))
         {
-            ID =  3,
+            ID = 3,
             MoveAI = new DistanceMovementAI
             {
                 target = _hero,
                 distance = 250
             }
         });
-        _collisionManager = new CollisionManager(_hero, inimigos);
-        _hero.MapBounds(_map.MapSize, _map.TileSize);
+        _collisionManager = new CollisionManager(_hero, inimigos); //Cria gerenciador de colisões entre inimigos e jogador
+        _hero.MapBounds(_map.MapSize, _map.TileSize); //Atrela o Heroi aos limites do mapa
 
 
     }
 
-    private void CalculateTranslation()
+    private void CalculateTranslation() // Gerenciador dos limites de camera de acordo com o mapa.
     {
         var dx = (Globals.WindowSize.X / 2) - _hero.CENTER.X;
         dx = MathHelper.Clamp(dx, -_map.MapSize.X + Globals.WindowSize.X + (_map.TileSize.X / 2), _map.TileSize.X / 2);
@@ -64,32 +68,40 @@ public class GameManager
         _translation = Matrix.CreateTranslation(dx, dy, 0f);
     }
 
-
-
     public void Update()
     {
 
-        InputManager.Update();
-        _hero.Update();
-        foreach (var inimigo in inimigos)
+        InputManager.Update(); //Atualiza os botões
+        _hero.Update(); //Atualiza os herois
+        List<enemyCollection> inimigosParaRemover = new List<enemyCollection>(); //Atualiza a lista de inimigos mortos
+        foreach (var inimigo in inimigos) //Para cada inimigo...
         {
-            inimigo.Update();
+            inimigo.Update(); //Atualiza
+            if (inimigo.DEATHSTATE) 
+            {
+                inimigosParaRemover.Add(inimigo); //Se esta morto adiciona a lista de inimigos derrotados
+            }
         }
 
-        _collisionManager.CheckCollisions();
-        CalculateTranslation();
+        foreach (var inimigoParaRemover in inimigosParaRemover) //Para cada inimigo derrotado...
+        {
+            inimigos.Remove(inimigoParaRemover); //Remova o inimigo
+        }
+
+        _collisionManager.CheckCollisions(); //Checa as colisões
+        CalculateTranslation(); //Atualiza a posição da camera
 
     }
 
     public void Draw()
     {
-        Globals.SpriteBatch.Begin(transformMatrix: _translation);
-        _map.Draw();
+        Globals.SpriteBatch.Begin(transformMatrix: _translation); //Cria os sprites dentro dos limites do mapa
+        _map.Draw(); //Desenha o mapa
         foreach (var inimigo in inimigos)
         {
-            inimigo.Draw();
+            inimigo.Draw(); //Para cada inimigo no mapa, ele é desenhado
         }
-        _hero.Draw();
+        _hero.Draw(); //Desenha o heroi
         Globals.SpriteBatch.End();
     }
 }

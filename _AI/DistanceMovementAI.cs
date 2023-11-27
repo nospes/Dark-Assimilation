@@ -8,9 +8,9 @@ public class DistanceMovementAI : MovementAI
     public override void Move(enemyBase enemy)
     {
         Vector2 dir;
-        if (target is null || enemy.DANORECEBIDO) return;
+        if (target is null || enemy.actionstate) return;
 
-        dir = target.CENTER - enemy.center;
+        dir = target.CENTER - enemy.CENTER;
         var length = dir.Length();
 
         if (length > distance + 2)

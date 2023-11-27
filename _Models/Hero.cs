@@ -4,49 +4,61 @@ public class Hero
 {
 
     //Posição e Velocidade
-    public Vector2 POSITION { get; set; }
-    private float _speed { get; set; }
+    public Vector2 POSITION { get; set; } //Posição do jogador
+    private float _speed { get; set; } //Velocidade do jogador
 
     // Animações
-    private readonly AnimationManager _anims = new();
-    private static Texture2D _textureIdle, _textureMove, _textureAttack, _textureCAST, _textureDASH;
-    private readonly int _scale = 3;
-    private bool _mirror { get; set; }
-    private Vector2 _origin { get; set; }
+    private readonly AnimationManager _anims = new(); //Gerenciador de animações
+    private static Texture2D _textureIdle, _textureMove, _textureAttack, _textureCast, _textureDash, _textureDeath, _textureRecoil; //Texturas
+    private readonly int _scale = 3; //Escalonamento do sprite
+    private bool _mirror { get; set; } //Espelhamento do sprite
+    private Vector2 _origin { get; set; } //Origem do centro do sprite
 
 
     //Atributos do hitbox
-    private Vector2 _baseHitBoxsize, _minPos, _maxPos;
-    public static Vector2 SCALEDHITBOXSIZE;
-    public Vector2 CENTER;
+    private Vector2 _baseHitBoxsize, _minPos, _maxPos; //Tamanho da hitbox base e posições maximas e minimas do mapa
+    public static Vector2 SCALEDHITBOXSIZE; //Hitbox escalonada
+    public Vector2 CENTER; //Centro do sprite escalonado e atualizado com a posição atual
 
     //Estados
-    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, DASH = false;
+    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, DASH = false, RECOIL = false, DEATH = false; //Variaveis de estados do jogador
+
+    //Atributos de combate
+    public int HP; //Vida
+    public static Vector2 lastHitpos; //Guarda posição do ultimo inimigo que acertou o heroi, utilizado no calculo de Knockback
 
     //Gerenciadores de tempo de recarga
-    public static SkillManager dashCD, skillCD, attackCD;
-    private bool _dashCDlock = true, _skillCDlock = true, _attackCDlock = true;
+    public static SkillManager dashCD, skillCD, attackCD; //Gerenciadores
+    private bool _dashCDlock = true, _skillCDlock = true, _attackCDlock = true; //Variaveis de controle para os gerenciadores
 
+
+    //Definindo bases do Hero/Jogador
     public Hero(Vector2 pos)
     {
         //Definindo texturas
         _textureIdle ??= Globals.Content.Load<Texture2D>("Player/hero.Idle");
         _textureMove ??= Globals.Content.Load<Texture2D>("Player/hero.Run");
         _textureAttack ??= Globals.Content.Load<Texture2D>("Player/hero.Attack");
-        _textureCAST ??= Globals.Content.Load<Texture2D>("Player/hero.CAST");
-        _textureDASH ??= Globals.Content.Load<Texture2D>("Player/hero.DASH");
+        _textureCast ??= Globals.Content.Load<Texture2D>("Player/hero.Cast");
+        _textureDash ??= Globals.Content.Load<Texture2D>("Player/hero.Dash");
+        _textureDeath ??= Globals.Content.Load<Texture2D>("Player/hero.Death");
+        _textureRecoil ??= Globals.Content.Load<Texture2D>("Player/hero.Hurt");
+
 
 
         //Definindo area dos sprites sheets para fazer a animação
-        _anims.AddAnimation(0, new(_textureIdle, 4, 1, 0.2f, 1, true));
-        _anims.AddAnimation(1, new(_textureMove, 6, 1, 0.1f, 1, true));
-        _anims.AddAnimation(2, new(_textureAttack, 20, 1, 0.07f, 1, true));
-        _anims.AddAnimation(3, new(_textureCAST, 9, 1, 0.09f, 1, true));
-        _anims.AddAnimation(4, new(_textureDASH, 5, 1, 0.1f, 1, true));
+        _anims.AddAnimation(0, new(_textureIdle, 4, 1, 0.2f, 1));
+        _anims.AddAnimation(1, new(_textureMove, 6, 1, 0.1f, 1));
+        _anims.AddAnimation(2, new(_textureAttack, 20, 1, 0.07f, 1));
+        _anims.AddAnimation(3, new(_textureCast, 9, 1, 0.09f, 1));
+        _anims.AddAnimation(4, new(_textureDash, 5, 1, 0.1f, 1));
+        _anims.AddAnimation(5, new(_textureDeath, 5, 1, 0.2f, 1));
+        _anims.AddAnimation(6, new(_textureRecoil, 4, 1, 0.04f, 1));
 
-        //Define a posição e velocidade
+        //Definição de Atributos do jogador
         POSITION = pos;
         _speed = 200;
+        HP = 100;
 
 
         // Tamanho base da hitbox
@@ -64,7 +76,7 @@ public class Hero
         _origin = new(frameWidth / 2, frameHeight / 2);
 
 
-        //Cria um objeto para gerenciar o cooldown do DASH e da magia respectivamente
+        //Cria objetos para gerenciar o cooldowns
         dashCD = new SkillManager();
         skillCD = new SkillManager();
         attackCD = new SkillManager();
@@ -73,69 +85,96 @@ public class Hero
 
     }
 
+    //Pega os limites do jogador
     public Rectangle GetBounds()
     {
-        int _centeroffsetX;
+        int _centeroffsetX;//variavel para auxilhar no ajuste de posição
+        //A seguir ele ajusta a hitbox de acordo com a ação e espelhamento
+        //Hitbox se movimentando
         if (InputManager.Moving && !_mirror) _centeroffsetX = 20;
+        //Hitbox espelhada
         else if (InputManager.Moving && _mirror) _centeroffsetX = -20;
+        //Caso nenhum dos dois, não há ajuste
         else _centeroffsetX = 0;
 
         int _centeroffsetY;
+        //Hitbox quando está atacando
         if (Hero.ATTACKING) _centeroffsetY = +10;
         else _centeroffsetY = 0;
 
-
+        //Define os cantos superior e esquerdo da sprite.
         int left = (int)CENTER.X + _centeroffsetX - (int)SCALEDHITBOXSIZE.X / 2;
         int top = (int)CENTER.Y + _centeroffsetY - (int)SCALEDHITBOXSIZE.Y / 2;
 
+        //Após todo o ajuste e casos aplicados, retorna um retangulo ajustado
         return new Rectangle(left, top, (int)SCALEDHITBOXSIZE.X, (int)SCALEDHITBOXSIZE.Y);
     }
 
+    // Define até onde o jogador pode se movimentar
     public void MapBounds(Point mapSize, Point tileSize)
     {
-        _minPos = new((-tileSize.X / 2) - SCALEDHITBOXSIZE.X, (-tileSize.Y / 2));
-        _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110);
+        _minPos = new((-tileSize.X / 2) - SCALEDHITBOXSIZE.X, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
-
+    //Define os limites dos golpes do jogador
     public Rectangle AttackBounds()
     {
 
-        var _hitsize = new Vector2(24 * _scale, 30 * _scale);
+        var _hitsize = new Vector2(24 * _scale, 30 * _scale); //Define o tamanho
 
-        if (!_mirror)
+        if (!_mirror) //Caso não esteja espelhado ele retorna o seguinte retangulo
             return new Rectangle((int)CENTER.X, (int)(CENTER.Y - _hitsize.Y / 2), (int)_hitsize.X, (int)_hitsize.Y);
-        else
+        else //Caso esteja
             return new Rectangle((int)(CENTER.X - _hitsize.X), (int)(CENTER.Y - _hitsize.Y / 2), (int)_hitsize.X, (int)_hitsize.Y);
     }
 
 
-
+    //Variaveis de temporizadores
+    float _recoiltimer = 0f, _recoiltimerduration = 0.3f; //Contador e Duração de invulnerabilidade
     public void Update()
     {
-        //define speed
+        //Tempo de invulnerabilidade após levar dano
+        if (RECOIL)
+        {
+            POSITION += (Vector2.Normalize((CENTER - lastHitpos)))*2;
+            //Temporizador para fim da invulnerabilidade
+            _recoiltimer += (float)Globals.TotalSeconds;
+            if (_recoiltimer >= _recoiltimerduration)
+            {
+                RECOIL = false;
+                _recoiltimer = 0f;
+            }
+        }
+
+
+        //define speed, aumentando-o caso esteja durante o dash
         if (DASH) _speed = 500;
         else _speed = 200;
 
-        //Atualiza o centro
+        //Atualiza o centro do sprite utilizando posição atual + origem base + escalonamento da imagem
         CENTER = POSITION + _origin * _scale;
 
         //Movimenta o jogador com os comandos dado pelo Inputmanager.cs
-        if (!ATTACKING && !CAST)
+        if (!ATTACKING && !CAST && !RECOIL)
         {
-            if (InputManager.Moving)
+            if (InputManager.Moving) // Caso esteja se movendo ele anda nas direções do 'Direction' com base na speed e no tempo de jogo
             {
                 POSITION += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
             }
-            else if (DASH)
+            else if (DASH) //A mesma coisa que movimento, porem como um avanço rapido
             {
                 POSITION += Vector2.Normalize(InputManager.Lastdir) * _speed * Globals.TotalSeconds;
             }
-            POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos);
+            POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos); //Caso o jogador tente ultrapassar os limites do mapa ele retorna
         }
 
+        //Se a vida chega a 0 entra em estado de morte
+        //if(HP<=0) DEATH = true;
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
-        if (CAST) _anims.Update(3);
+        if(DEATH) _anims.Update(5);
+        else if (RECOIL) _anims.Update(6);
+        else if (CAST) _anims.Update(3);
         else if (ATTACKING) _anims.Update(2);
         else if (DASH) _anims.Update(4);
         else if (InputManager.Direction != Vector2.Zero)
@@ -159,7 +198,7 @@ public class Hero
         //cooldown do DASH
         dashCD.skillCooldown(1.00f, () =>
             {
-                Console.WriteLine("Cooldown de 1 terminado. Você pode realizar a ação agora.");
+                //Console.WriteLine("Cooldown de 1 terminado. Você pode realizar a ação agora.");
             });
         if (!DASH)
         {
@@ -170,12 +209,11 @@ public class Hero
             }
         }
         else _dashCDlock = false;
-        //Console.WriteLine($"Cooldown de {cooldownDuration} terminado. Você pode realizar a ação agora.");
 
         //cooldown da skill
         skillCD.skillCooldown(3.00f, () =>
             {
-                Console.WriteLine("Cooldown de 3 terminado. Você pode realizar a ação agora.");
+                //Console.WriteLine("Cooldown de 3 terminado. Você pode realizar a ação agora.");
             });
         if (!CAST)
         {
@@ -190,7 +228,7 @@ public class Hero
         //cooldown do autoattack
         attackCD.skillCooldown(0.15f, () =>
             {
-                Console.WriteLine("Cooldown de 0,15 terminado. Você pode realizar a ação agora.");
+                //Console.WriteLine("Cooldown de 0,15 terminado. Você pode realizar a ação agora.");
             });
         if (!ATTACKING)
         {
@@ -201,6 +239,8 @@ public class Hero
             }
         }
         else _attackCDlock = false;
+
+
     }
 
 
@@ -209,7 +249,6 @@ public class Hero
     {
 
         //hitbox check
-
         Rectangle rect = AttackBounds();
         if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
 
