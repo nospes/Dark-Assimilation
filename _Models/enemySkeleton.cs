@@ -31,7 +31,7 @@ public class enemySkeleton : enemyBase
         //Define a posição, velocidade e tamanho do sprite respectivamente
         position = pos;
         speed = 100f;
-        scale = 4;
+        scale = 5;
 
         //Definição inicial de origem e tamanho da caixa de colisão
         basehitboxSize = new(14, 30); // Tamanho
@@ -41,6 +41,7 @@ public class enemySkeleton : enemyBase
 
         //Pré definição de atributos de combate e animação para evitar bugs
         HP = 100;
+        DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
         DEATHSTATE = false;
@@ -62,11 +63,11 @@ public class enemySkeleton : enemyBase
         int _reactionSize = 40 * scale;  //Tamanho da caixa de colisão
 
         Vector2 _attackOffset1 = new Vector2(_left - 32, _top - 28); //Define a posição dos golpes utilizando dos limites pré-definidos e valores absolutos definidos pela animação
-        Vector2 _attackOffset1M = new Vector2(_left - 90, _top - 28); //Versão espelhada
+        Vector2 _attackOffset1M = new Vector2(_left - 114, _top - 28); //Versão espelhada
         Vector2 _attackOffset2 = new Vector2(_left - 80, _top); //Segunda parte do golpe
-        Vector2 _attackOffset2M = new Vector2(_left - 84, _top); //Versão espelhada
+        Vector2 _attackOffset2M = new Vector2(_left - 114, _top); //Versão espelhada
         Vector2 _attackSize1 = new Vector2(scale * 45, scale * 25); //Área definida de acordo com valores absolutos de animação e escalonamento de sprite
-        Vector2 _attackSize2 = new Vector2(scale * 58, scale * 20); //Segunda parte do golpe
+        Vector2 _attackSize2 = new Vector2(scale * 54, scale * 20); //Segunda parte do golpe
 
         switch (boundType) //Alterna o tipo de colisão de acordo com o valor passado
         {
@@ -76,8 +77,8 @@ public class enemySkeleton : enemyBase
                 return new Rectangle(_left, _top, (int)(basehitboxSize.X * scale), (int)(basehitboxSize.Y * scale));
             case "reactionbox":
                 //Caixa de colisão para Reação do monstro
-                if (!mirror) return new Rectangle(_left - _reactionOffset, _top, _reactionSize, (int)(basehitboxSize.Y * scale));
-                else return new Rectangle(_left - _reactionSize / 2, _top, _reactionSize, (int)(basehitboxSize.Y * scale));
+                if (!mirror) return new Rectangle(_left - _reactionOffset, _top, _reactionSize, (int)((basehitboxSize.Y - 14) * scale));
+                else return new Rectangle(_left - _reactionSize / 2, _top, _reactionSize, (int)((basehitboxSize.Y - 14) * scale));
             case "attackbox1":
                 //Caixa de colisão para o 1º Golpe do monstro
                 if (!mirror) return new Rectangle((int)_attackOffset1.X, (int)_attackOffset1.Y, (int)_attackSize1.X, (int)_attackSize1.Y);
@@ -110,8 +111,8 @@ public class enemySkeleton : enemyBase
         {
             Recoling = true; //Recuo se torna verdadeiro
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
-            _preattacktimer = 0f;
-            _recoilingtimer = 0f;
+            _preattacktimer = 0f; 
+            _recoilingtimer = 0f; 
         }
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
@@ -131,7 +132,9 @@ public class enemySkeleton : enemyBase
         //Caso inimigo esteja com vida e esteja em estado de Recoiling/Recuo/Knockback;
         if (Recoling && HP > 0)
         {
-            if(!ATTACKSTATE)position += (Vector2.Normalize(CENTER - HEROATTACKPOS))/2; //Ele se movimenta na direção contrária ao jogador
+            Vector2 _knockbackdist;
+            _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
+            if (!ATTACKSTATE) position.X += _knockbackdist.X; // Aplica o recuo apenas na horizontal
             _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
             if (_recoilingtimer >= _recoilingduration)
             {
@@ -207,6 +210,10 @@ public class enemySkeleton : enemyBase
         //hitbox test
         Rectangle Erect = GetBounds($"attackbox{ATTACKTYPE}");
         if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
+
+        //Reaction box test
+        //Rectangle Erect = GetBounds($"reactionbox");
+        //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
         _anims.Draw(position, scale, mirror);

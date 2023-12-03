@@ -32,10 +32,20 @@ Tambem foram adicionados os comportamentos básicos para inimigos e sua herança
 Por fim algumas partes do código foram simplificadas e compactadas para deixar mais claro ao entendimento e leitura dele.
 
 Versão 0.4.1 - Adicionado nos arquivos do jogo diversos sprites dos futuros inimigos, com isso o 'enemySkeleton' foi alterado para sprite do 'BigSkeleton', uma tropa que tem intuito de ser grande, lenta, resistente e de alto dano. Foi otimizada a lógica do alvo posição para movimentação das IA para alvejar o centro do heroi.
-Inimigos agora perdem vida ao serem atingidos e entram em estado de 'Hit'/'Machucados' parando algumas ações deles temporariamente, ao alcançar 0 de vida os inimigos entram na animação de morte e logo depois dela são devidamente deletados.
+Inimigos agora perdem vida ao serem atingidos e entram em estado de 'Hit'/'Machucados' parando algumas ações deles temporariamente, ao alcançar 0 de vida os inimigos entram na animação de morte e logo depois da animação são devidamente deletados.
 Também foi refinado a lógica na prioridade de ações, caixas e tempo de colisões dos golpes do herói, visando uma jogabilidade mais fluida, além da padronização dos nomes de variáveis e simplificação de condições complexas.
-Agora os inimigos têm uma caixa de colisão para reações fazendo com que ao herói entrar na área eles ativam o estado de PRÉ-ATAQUE, caso o ataque esteja fora do tempo de recarga, acionando um intervalo antes do ataque real. Após o intervalo o inimigo entra em estado de ATAQUE criando caixas de colisão em momentos especificos, similar ao sistema implementado no heroi nessa mesma atualização, e caso entre em contato com a caixa de colisão do heroi faz com que o mesmo receba dano.
-Os tempos de recarga tem implementados em sua lógica 'Action' e 'Invoke', permitindo que ao ser chamado ele possa executar alguma ação especifica quando terminar o seu Cooldown.
+Agora os inimigos têm uma caixa de colisão para reações fazendo com que ao herói entrar na área eles ativam o estado de PRÉ-ATAQUE, caso o ataque esteja fora do tempo de recarga, acionando um intervalo antes do ataque real. Após o intervalo o inimigo entra em estado de ATAQUE criando caixas de colisão em momentos especificos, similar ao sistema implementado no heroi nessa mesma atualização, caso entre em contato com a caixa de colisão do heroi faz com que o mesmo receba dano.
+foi implementado nos tempos de recarga a lógica de 'Action' e 'Invoke', permitindo que ao ser chamado ele possa executar alguma ação especifica quando terminar o seu Cooldown.
+
+Versão 0.4.2 -
 Sistema de 'Knockback' foi adicionado ao jogo, quando um inimigo ou jogador entra em estado de 'Hit' ele sofre um leve recuo na direção oposta do atacante e não pode agir temporariamente, foi presenciado um bug que faz com que receber dano em meio a um golpe deixa a caixa de colisão do ataque pra sempre causando danos fenomenais, embora já tenha sido corrigido é preciso ficar de olho em testes futuros.
 Foi adicionado a animação de receber dano ao heroi, ela entra em ação enquanto o jogador recebe knockback.
-Foi adicionado a animação de morte do heroi, quando ele recebe dano suficiente o jogador não pode mais agir e morre.
+Foi adicionado a animação de morte do heroi, quando ele recebe dano suficiente o jogador não pode mais agir e 'morre'.
+Dash agora ignora frames de ataque temporariamente.
+
+Versão 0.4.3 -
+Ajustada a área de reação do enemySkeleton para ser mais condizente com a área de dano.
+Knockback é aplicado apenas na horizontal para inimigos.
+Tamanho total do enemySkeleton foi aumentado e com isso sua caixa de colisão tambem foi ajustada, ele estava com tamanho muito similar ao jogador e outros inimigos com isso ele pode se tornar uma ameaça maior e robusta como era a ideia inicial.
+Foi adicionado o enemyArcher, ele mantem a distancia do personagem entrando em estado de pré ataque caso ele entre no alcance e após a duração do ataque ele lança uma flecha em direção a ultima posição do heroi, quando leva dano ele rola pro lado contrário com 2 segundos de recarga entre os rolamentos. (É PRECISO COLOCAR A FLECHA AINDA)
+Foi adicionado o enemySwarm, são inimigos que geralmente andam acompanhados, eles causam dano só de entrar em contato com o heroi com seu corpo, quando entram no alcance dele eles avançam em sua direção após um curto intervalo, seu avanço e preparo podem ser parados com golpes. Atualmente esses inimigos  podem ser gerados com 3 tipos de cores diferentes, mas futuramente suas cores vão ser usadas para diferenciar suas variações selecionadas pela IA.

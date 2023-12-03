@@ -8,12 +8,14 @@ public interface enemyCollection
     int HP { get; set; }
     Vector2 CENTER { get; set; }
     Vector2 HEROATTACKPOS {get; set ;}
+    Vector2 HEROLASTPOS {get; set;}
     //Estados
     bool DEATHSTATE { get; set; }
     bool PREATTACKSTATE { get; set; }
     bool ATTACKSTATE { get; set; }
     bool INVULSTATE { get; set; }
     int ATTACKTYPE { get; set; }
+    bool DASHSTATE{get; set;}
     //Temporizadores
     bool ATTACKHITTIME { get; set; }
     bool PREATTACKHITCD { get; set; }
@@ -47,11 +49,13 @@ public abstract class enemyBase : enemyCollection
     public bool INVULSTATE { get; set; }//Estado de recuo - tempo de recuo após levar um dano
     public bool ATTACKHITTIME { get; set; } //Estado de tempo de dano - Permite heroi levar dano enquanto verdadeiro
     public bool PREATTACKHITCD { get; set; }//Trava para tempo de recarga entre ataques
+    public bool DASHSTATE{get; set;}//Estado de Avanço - Presente em alguns inimigos
 
 
     //Variaveis de colisão e combate
     public int HP { get; set; } // Pontos de vida do inimigo
     public Vector2 HEROATTACKPOS { get; set; } //Posição do jogador ao acertar um golpe
+    public Vector2 HEROLASTPOS {get; set;} // Posição atual do jogador quando variavel é chamada (Usada para golpes)
     public Vector2 basehitboxSize; // Tamanho base do hitbox
     public Vector2 origin;   //Centro do frame atual no spritesheet
     public bool Recoling = false;

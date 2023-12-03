@@ -26,7 +26,6 @@ public class AnimationManager
             _anims[key].Update();
             _lastKey = key;
         }
-
     }
 
     public void Draw(Vector2 position, int scale, bool mirror)

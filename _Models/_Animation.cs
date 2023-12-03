@@ -67,6 +67,7 @@ public class Animation
         _frameTimeLeft = _frameTime;
 
     }
+
     public void Update()
     {
         //Se não está ativo, não atualiza o sprite
@@ -88,7 +89,7 @@ public class Animation
         {
             if (Hero.ATTACKING && !Hero.RECOIL) //Calculos de frames especificos para janelas de golpes
             {
-                if(Hero.RECOIL) Reset(); //Adicionado RECOIL nas condições para não bugar com ataque infinito
+                if (Hero.RECOIL) Reset(); //Adicionado RECOIL nas condições para não bugar com ataque infinito
                 //Gerenciador de animação entre os golpes
                 if (_frame == 6 || _frame == 11 || _frame == _frames - 1) Hero.ATTACKING = false;
                 //Gerenciador de janela de colisão para os golpes
@@ -121,19 +122,32 @@ public class Animation
                 _enemy.PREATTACKHITCD = true;
             }
             //Caso o inimigo seja do tipo enemySkeleton...
-            if (_objType == typeof(enemySkeleton) && _enemy.ATTACKSTATE && _enemy.HP > 0)
+            if (_objType == typeof(enemySkeleton))
             {
-                if (_frame == 1) //Mesma lógica do heroi, calculos de frames especificos para janelas de golpes
+                if (_enemy.ATTACKSTATE && _enemy.HP > 0)
                 {
-                    _enemy.ATTACKHITTIME = true;
-                    _enemy.ATTACKTYPE = 1;
+                    if (_frame == 1) //Mesma lógica do heroi, calculos de frames especificos para janelas de golpes
+                    {
+                        _enemy.ATTACKHITTIME = true;
+                        _enemy.ATTACKTYPE = 1;
+                    }
+                    else if (_frame == 5) //Parte 2 do golpe pois esse inimigo tem duas caixas de colisão
+                    {
+                        _enemy.ATTACKHITTIME = true;
+                        _enemy.ATTACKTYPE = 2;
+                    }
+                    else _enemy.ATTACKHITTIME = false; //Caso não esteja nesses frames, o golpe não tem hitbox
                 }
-                else if (_frame == 5) //Parte 2 do golpe pois esse inimigo tem duas caixas de colisão
+            }
+            if (_objType == typeof(enemyArcher))
+            {
+
+                if (_frame == _frames - 1 && _enemy.DASHSTATE && _enemy.HP > 0)
                 {
-                    _enemy.ATTACKHITTIME = true;
-                    _enemy.ATTACKTYPE = 2;
+                    Reset();
+                    _enemy.DASHSTATE = false;
                 }
-                else _enemy.ATTACKHITTIME = false; //Caso não esteja nesses frames, o golpe não tem hitbox
+
             }
 
         }

@@ -23,7 +23,7 @@ public class Game1 : Game
 
     protected override void Initialize()
     {
-        Globals.WindowSize = new(864, 576);
+        Globals.WindowSize = new(1280, 720);
         _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
         _graphics.PreferredBackBufferHeight =  Globals.WindowSize.Y;
         _graphics.ApplyChanges();

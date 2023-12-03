@@ -3,14 +3,14 @@ namespace MyGame;
 public class GuardMovementAI : MovementAI
 {
     public Hero target { get; set; }
-    public Vector2 guard { get; set; }
+    public Vector2 guardpos { get; set; }
     public float distance { get; set; }
 
     public override void Move(enemyBase enemy)
     {
         if (target is null || enemy.actionstate) return;
 
-        var totarget = (guard - target.POSITION).Length();
+        var totarget = (guardpos - target.POSITION).Length();
         Vector2 dir;
 
 
@@ -21,7 +21,7 @@ public class GuardMovementAI : MovementAI
         }
         else
         {
-            dir = guard - enemy.CENTER;
+            dir = guardpos - enemy.CENTER;
         }
 
         if (dir.X > 0)

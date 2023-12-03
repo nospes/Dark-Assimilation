@@ -49,6 +49,18 @@
 /processorParam:TextureFormat=Color
 /build:Creatures/Archer/archer_Death.png
 
+#begin Creatures/Archer/archer_Hit.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Archer/archer_Hit.png
+
 #begin Creatures/Archer/archer_Idle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -301,6 +313,30 @@
 /processorParam:TextureFormat=Color
 /build:Creatures/Swarm/swarm_blue.png
 
+#begin Creatures/Swarm/swarm_blue_death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_blue_death.png
+
+#begin Creatures/Swarm/swarm_blue_hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_blue_hurt.png
+
 #begin Creatures/Swarm/swarm_green.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -313,6 +349,30 @@
 /processorParam:TextureFormat=Color
 /build:Creatures/Swarm/swarm_green.png
 
+#begin Creatures/Swarm/swarm_green_death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_green_death.png
+
+#begin Creatures/Swarm/swarm_green_hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_green_hurt.png
+
 #begin Creatures/Swarm/swarm_purple.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -324,6 +384,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Creatures/Swarm/swarm_purple.png
+
+#begin Creatures/Swarm/swarm_purple_death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_purple_death.png
+
+#begin Creatures/Swarm/swarm_purple_hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_purple_hurt.png
 
 #begin Creatures/Swarm/swarm_red.png
 /importer:TextureImporter
@@ -348,6 +432,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Creatures/Swarm/swarm_yellow.png
+
+#begin Creatures/Swarm/swarm_yellow_death.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_yellow_death.png
+
+#begin Creatures/Swarm/swarm_yellow_hurt.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Swarm/swarm_yellow_hurt.png
 
 #begin Map/tile1.png
 /importer:TextureImporter

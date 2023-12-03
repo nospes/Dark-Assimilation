@@ -21,13 +21,13 @@ public class GameManager
         _hero = new(new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2));
 
         //Cria o inimigo e define algumas variaveis, como ID e tipo de AI
-        inimigos.Add(new enemySkeleton(new(600, 600))
+        /*inimigos.Add(new enemySkeleton(new(600, 600))
         {
             ID = 1,
             MoveAI = new GuardMovementAI
             {
                 target = _hero,
-                guard = new(600, 600),
+                guardpos = new(600, 600),
                 distance = 300
             }
         });
@@ -42,15 +42,54 @@ public class GameManager
             }
         });
 
+        
 
-
-        inimigos.Add(new enemySkeleton(new(100, 600))
+        inimigos.Add(new enemyArcher(new(100, 600))
         {
             ID = 3,
             MoveAI = new DistanceMovementAI
             {
                 target = _hero,
-                distance = 250
+                distance = 280
+            }
+        });
+
+                inimigos.Add(new enemyArcher(new(600, 100))
+        {
+            ID = 4,
+            MoveAI = new DistanceMovementAI
+            {
+                target = _hero,
+                distance = 280
+            }
+        });
+
+        */
+
+        inimigos.Add(new enemySwarm(new(100, 300))
+        {
+            ID = 1,
+            MoveAI = new FollowHeroAI
+            {
+                target = _hero
+            }
+        });
+
+        inimigos.Add(new enemySwarm(new(200, 500))
+        {
+            ID = 2,
+            MoveAI = new FollowHeroAI
+            {
+                target = _hero
+            }
+        });
+
+        inimigos.Add(new enemySwarm(new(300, 800))
+        {
+            ID = 3,
+            MoveAI = new FollowHeroAI
+            {
+                target = _hero
             }
         });
         _collisionManager = new CollisionManager(_hero, inimigos); //Cria gerenciador de colisões entre inimigos e jogador
@@ -77,7 +116,7 @@ public class GameManager
         foreach (var inimigo in inimigos) //Para cada inimigo...
         {
             inimigo.Update(); //Atualiza
-            if (inimigo.DEATHSTATE) 
+            if (inimigo.DEATHSTATE)
             {
                 inimigosParaRemover.Add(inimigo); //Se esta morto adiciona a lista de inimigos derrotados
             }

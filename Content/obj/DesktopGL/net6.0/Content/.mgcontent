@@ -7,6 +7,7 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Dash.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Hit.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Skill.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Walk.png</File>
@@ -28,10 +29,18 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Soldier/soldier_Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Soldier/soldier_Walk.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_blue.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_blue_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_blue_hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_green.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_green_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_green_hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_purple.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_purple_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_purple_hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_red.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_yellow.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_yellow_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_yellow_hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile1.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile2.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile3.png</File>
@@ -46,6 +55,15 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Run.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

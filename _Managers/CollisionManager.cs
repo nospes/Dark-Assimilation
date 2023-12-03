@@ -5,6 +5,8 @@ namespace MyGame
         private Hero _hero;
         public List<enemyCollection> _inimigos;
 
+        private Type _objType;
+
         public CollisionManager(Hero hero, List<enemyCollection> inimigos)//Criando variaveis locais para unidades
         {
             _hero = hero;
@@ -21,15 +23,17 @@ namespace MyGame
                 Rectangle _enemybounds = _inimigo.GetBounds("hitbox"); // hitbox dos inimigos
                 Rectangle _enemyReactionbounds = _inimigo.GetBounds("reactionbox"); //hitbox de reação dos inimigos
                 Rectangle _enemyAttackbounds = _inimigo.GetBounds($"attackbox{_inimigo.ATTACKTYPE}"); //Ataque do inimigo, nota-se se ele ele tiver mais de um ataque esse parametro pode ser passado
+                _objType = _inimigo.GetType();
 
                 //Se o heroi entrar na area de reação do inimigo
                 if (_herobounds.Intersects(_enemyReactionbounds))
                 {
                     if (!_inimigo.PREATTACKHITCD)
                     {
-                        if (!_inimigo.PREATTACKSTATE && !_inimigo.ATTACKSTATE)
+                        if (!_inimigo.PREATTACKSTATE && !_inimigo.ATTACKSTATE && !_inimigo.DASHSTATE)
                         {
                             _inimigo.PREATTACKSTATE = true;
+                            _inimigo.HEROLASTPOS = _hero.CENTER;
                         }
                     }
                 }
@@ -51,6 +55,9 @@ namespace MyGame
                     Hero.lastHitpos = _inimigo.CENTER;
                     Hero.RECOIL = true;
                     //Console.WriteLine(_hero.HP);
+
+                    // Caso inimigo seja do tipo enemySwarm...
+                    if (_objType == typeof(enemySwarm)) _inimigo.ATTACKHITTIME = false;
                 }
 
                 //Permite que o inimigo volte a levar golpes quando terminar a animação de um
@@ -58,14 +65,5 @@ namespace MyGame
             }
         }
 
-        public void Knockbackmanager(enemyCollection _enemy)
-        {
-            var dir = _hero.CENTER - _enemy.CENTER;
-            Vector2.Normalize(dir);
-            /*while()
-            {
-                
-            }*/
-            }
-        }
+    }
 }
