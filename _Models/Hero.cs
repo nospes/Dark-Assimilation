@@ -5,7 +5,7 @@ public class Hero
 
     //Posição e Velocidade
     public Vector2 POSITION { get; set; } //Posição do jogador
-    private float _speed { get; set; } //Velocidade do jogador
+    public float SPEED { get; set; } //Velocidade do jogador
 
     // Animações
     private readonly AnimationManager _anims = new(); //Gerenciador de animações
@@ -21,7 +21,7 @@ public class Hero
     public Vector2 CENTER; //Centro do sprite escalonado e atualizado com a posição atual
 
     //Estados
-    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, DASH = false, RECOIL = false, DEATH = false; //Variaveis de estados do jogador
+    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, DASH = false, RECOIL = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
 
     //Atributos de combate
     public int HP; //Vida
@@ -29,7 +29,7 @@ public class Hero
 
     //Gerenciadores de tempo de recarga
     public static SkillManager dashCD, skillCD, attackCD; //Gerenciadores
-    private bool _dashCDlock = true, _skillCDlock = true, _attackCDlock = true; //Variaveis de controle para os gerenciadores
+    private bool _dashCDlock = true, _skillCDlock = true; //Variaveis de controle para os gerenciadores
 
 
     //Definindo bases do Hero/Jogador
@@ -47,17 +47,17 @@ public class Hero
 
 
         //Definindo area dos sprites sheets para fazer a animação
-        _anims.AddAnimation(0, new(_textureIdle, 4, 1, 0.2f, 1));
-        _anims.AddAnimation(1, new(_textureMove, 6, 1, 0.1f, 1));
-        _anims.AddAnimation(2, new(_textureAttack, 20, 1, 0.07f, 1));
-        _anims.AddAnimation(3, new(_textureCast, 9, 1, 0.09f, 1));
-        _anims.AddAnimation(4, new(_textureDash, 5, 1, 0.1f, 1));
-        _anims.AddAnimation(5, new(_textureDeath, 5, 1, 0.2f, 1));
-        _anims.AddAnimation(6, new(_textureRecoil, 4, 1, 0.04f, 1));
+        _anims.AddAnimation(0, new(_textureIdle, 4, 1, 0.2f, this));
+        _anims.AddAnimation(1, new(_textureMove, 6, 1, 0.1f, this));
+        _anims.AddAnimation(2, new(_textureAttack, 20, 1, 0.07f, this));
+        _anims.AddAnimation(3, new(_textureCast, 9, 1, 0.09f, this));
+        _anims.AddAnimation(4, new(_textureDash, 5, 1, 0.1f, this));
+        _anims.AddAnimation(5, new(_textureDeath, 5, 1, 0.2f, this));
+        _anims.AddAnimation(6, new(_textureRecoil, 4, 1, 0.04f, this));
 
         //Definição de Atributos do jogador
         POSITION = pos;
-        _speed = 200;
+        SPEED = 200;
         HP = 100;
 
 
@@ -134,10 +134,12 @@ public class Hero
     float _recoiltimer = 0f, _recoiltimerduration = 0.3f; //Contador e Duração de invulnerabilidade
     public void Update()
     {
+
+
         //Tempo de invulnerabilidade após levar dano
         if (RECOIL)
         {
-            POSITION += (Vector2.Normalize((CENTER - lastHitpos)))*2;
+            POSITION += (Vector2.Normalize((CENTER - lastHitpos))) * 2;
             //Temporizador para fim da invulnerabilidade
             _recoiltimer += (float)Globals.TotalSeconds;
             if (_recoiltimer >= _recoiltimerduration)
@@ -148,9 +150,18 @@ public class Hero
         }
 
 
-        //define speed, aumentando-o caso esteja durante o dash
-        if (DASH) _speed = 500;
-        else _speed = 200;
+        //define speed, aumentando-o caso esteja durante o dash ou reduzindo em caso de slow, dash quebra slow
+        if (SLOWED && !DASH)
+        {
+            if (SPEED > 150) SPEED = 150;
+            if (SPEED > 0) SPEED -= 1;
+        }
+        else if (DASH)
+        {
+            SPEED = 500;
+            SLOWED = false;
+        }
+        else SPEED = 200;
 
         //Atualiza o centro do sprite utilizando posição atual + origem base + escalonamento da imagem
         CENTER = POSITION + _origin * _scale;
@@ -160,19 +171,19 @@ public class Hero
         {
             if (InputManager.Moving) // Caso esteja se movendo ele anda nas direções do 'Direction' com base na speed e no tempo de jogo
             {
-                POSITION += Vector2.Normalize(InputManager.Direction) * _speed * Globals.TotalSeconds;
+                POSITION += Vector2.Normalize(InputManager.Direction) * SPEED * Globals.TotalSeconds;
             }
             else if (DASH) //A mesma coisa que movimento, porem como um avanço rapido
             {
-                POSITION += Vector2.Normalize(InputManager.Lastdir) * _speed * Globals.TotalSeconds;
+                POSITION += Vector2.Normalize(InputManager.Lastdir) * SPEED * Globals.TotalSeconds;
             }
             POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos); //Caso o jogador tente ultrapassar os limites do mapa ele retorna
         }
 
         //Se a vida chega a 0 entra em estado de morte
-        //if(HP<=0) DEATH = true;
+        if(HP<=0) DEATH = true;
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
-        if(DEATH) _anims.Update(5);
+        if (DEATH) _anims.Update(5);
         else if (RECOIL) _anims.Update(6);
         else if (CAST) _anims.Update(3);
         else if (ATTACKING) _anims.Update(2);
@@ -196,7 +207,7 @@ public class Hero
 
         //atualiza o tempo de recarga da ação com base no valor passado
         //cooldown do DASH
-        dashCD.skillCooldown(1.00f, () =>
+        dashCD.skillCooldown(1.5f, () =>
             {
                 //Console.WriteLine("Cooldown de 1 terminado. Você pode realizar a ação agora.");
             });
@@ -225,21 +236,6 @@ public class Hero
         }
         else _skillCDlock = false;
 
-        //cooldown do autoattack
-        attackCD.skillCooldown(0.15f, () =>
-            {
-                //Console.WriteLine("Cooldown de 0,15 terminado. Você pode realizar a ação agora.");
-            });
-        if (!ATTACKING)
-        {
-            if (!_attackCDlock)
-            {
-                attackCD.CheckCooldown = true;
-                _attackCDlock = true;
-            }
-        }
-        else _attackCDlock = false;
-
 
     }
 
@@ -253,7 +249,8 @@ public class Hero
         if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
 
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
-        _anims.Draw(POSITION, _scale, _mirror);
+        if(!SLOWED)_anims.Draw(POSITION, _scale, _mirror);
+        else _anims.Draw(POSITION, _scale, _mirror, 0, Color.Purple); // Caso jogador esteja sob efeito de SLOWED ele fica roxo
 
 
 

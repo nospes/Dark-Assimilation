@@ -3,7 +3,7 @@ namespace MyGame;
 public class DistanceMovementAI : MovementAI
 {
     public Hero target { get; set; }
-    public float distance { get; set; }
+    public float distance = 280;
 
     public override void Move(enemyBase enemy)
     {
@@ -30,9 +30,6 @@ public class DistanceMovementAI : MovementAI
         }
         else enemy.walkState = false;
 
-        if (dir.X > 0)
-            enemy.mirror = false;
-        else if (dir.X < 0)
-            enemy.mirror = true;
+
     }
 }

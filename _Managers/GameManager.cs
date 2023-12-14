@@ -21,79 +21,55 @@ public class GameManager
         _hero = new(new(Globals.WindowSize.X / 2, Globals.WindowSize.Y / 2));
 
         //Cria o inimigo e define algumas variaveis, como ID e tipo de AI
-        /*inimigos.Add(new enemySkeleton(new(600, 600))
-        {
-            ID = 1,
-            MoveAI = new GuardMovementAI
-            {
-                target = _hero,
-                guardpos = new(600, 600),
-                distance = 300
-            }
-        });
 
-
-        inimigos.Add(new enemySkeleton(new(100, 300))
+        inimigos.Add(new enemyMage(new(300, 800))
         {
             ID = 2,
-            MoveAI = new FollowHeroAI
+            MoveAI = new DistanceMovementAI
             {
                 target = _hero
             }
         });
+        /*
 
-        
 
-        inimigos.Add(new enemyArcher(new(100, 600))
-        {
-            ID = 3,
-            MoveAI = new DistanceMovementAI
-            {
-                target = _hero,
-                distance = 280
-            }
-        });
+                        inimigos.Add(new enemyArcher(new(600, 100))
+                        {
+                            ID = 1,
+                            MoveAI = new DistanceMovementAI
+                            {
+                                target = _hero
+                            }
+                        });
 
-                inimigos.Add(new enemyArcher(new(600, 100))
-        {
-            ID = 4,
-            MoveAI = new DistanceMovementAI
-            {
-                target = _hero,
-                distance = 280
-            }
-        });
 
+
+                inimigos.Add(new enemySwarm(new(500, 500))
+                {
+                    ID = 3,
+                    MoveAI = new FollowHeroAI
+                    {
+                        target = _hero
+                    }
+                });
+
+                inimigos.Add(new enemySkeleton(new(100, 300))
+                {
+                    ID = 4,
+                    MoveAI = new FollowHeroAI
+                    {
+                        target = _hero
+                    }
+                });
         */
 
-        inimigos.Add(new enemySwarm(new(100, 300))
-        {
-            ID = 1,
-            MoveAI = new FollowHeroAI
-            {
-                target = _hero
-            }
-        });
 
-        inimigos.Add(new enemySwarm(new(200, 500))
-        {
-            ID = 2,
-            MoveAI = new FollowHeroAI
-            {
-                target = _hero
-            }
-        });
-
-        inimigos.Add(new enemySwarm(new(300, 800))
-        {
-            ID = 3,
-            MoveAI = new FollowHeroAI
-            {
-                target = _hero
-            }
-        });
         _collisionManager = new CollisionManager(_hero, inimigos); //Cria gerenciador de colisões entre inimigos e jogador
         _hero.MapBounds(_map.MapSize, _map.TileSize); //Atrela o Heroi aos limites do mapa
+        foreach (var inimigo in inimigos) //Atrela os inimigos aos limites do mapa
+        {
+            inimigo.MapBounds(_map.MapSize, _map.TileSize);
+        }
 
 
     }
@@ -105,17 +81,19 @@ public class GameManager
         var dy = (Globals.WindowSize.Y / 2) - _hero.CENTER.Y;
         dy = MathHelper.Clamp(dy, -_map.MapSize.Y + Globals.WindowSize.Y + (_map.TileSize.Y / 2), _map.TileSize.Y / 2);
         _translation = Matrix.CreateTranslation(dx, dy, 0f);
+
     }
 
     public void Update()
     {
-
+        Globals.HEROLASTPOS = _hero.CENTER;
         InputManager.Update(); //Atualiza os botões
         _hero.Update(); //Atualiza os herois
         List<enemyCollection> inimigosParaRemover = new List<enemyCollection>(); //Atualiza a lista de inimigos mortos
         foreach (var inimigo in inimigos) //Para cada inimigo...
         {
             inimigo.Update(); //Atualiza
+
             if (inimigo.DEATHSTATE)
             {
                 inimigosParaRemover.Add(inimigo); //Se esta morto adiciona a lista de inimigos derrotados
@@ -127,6 +105,7 @@ public class GameManager
             inimigos.Remove(inimigoParaRemover); //Remova o inimigo
         }
 
+        ProjectileManager.Update();
         _collisionManager.CheckCollisions(); //Checa as colisões
         CalculateTranslation(); //Atualiza a posição da camera
 
@@ -140,6 +119,8 @@ public class GameManager
         {
             inimigo.Draw(); //Para cada inimigo no mapa, ele é desenhado
         }
+
+        ProjectileManager.Draw();
         _hero.Draw(); //Desenha o heroi
         Globals.SpriteBatch.End();
     }

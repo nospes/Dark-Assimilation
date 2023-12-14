@@ -4,6 +4,7 @@ namespace MyGame
     {
         private Hero _hero;
         public List<enemyCollection> _inimigos;
+        public List<Projectile> _projeteis;
 
         private Type _objType;
 
@@ -11,12 +12,14 @@ namespace MyGame
         {
             _hero = hero;
             _inimigos = inimigos;
+
         }
 
         public void CheckCollisions()
         {
             Rectangle _herobounds = _hero.GetBounds(); //Hitbox do heroi
             Rectangle _heroAttackbounds = _hero.AttackBounds(); //Hitbox de ataque heroi
+            _projeteis = ProjectileManager.Projectiles;
 
             foreach (var _inimigo in _inimigos)
             {
@@ -33,7 +36,6 @@ namespace MyGame
                         if (!_inimigo.PREATTACKSTATE && !_inimigo.ATTACKSTATE && !_inimigo.DASHSTATE)
                         {
                             _inimigo.PREATTACKSTATE = true;
-                            _inimigo.HEROLASTPOS = _hero.CENTER;
                         }
                     }
                 }
@@ -49,7 +51,7 @@ namespace MyGame
                 }
 
                 //Caso um frame de golpe do inimigo acerte o player;
-                if (_enemyAttackbounds.Intersects(_herobounds) && _inimigo.ATTACKHITTIME && !Hero.RECOIL && !Hero.DASH)
+                if (_enemyAttackbounds.Intersects(_herobounds) && _inimigo.ATTACKHITTIME && _inimigo.HP > 0 && !Hero.RECOIL && !Hero.DASH)
                 {
                     _hero.HP -= 10;
                     Hero.lastHitpos = _inimigo.CENTER;
@@ -62,6 +64,39 @@ namespace MyGame
 
                 //Permite que o inimigo volte a levar golpes quando terminar a animação de um
                 if (!Hero.ATTACKING) _inimigo.INVULSTATE = false;
+            }
+            foreach (var _projetil in _projeteis) //Gerenciador para casos de colisões com Projeteis
+            {
+                Rectangle _projectileBounds = _projetil.GetBounds(); // Caixa de colisão do projétil
+                if (_projectileBounds.Intersects(_herobounds) && !Hero.RECOIL && !Hero.DASH) //Caso entre em contato com heroi...
+                {
+                    if (_projetil.ProjectileType == "Arrow") // Caso seja do tipo 'Arrow'
+                    {
+                        _hero.HP -= 10;
+                        Hero.lastHitpos = _projetil.Position;
+                        Hero.RECOIL = true;
+                        _projetil.Lifespan = 0; //Destroe o projétil
+                    }
+                    else if (_projetil.ProjectileType == "DarkProj" && _projetil.Lifespan > 1) // Caso seja do tipo 'Arrow'
+                    {
+                        _hero.HP -= 10;
+                        Hero.lastHitpos = _projetil.Position;
+                        Hero.RECOIL = true;
+                        _projetil.Lifespan = 1; //Destroe o projetil, nesse caso ele para de causar dano no ultimo segundo de vida
+                    }
+                    else if (_projetil.ProjectileType == "DarkSpell") // Caso seja do tipo 'DarkSpell'
+                    {
+                        Hero.SLOWED = true; // Causa lentidão
+                        if (_hero.SPEED <= 1) //Caso jogador ainda esteja na area com speed 1 ou menor...
+                        {
+                            _hero.HP -= 10; //Causa dano
+                            Hero.SLOWED = false; // Termina a lentidão
+                            Hero.lastHitpos = _projetil.Position;
+                            Hero.RECOIL = true;
+                        }
+
+                    }
+                }
             }
         }
 

@@ -114,7 +114,6 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Big
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Hit.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Idle.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\BigSkeleton\bigskel_Walk.xnb
-C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Cast.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Death.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Hit.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Idle.xnb
@@ -141,3 +140,7 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swa
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_purple_hurt.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_yellow_death.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Swarm\swarm_yellow_hurt.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Precast.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\spell_dark1.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\spell_dark2.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Attack.xnb

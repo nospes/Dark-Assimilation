@@ -24,11 +24,6 @@ public class GuardMovementAI : MovementAI
             dir = guardpos - enemy.CENTER;
         }
 
-        if (dir.X > 0)
-            enemy.mirror = false;
-        else if (dir.X < 0)
-            enemy.mirror = true;
-
         if (dir.Length() > 4 || dir.Length() < -4)
         {
             dir.Normalize();

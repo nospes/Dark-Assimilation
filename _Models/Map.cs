@@ -3,13 +3,13 @@ namespace MyGame;
 public class Map
 {
     private readonly Point _mapTileSize = new(15, 15);
-    private readonly Sprite[,] _tiles;
+    private readonly staticSprite[,] _tiles;
     public Point TileSize { get; private set; }
     public Point MapSize { get; private set; }
 
     public Map()
     {
-        _tiles = new Sprite[_mapTileSize.X, _mapTileSize.Y];
+        _tiles = new staticSprite[_mapTileSize.X, _mapTileSize.Y];
 
         List<Texture2D> textures = new(1); //Adiciona lista de texturas
 

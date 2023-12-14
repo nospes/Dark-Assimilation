@@ -21,12 +21,12 @@ public class enemySkeleton : enemyBase
 
 
         //Definindo area,frames dos sprites sheets para fazer a animação
-        _anims.AddAnimation("bigskel_Idle", new(_textureIdle, 4, 1, 0.1f, 1, this));
-        _anims.AddAnimation("bigskel_Hit", new(_textureHit, 3, 1, 0.1f, 1, this));
-        _anims.AddAnimation("bigskel_Walk", new(_textureWalk, 12, 1, 0.1f, 1, this));
-        _anims.AddAnimation("bigskel_Death", new(_textureDeath, 13, 1, 0.1f, 1, this));
-        _anims.AddAnimation("bigskel_Preattack", new(_texturePreattack, 4, 1, 0.1f, 1, this));
-        _anims.AddAnimation("bigskel_Attack", new(_textureAttack, 10, 1, 0.1f, 1, this));
+        _anims.AddAnimation("bigskel_Idle", new(_textureIdle, 4, 1, 0.1f, this, this));
+        _anims.AddAnimation("bigskel_Hit", new(_textureHit, 3, 1, 0.1f, this, this));
+        _anims.AddAnimation("bigskel_Walk", new(_textureWalk, 12, 1, 0.1f, this, this));
+        _anims.AddAnimation("bigskel_Death", new(_textureDeath, 13, 1, 0.1f, this, this));
+        _anims.AddAnimation("bigskel_Preattack", new(_texturePreattack, 4, 1, 0.1f, this, this));
+        _anims.AddAnimation("bigskel_Attack", new(_textureAttack, 10, 1, 0.1f, this, this));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
         position = pos;
@@ -93,12 +93,17 @@ public class enemySkeleton : enemyBase
         }
 
     }
+    public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
+    {
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
+    }
 
     //Variaveis para o temporizador entre pré-ataque e ataque
     float _preattacktimer = 0f, _preattackduration = 1f;
 
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 2f;
+    float _preattackcdtimer = 0f, _preattackcdduration = 1f;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -106,13 +111,15 @@ public class enemySkeleton : enemyBase
     public override void Update()
     {
 
-        //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
+        // Definindo o centro do frame de acordo com a posição atual
+        CENTER = position + origin * scale;
+
+        //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso cancele o pré-ataque ele reduz ou reinicia o temporizador
         if (INVULSTATE)
         {
             Recoling = true; //Recuo se torna verdadeiro
-            PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
-            _preattacktimer = 0f; 
-            _recoilingtimer = 0f; 
+            _recoilingtimer = 0f;
+            if (PREATTACKSTATE && _preattacktimer>=0.75) _preattacktimer = 0.9f;
         }
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
@@ -157,13 +164,6 @@ public class enemySkeleton : enemyBase
 
         }
 
-
-
-
-
-        // Definindo o centro do frame de acordo com a posição atual
-        CENTER = position + origin * scale;
-
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
         if (MoveAI != null)
         {
@@ -171,6 +171,8 @@ public class enemySkeleton : enemyBase
             MoveAI.Move(this);
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //Controladores de animação
 
         //Define as animações de acordo com os estados
         if (HP <= 0) //Caso de morte
@@ -198,9 +200,19 @@ public class enemySkeleton : enemyBase
             _anims.Update("bigskel_Idle");
         };
 
+        //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
+        if (Globals.HEROLASTPOS.X - CENTER.X > 0)
+            mirror = false;
+        else if (Globals.HEROLASTPOS.X - CENTER.X < 0)
+            mirror = true;
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
         //Caso o inimigo esteja fazendo alguma ação que impede o movimento ele entra em estado de 'actionstate'
         if (INVULSTATE || PREATTACKSTATE || ATTACKSTATE || HP <= 0 || Recoling) actionstate = true;
         else actionstate = false; //Caso não esteja em nenhum desses estados ele pode voltar a se mover
+
+        position = Vector2.Clamp(position, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
 
     }
 

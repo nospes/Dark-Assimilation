@@ -18,11 +18,14 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/BigSkeleton/bigskel_Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/BigSkeleton/bigskel_Preattack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/BigSkeleton/bigskel_Walk.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Cast.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Death.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Hit.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Idle.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Precast.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Walk.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/spell_dark1.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/spell_dark2.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Soldier/soldier_Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Soldier/soldier_Death.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Soldier/soldier_Hit.png</File>
@@ -55,6 +58,9 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Run.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

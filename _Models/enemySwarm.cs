@@ -35,24 +35,24 @@ public class enemySwarm : enemyBase
 
 
         //Definindo area,frames dos sprites sheets para fazer a animação
-        _anims.AddAnimation("swarm_blue", new(_textureIdle_blue, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_blue_hurt", new(_textureHit_blue, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_blue_death", new(_textureDeath_blue, 16, 1, 0.1f, 1, this));
+        _anims.AddAnimation("swarm_blue", new(_textureIdle_blue, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_blue_hurt", new(_textureHit_blue, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_blue_death", new(_textureDeath_blue, 16, 1, 0.1f, this, this));
 
-        _anims.AddAnimation("swarm_green", new(_textureIdle_green, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_green_hurt", new(_textureHit_green, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_green_death", new(_textureDeath_green, 16, 1, 0.1f, 1, this));
+        _anims.AddAnimation("swarm_green", new(_textureIdle_green, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_green_hurt", new(_textureHit_green, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_green_death", new(_textureDeath_green, 16, 1, 0.1f, this, this));
 
-        _anims.AddAnimation("swarm_purple", new(_textureIdle_purple, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_purple_hurt", new(_textureHit_purple, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_purple_death", new(_textureDeath_purple, 16, 1, 0.1f, 1, this));
+        _anims.AddAnimation("swarm_purple", new(_textureIdle_purple, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_purple_hurt", new(_textureHit_purple, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_purple_death", new(_textureDeath_purple, 16, 1, 0.1f, this, this));
 
-        _anims.AddAnimation("swarm_yellow", new(_textureIdle_yellow, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_yellow_hurt", new(_textureHit_yellow, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_yellow_death", new(_textureDeath_yellow, 16, 1, 0.1f, 1, this));
+        _anims.AddAnimation("swarm_yellow", new(_textureIdle_yellow, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_yellow_hurt", new(_textureHit_yellow, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_yellow_death", new(_textureDeath_yellow, 16, 1, 0.1f, this, this));
 
-        _anims.AddAnimation("swarm_Preattack", new(_texturePreattack, 16, 1, 0.1f, 1, this));
-        _anims.AddAnimation("swarm_Attack", new(_textureAttack, 16, 1, 0.1f, 1, this));
+        _anims.AddAnimation("swarm_Preattack", new(_texturePreattack, 16, 1, 0.1f, this, this));
+        _anims.AddAnimation("swarm_Attack", new(_textureAttack, 16, 1, 0.1f, this, this));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
         position = pos;
@@ -107,6 +107,7 @@ public class enemySwarm : enemyBase
                 //Caixa de colisão para Reação do monstro
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
             case "attackbox1":
+            //Tem uma Attackbox levemente menor que sua Hitbox, dando mais janela para jogador atacar sem receber dano
                 return new Rectangle(_left + 5, _top + 5, (int)((basehitboxSize.X - 5) * scale), (int)((basehitboxSize.Y - 5) * scale));
             default:
                 //Caso nenhuma caixa de colisão válida seja selecionada
@@ -114,12 +115,17 @@ public class enemySwarm : enemyBase
         }
 
     }
+    public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
+    {
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
+    }
 
     //Variaveis para o temporizador entre pré-ataque e ataque (nesse caso avanço)
-    float _preattacktimer = 0f, _preattackduration = 1f;
+    float _preattacktimer = 0f, _preattackduration = 1.25f;
 
     //Variaveis para o temporizador entre ataques (nesse caso avanços)
-    float _preattackcdtimer = 0f, _preattackcdduration = 5f;
+    float _preattackcdtimer = 0f, _preattackcdduration = 2.5f;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -132,17 +138,28 @@ public class enemySwarm : enemyBase
 
     public override void Update()
     {
+        //Se HP for 0, ou seja morrer, não causa dano.
+        if (HP <= 0) ATTACKHITTIME = false;
+
+        // Definindo o centro do frame de acordo com a posição atual
+        CENTER = position + origin * scale;
 
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
             Recoling = true; //Recuo se torna verdadeiro
+            _recoilingtimer = 0f; // Tempo de recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
-            _preattacktimer = 0f;
-            _recoilingtimer = 0f;
+            _preattacktimer = 0f; // Se ele estiver no fim de um pré ataque, restitue parte da recarga
             PREATTACKHITCD = true;
-            ATTACKSTATE = false;
-            
+            if (ATTACKSTATE) //Caso esteja avançando....
+            {
+                ATTACKSTATE = false; //Cancela o avanço
+                _preattackcdtimer = 0.5f; //Caso esteja no meio de um avanço, restitue parte da recarga
+                _anims.Reset("swarm_Attack"); //Reinicia a animação de avanço
+            }
+
+
         }
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
@@ -155,22 +172,6 @@ public class enemySwarm : enemyBase
                 PREATTACKSTATE = false;
                 ATTACKSTATE = true;
                 _preattacktimer = 0f;
-            }
-
-        }
-
-        //Caso inimigo esteja com vida e esteja em estado de Recoiling/Recuo/Knockback;
-        if (Recoling && HP > 0)
-        {
-            
-            Vector2 _knockbackdist;
-            _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
-            if (!ATTACKSTATE) position.X += _knockbackdist.X; // Aplica o recuo apenas na horizontal
-            _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
-            if (_recoilingtimer >= _recoilingduration)
-            {
-                Recoling = false;//No fim da duração, para de sofrer Recuo.
-                _recoilingtimer = 0f;
             }
 
         }
@@ -188,6 +189,7 @@ public class enemySwarm : enemyBase
 
         }
 
+        //Esta unidade causa dano ao tocar no heroi estando em instancia de ataque ou não, ela tem tempo de recarga entre os danos causados no heroi.
         if (!ATTACKHITTIME)
         {
             _attackhittimetimer += (float)Globals.TotalSeconds;
@@ -198,21 +200,33 @@ public class enemySwarm : enemyBase
             }
         }
 
-        if(PREATTACKSTATE)
+        //Caso inimigo esteja com vida e esteja em estado de Recoiling/Recuo/Knockback;
+        if (Recoling && HP > 0)
         {
-            _dashdir = (Vector2.Normalize(CENTER - HEROLASTPOS)); //define a direção do recuo, sendo ela contrária ao atacante
+
+            Vector2 _knockbackdist;
+            _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
+            if (!ATTACKSTATE) position.X += _knockbackdist.X; // Aplica o recuo apenas na horizontal
+            _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
+            if (_recoilingtimer >= _recoilingduration)
+            {
+                Recoling = false;//No fim da duração, para de sofrer Recuo.
+                _recoilingtimer = 0f;
+            }
+
         }
-        else if (ATTACKSTATE && !Recoling)
+
+
+
+        if (PREATTACKSTATE) //Quando entre em préataque...
         {
-            
-            int _dashspeed = 6;
-            position -= _dashdir * _dashspeed; // Aplica o recuo durante o DASHSTATE
+            _dashdir = (Vector2.Normalize(CENTER - Globals.HEROLASTPOS)); //define a direção do avanço, sendo ele em direção ao heroi
         }
-
-
-
-        // Definindo o centro do frame de acordo com a posição atual
-        CENTER = position + origin * scale;
+        else if (ATTACKSTATE && !Recoling) //Ao entrar em estado de Ataque e caso não esteja recebendo Dano...
+        {
+            int _dashspeed = 6; //Define velocidade do avanço
+            position -= _dashdir * _dashspeed; //Avança na direção pré definida
+        }
 
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
         if (MoveAI != null)
@@ -220,6 +234,9 @@ public class enemySwarm : enemyBase
             //Aplica um comportamento ao inimigo definido pelo GameManager.cs
             MoveAI.Move(this);
         }
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //Controladores de animação
 
         if (ATTACKSTATE && HP >= 0 && !Recoling) //Caso de Ataque
         {
@@ -290,11 +307,22 @@ public class enemySwarm : enemyBase
             }
         }
 
+        //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
+        if (!ATTACKSTATE)
+        {
+            if (Globals.HEROLASTPOS.X - CENTER.X > 0)
+                mirror = false;
+            else if (Globals.HEROLASTPOS.X - CENTER.X < 0)
+                mirror = true;
+        }
 
+        //////////////////////////////////////////////////////////////////////////////////////////
 
         //Caso o inimigo esteja fazendo alguma ação que impede o movimento ele entra em estado de 'actionstate'
         if (INVULSTATE || PREATTACKSTATE || ATTACKSTATE || HP <= 0 || Recoling) actionstate = true;
         else actionstate = false; //Caso não esteja em nenhum desses estados ele pode voltar a se mover
+
+        position = Vector2.Clamp(position, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
 
     }
 

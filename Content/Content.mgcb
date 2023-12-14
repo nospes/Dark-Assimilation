@@ -181,7 +181,7 @@
 /processorParam:TextureFormat=Color
 /build:Creatures/BigSkeleton/bigskel_Walk.png
 
-#begin Creatures/Necromancer/necro_Cast.png
+#begin Creatures/Necromancer/necro_Attack.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -191,7 +191,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Creatures/Necromancer/necro_Cast.png
+/build:Creatures/Necromancer/necro_Attack.png
 
 #begin Creatures/Necromancer/necro_Death.png
 /importer:TextureImporter
@@ -229,6 +229,18 @@
 /processorParam:TextureFormat=Color
 /build:Creatures/Necromancer/necro_Idle.png
 
+#begin Creatures/Necromancer/necro_Precast.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Necromancer/necro_Precast.png
+
 #begin Creatures/Necromancer/necro_Walk.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -240,6 +252,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Creatures/Necromancer/necro_Walk.png
+
+#begin Creatures/Necromancer/spell_dark1.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Necromancer/spell_dark1.png
+
+#begin Creatures/Necromancer/spell_dark2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Creatures/Necromancer/spell_dark2.png
 
 #begin Creatures/Soldier/soldier_Attack.png
 /importer:TextureImporter

@@ -13,11 +13,6 @@ public class FollowHeroAI : MovementAI
 
             dir = target.CENTER - enemy.CENTER;
 
-            if (dir.X > 0)
-                enemy.mirror = false;
-            else if (dir.X < 0)
-                enemy.mirror = true;
-
             if (dir.Length() > 4 || dir.Length() < -4)
             {
                 enemy.walkState = true;

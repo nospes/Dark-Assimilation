@@ -10,17 +10,17 @@ public class Animation
     private readonly List<Rectangle> _sourceRectangles = new();
 
     //Variaveis relacionadas a quantidade de frames, tempo entre frames e se o sprite está ativo ou não.
-    private readonly int _frames;
-    private int _frame;
-    private readonly float _frameTime;
-    private float _frameTimeLeft;
-    private bool _active = true;
+    private readonly int _frames; //Total de Frames
+    private int _frame; //Frame atual
+    private readonly float _frameTime; //Tempo entre cada frame
+    private float _frameTimeLeft;  //Tempo restante de frame
+    private bool _active = true; //Define se está ativo a animação
+    private readonly enemyCollection _enemy; //Metodo de acesso de objetos especificos(inimigos)
+    private Type _enemyType; //Tipo de inimigo
+    private object _objType; //Tipo de objeto
+    private Vector2 Origin; //Meio do sprite
 
-    //Metodo de acesso de objetos especificos(inimigos)
-    private readonly enemyCollection _enemy;
-    private Type _objType;
-
-    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, int row = 1, enemyCollection enemyInstance = null)
+    public Animation(Texture2D texture, int framesX, int framesY, float frameTime, object objectInstance = null, enemyCollection enemyInstance = null, int row = 1)
     {
         //Definição dos parametros para montagem do spritesheet
         _texture = texture;
@@ -31,6 +31,8 @@ public class Animation
         //Definindo área do sprite para animação
         var frameWidth = _texture.Width / framesX;
         var frameHeight = _texture.Height / framesY;
+        Origin = new(frameWidth / 2, frameHeight / 2);
+
 
 
         //Define a área de cada animação no spritesheet de acordo com o proprio tamanho dele
@@ -39,10 +41,10 @@ public class Animation
             _sourceRectangles.Add(new(i * frameWidth, (row - 1) * frameHeight, frameWidth, frameHeight));
         }
 
-        //Salva obj especifico para trabalhar com ele, usado para gerenciar inimigos
-        _enemy = enemyInstance;
-        //Salva o TIPO do objeto, no caso inimigos, para poder comparar condições
-        _objType = enemyInstance?.GetType();
+        _objType = objectInstance; //Salva obj para trabalhar com ele 
+        _enemy = enemyInstance; //Salva tipo enemyInstance no _enemy
+
+        _enemyType = _enemy?.GetType(); //Salva o TIPO do objeto, no caso inimigos, para poder comparar condições
 
     }
 
@@ -85,7 +87,7 @@ public class Animation
 
 
         //GERENCIADOR DE ANIMAÇÕES PARA O PLAYER
-        if (_enemy == null)
+        if (_enemy == null && _objType != null)
         {
             if (Hero.ATTACKING && !Hero.RECOIL) //Calculos de frames especificos para janelas de golpes
             {
@@ -106,8 +108,9 @@ public class Animation
                 Reset();
                 Hero.DASH = false;
             }
+            if (_frame == _frames - 1 && Hero.DEATH) Globals.Exitgame = true;
         }
-        else // GERENCIADOR DE ANIMAÇÕES PARA INIMIGOS
+        else if (_enemy != null)
         {
             //Deleta o inimigo do jogo quando animação de morte termina e HP está menor que 0
             if (_frame == _frames - 1 && _enemy.HP <= 0)
@@ -120,9 +123,10 @@ public class Animation
                 Reset();
                 _enemy.ATTACKSTATE = false;
                 _enemy.PREATTACKHITCD = true;
+                if (_enemyType == typeof(enemyArcher) || _enemyType == typeof(enemyMage)) _enemy.ENEMYSKILL_LOCK = true;
             }
             //Caso o inimigo seja do tipo enemySkeleton...
-            if (_objType == typeof(enemySkeleton))
+            if (_enemyType == typeof(enemySkeleton))
             {
                 if (_enemy.ATTACKSTATE && _enemy.HP > 0)
                 {
@@ -139,7 +143,7 @@ public class Animation
                     else _enemy.ATTACKHITTIME = false; //Caso não esteja nesses frames, o golpe não tem hitbox
                 }
             }
-            if (_objType == typeof(enemyArcher))
+            if (_enemyType == typeof(enemyArcher))
             {
 
                 if (_frame == _frames - 1 && _enemy.DASHSTATE && _enemy.HP > 0)
@@ -155,12 +159,24 @@ public class Animation
 
     }
 
-    public void Draw(Vector2 pos, int scale, bool fliped)
+    public void Draw(Vector2 pos, float scale, bool fliped, float rotation = 0, Color? color = null)
     {
-        //Utilizando SpriteBatch localizado em Global.cs ele desenha na tela um sprite com parametros passados pelo Animation Manager.
-        if (!fliped)
-            Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 1);
+
+        Color drawColor = color ?? Color.White; //Se não for definida uma cor é utilizada a cor padrão: White
+        if (_enemy != null || _objType != null)
+        {
+            //Utilizando SpriteBatch localizado em Global.cs ele desenha na tela um sprite com parametros passados pelo Animation Manager.
+            if (!fliped)
+                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 1);
+            else
+                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.FlipHorizontally, 1);
+        }
         else
-            Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], Color.White, 0, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.FlipHorizontally, 1);
+        {
+            if (!fliped)
+                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Origin, new Vector2(scale, scale), SpriteEffects.None, 1);
+            else
+                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Origin, new Vector2(scale, scale), SpriteEffects.FlipHorizontally, 1);
+        }
     }
 }

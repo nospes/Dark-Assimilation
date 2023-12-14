@@ -5,8 +5,8 @@ public class enemyArcher : enemyBase
     // Variaveis para Animações
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _textureDash, _textureSkill;  //Spritesheets
-    //Definição de comportamento
-    public MovementAI MoveAI { get; set; }
+    public MovementAI MoveAI { get; set; } //Definição de comportamento
+
 
 
     public enemyArcher(Vector2 pos)
@@ -22,13 +22,13 @@ public class enemyArcher : enemyBase
 
 
         //Definindo area,frames dos sprites sheets para fazer a animação
-        _anims.AddAnimation("archer_Idle", new(_textureIdle, 4, 1, 0.1f, 1, this));
-        _anims.AddAnimation("archer_Walk", new(_textureWalk, 8, 1, 0.1f, 1, this));
-        _anims.AddAnimation("archer_Death", new(_textureDeath, 8, 1, 0.1f, 1, this));
-        _anims.AddAnimation("archer_Attack", new(_textureAttack, 8, 1, 0.1f, 1, this));
-        _anims.AddAnimation("archer_Dash", new(_textureDash, 7, 1, 0.07f, 1, this));
-        _anims.AddAnimation("archer_Hit", new(_textureHit, 4, 1, 0.1f, 1, this));
-        _anims.AddAnimation("archer_Skill", new(_textureSkill, 4, 1, 0.1f, 1, this));
+        _anims.AddAnimation("archer_Idle", new(_textureIdle, 4, 1, 0.1f, this, this));
+        _anims.AddAnimation("archer_Walk", new(_textureWalk, 8, 1, 0.1f, this, this));
+        _anims.AddAnimation("archer_Death", new(_textureDeath, 8, 1, 0.1f, this, this));
+        _anims.AddAnimation("archer_Attack", new(_textureAttack, 8, 1, 0.2f, this, this));
+        _anims.AddAnimation("archer_Dash", new(_textureDash, 7, 1, 0.07f, this, this));
+        _anims.AddAnimation("archer_Hit", new(_textureHit, 4, 1, 0.1f, this, this));
+        _anims.AddAnimation("archer_Skill", new(_textureSkill, 4, 1, 0.1f, this, this));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
         position = pos;
@@ -53,6 +53,25 @@ public class enemyArcher : enemyBase
         ATTACKTYPE = 1;
 
     }
+
+    //Função utilizada para definir como é o projétil que vai ser adicionado ao gerenciador de projeteis
+    private void Fire()
+    {
+        //Definindo atributos do projétil
+        ProjectileData pd = new()
+        {
+            Position = CENTER,
+            Direction = Globals.HEROLASTPOS - CENTER,
+            Lifespan = 3,
+            Homing = false,
+            ProjectileType = "Arrow",
+            Scale = 1.75f,
+            Speed = 500
+        };
+        ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciador
+        ENEMYSKILL_LOCK = false;    //Ao lançar o projétil ativa a trava impedindo que lance varias flechas 
+    }
+
 
     //Função de calculo para caixas de colisão
     public override Rectangle GetBounds(string boundType)
@@ -82,8 +101,7 @@ public class enemyArcher : enemyBase
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
             case "attackbox1":
                 //Caixa de colisão para o 1º Golpe do monstro
-                if (!mirror) return new Rectangle((int)_attackOffset1.X, (int)_attackOffset1.Y, (int)_attackSize1.X, (int)_attackSize1.Y);
-                else return new Rectangle((int)_attackOffset1M.X, (int)_attackOffset1M.Y, (int)_attackSize1.X, (int)_attackSize1.Y);
+                return new Rectangle(0, 0, 0, 0);
             default:
                 //Caso nenhuma caixa de colisão válida seja selecionada
                 throw new InvalidOperationException($"Tipo de caixa de colisão desconhecido: {boundType}"); ;
@@ -91,19 +109,27 @@ public class enemyArcher : enemyBase
 
     }
 
-    //Variaveis para o temporizador entre pré-ataque e ataque
-    float _preattacktimer = 0f, _preattackduration = 2f;
+    public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
+    {
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
+    }
+
+
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 1f;
+    float _preattackcdtimer = 0f, _preattackcdduration = 1.6f;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
     //Variaveis para recarga do avanço/dash
-    float _dashtimer = 0f, _dashduration = 2f; bool _dashcdlock = false;
+    float _dashtimer = 0f, _dashduration = 3f; bool _dashcdlock = false;
 
     public override void Update()
     {
+
+        // Definindo o centro do frame de acordo com a posição atual
+        CENTER = position + origin * scale;
 
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
@@ -111,23 +137,21 @@ public class enemyArcher : enemyBase
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f; // Reinicia a duração do recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
-            _preattacktimer = 0f;
-            _preattackcdtimer = 0f;
+            if (ATTACKSTATE) //Se estiver em estado de ataque...
+            {
+                ATTACKSTATE = false; //Desativa o ataque
+                PREATTACKHITCD = true; //Ativa o tempo de recarga de ataque
+                if(_preattackcdtimer>0.6)_preattackcdtimer = 0.9f; //Restitue parte do seu tempo
+                _anims.Reset("archer_Attack"); //Reseta a animação de ataque para começar ela do inicio novamente
+            }
 
         }
+
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
         {
-
-            _preattacktimer += (float)Globals.TotalSeconds;
-            if (_preattacktimer >= _preattackduration)
-            {
-
-                PREATTACKSTATE = false;
-                ATTACKSTATE = true;
-                _preattacktimer = 0f;
-            }
-
+            PREATTACKSTATE = false;
+            ATTACKSTATE = true;
         }
 
         //Temporizador de tempo de recarga entre os ataques
@@ -159,14 +183,12 @@ public class enemyArcher : enemyBase
         //Ao entrar em DASHSTATE  faz um recuo e aplica tempo de recarga dele
         if (DASHSTATE)
         {
-            _preattacktimer = 0f;
-            PREATTACKSTATE = false;
-
-            PREATTACKHITCD = true;
-            Vector2 _dashdir;
-            _dashdir = (Vector2.Normalize(CENTER - HEROATTACKPOS)); //define a direção do recuo, sendo ela contrária ao atacante
-            position += _dashdir * 7; // Aplica o recuo durante o DASHSTATE
-            _dashcdlock = true;
+            ATTACKSTATE = false; // Cancela o ataque
+            PREATTACKSTATE = false; // Cancela o pré ataque
+            PREATTACKHITCD = true;  //Ativa o CD porem...
+            _preattackcdtimer = 1.6f; //Restitue 100% do tempo de recarga do golpe
+            position += Vector2.Normalize(CENTER - HEROATTACKPOS) * 7; // Aplica o recuo durante o DASHSTATE
+            _dashcdlock = true; //Ativa o tempo de recarga o dash
 
         }
 
@@ -181,8 +203,9 @@ public class enemyArcher : enemyBase
             }
         }
 
-        // Definindo o centro do frame de acordo com a posição atual
-        CENTER = position + origin * scale;
+        //Ao terminar a ação de ataque ativa a trava ENEMYSKILL_LOCK disparando uma flecha com a função Fire();
+        if (ENEMYSKILL_LOCK) Fire();
+
 
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
         if (MoveAI != null)
@@ -191,6 +214,8 @@ public class enemyArcher : enemyBase
             MoveAI.Move(this);
         }
 
+        //////////////////////////////////////////////////////////////////////////////////////////
+        //Controladores de animação
 
         //Define as animações de acordo com os estados
         if (HP <= 0) //Caso de morte
@@ -222,11 +247,23 @@ public class enemyArcher : enemyBase
             _anims.Update("archer_Idle");
         };
 
+        //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
+        if (Globals.HEROLASTPOS.X - CENTER.X > 0)
+            mirror = false;
+        else if (Globals.HEROLASTPOS.X - CENTER.X < 0)
+            mirror = true;
+
+        //////////////////////////////////////////////////////////////////////////////////////////
+
         //Caso o inimigo esteja fazendo alguma ação que impede o movimento ele entra em estado de 'actionstate'
         if (INVULSTATE || PREATTACKSTATE || ATTACKSTATE || HP <= 0 || Recoling || DASHSTATE) actionstate = true;
         else actionstate = false; //Caso não esteja em nenhum desses estados ele pode voltar a se mover
 
+        position = Vector2.Clamp(position, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
+
     }
+
+
 
 
     public override void Draw()
