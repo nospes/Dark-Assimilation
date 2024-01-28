@@ -30,7 +30,7 @@ public class GameManager
                 target = _hero
             }
         });
-        /*
+        
 
 
                         inimigos.Add(new enemyArcher(new(600, 100))
@@ -61,7 +61,7 @@ public class GameManager
                         target = _hero
                     }
                 });
-        */
+        
 
 
         _collisionManager = new CollisionManager(_hero, inimigos); //Cria gerenciador de colisões entre inimigos e jogador

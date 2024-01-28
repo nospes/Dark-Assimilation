@@ -144,3 +144,4 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Nec
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\spell_dark1.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\spell_dark2.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Content\Creatures\Necromancer\necro_Attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net6.0\Newtonsoft.Json.dll
