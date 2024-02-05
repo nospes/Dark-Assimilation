@@ -5,8 +5,6 @@ public class enemyMage : enemyBase
     // Variaveis para Animações
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _texturePreattack;  //Spritesheets
-    //Definição de comportamento
-    public MovementAI MoveAI { get; set; }
 
 
 
@@ -64,10 +62,11 @@ public class enemyMage : enemyBase
             Homing = true,
             ProjectileType = "DarkProj",
             Scale = 1.75f,
-            Speed = 300
+            Speed = 300,
+            Friendly = false
         };
         ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciador
-        ENEMYSKILL_LOCK = false;    //Ao lançar o projétil ativa a trava impedindo que lance varios 
+        ENEMYSKILL_LOCK = false;    //Ao lançar o projétil ativa uma trava, impedindo que lance varios 
     }
 
 
@@ -82,7 +81,8 @@ public class enemyMage : enemyBase
             Homing = false,
             ProjectileType = "DarkSpell",
             Scale = 2f,
-            Speed = 0
+            Speed = 0,
+            Friendly = false
         };
         ProjectileData pd2 = new()
         {
@@ -92,7 +92,8 @@ public class enemyMage : enemyBase
             Homing = false,
             ProjectileType = "DarkSpell",
             Scale = 2f,
-            Speed = 0
+            Speed = 0,
+            Friendly = false
         };
         ProjectileData pd3 = new()
         {
@@ -102,7 +103,8 @@ public class enemyMage : enemyBase
             Homing = false,
             ProjectileType = "DarkSpell",
             Scale = 2f,
-            Speed = 0
+            Speed = 0,
+            Friendly = false
         };
         ProjectileData pd4 = new()
         {
@@ -112,7 +114,8 @@ public class enemyMage : enemyBase
             Homing = false,
             ProjectileType = "DarkSpell",
             Scale = 2f,
-            Speed = 0
+            Speed = 0,
+            Friendly = false
         };
         ProjectileManager.AddProjectile(pd1); //Cria quatro projeteis na área de ação
         ProjectileManager.AddProjectile(pd2);
@@ -162,6 +165,31 @@ public class enemyMage : enemyBase
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
+    public override async Task SetInvulnerableTemporarily(int durationInMilliseconds)
+    {
+        INVULSTATE = true; // Ativa a ivulnerabilidade
+
+        await Task.Delay(durationInMilliseconds); // Espera X tempo
+
+        INVULSTATE = false; // Desativa após o tempo
+    }
+
+    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
+    bool _dataPassed = false;
+    private async Task SerializeDataOnDeath()
+    {
+        if (!_dataPassed)
+        {
+            // Example metrics - replace these with actual calculations/values
+            int averageCombatTime = 120; // Example value
+            int damageWindow = 30; // Example value
+            int totalDashes = 5; // Example value
+            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
+            _dataPassed = true;
+        }
+    }
+
+
     //Variaveis para o temporizador entre pré-ataque e ataque
     float _preattacktimer = 0f, _preattackduration = 0f;
 
@@ -172,7 +200,7 @@ public class enemyMage : enemyBase
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
 
-    public override void Update()
+    public override async void Update()
     {
         // Definindo o centro do frame de acordo com a posição atual
         CENTER = position + (origin + new Vector2(0, 25)) * scale;
@@ -257,6 +285,7 @@ public class enemyMage : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("necro_Death");
+            await SerializeDataOnDeath();
         }
         else if (ATTACKSTATE) //Caso de Ataque
         {
@@ -298,8 +327,8 @@ public class enemyMage : enemyBase
     public override void Draw()
     {
         //hitbox test
-        Rectangle Erect = GetBounds($"hitbox");
-        Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
+        //Rectangle Erect = GetBounds($"hitbox");
+        //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Reaction box test
         //Rectangle Erect = GetBounds($"reactionbox");

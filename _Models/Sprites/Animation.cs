@@ -101,7 +101,10 @@ public class Animation
 
             }
             //Conjuração
-            if (_frame == _frames - 1 && Hero.CAST) Hero.CAST = false;
+            if (Hero.CAST){
+                if(_frame >= 4 && _frame <= 6 ) Hero.CASTED = true;
+                if(_frame == _frames - 1) {Reset(); Hero.CAST = false;}
+            }
             //Dash
             if (_frame == _frames - 1 && Hero.DASH)
             {
@@ -110,7 +113,7 @@ public class Animation
             }
             if (_frame == _frames - 1 && Hero.DEATH) Globals.Exitgame = true;
         }
-        else if (_enemy != null)
+        else if (_enemy != null) // ANIMAÇÕES DOS INIMIGOS
         {
             //Deleta o inimigo do jogo quando animação de morte termina e HP está menor que 0
             if (_frame == _frames - 1 && _enemy.HP <= 0)
@@ -163,7 +166,7 @@ public class Animation
     {
 
         Color drawColor = color ?? Color.White; //Se não for definida uma cor é utilizada a cor padrão: White
-        if (_enemy != null || _objType != null)
+        if (_enemy != null || _objType != null) // Caso ele não seja um projétil...
         {
             //Utilizando SpriteBatch localizado em Global.cs ele desenha na tela um sprite com parametros passados pelo Animation Manager.
             if (!fliped)

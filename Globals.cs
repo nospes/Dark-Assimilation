@@ -11,9 +11,11 @@ public static class Globals
     public static Vector2 HEROLASTPOS { get; set; } // Posição atual do jogador, atualizada constantemente no gamemanager
     public static bool Exitgame = false;
 
+
     public static void Update(GameTime gt)
     {
         TotalSeconds = (float)gt.ElapsedGameTime.TotalSeconds;
+
     }
 
 }

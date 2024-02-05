@@ -5,8 +5,7 @@ public class enemySkeleton : enemyBase
     // Variaveis para Animações
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _texturePreattack;  //Spritesheets
-    //Definição de comportamento
-    public MovementAI MoveAI { get; set; }
+
 
 
     public enemySkeleton(Vector2 pos)
@@ -99,6 +98,32 @@ public class enemySkeleton : enemyBase
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
+    public override async Task SetInvulnerableTemporarily(int durationInMilliseconds)
+    {
+        INVULSTATE = true; // Ativa a ivulnerabilidade
+
+        await Task.Delay(durationInMilliseconds); // Espera X tempo
+
+        INVULSTATE = false; // Desativa após o tempo
+    }
+
+
+    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
+    bool _dataPassed = false;
+
+    private async Task SerializeDataOnDeath()
+    {
+        if (!_dataPassed)
+        {
+            // Example metrics - replace these with actual calculations/values
+            int averageCombatTime = 120; // Example value
+            int damageWindow = 30; // Example value
+            int totalDashes = 5; // Example value
+            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
+            _dataPassed = true;
+        }
+    }
+
     //Variaveis para o temporizador entre pré-ataque e ataque
     float _preattacktimer = 0f, _preattackduration = 1f;
 
@@ -108,7 +133,7 @@ public class enemySkeleton : enemyBase
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
-    public override void Update()
+    public override async void Update()
     {
 
         // Definindo o centro do frame de acordo com a posição atual
@@ -119,7 +144,7 @@ public class enemySkeleton : enemyBase
         {
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f;
-            if (PREATTACKSTATE && _preattacktimer>=0.75) _preattacktimer = 0.9f;
+            if (PREATTACKSTATE && _preattacktimer >= 0.75) _preattacktimer = 0.9f;
         }
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
@@ -178,6 +203,7 @@ public class enemySkeleton : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("bigskel_Death");
+            await SerializeDataOnDeath();
         }
         else if (ATTACKSTATE) //Caso de Ataque
         {

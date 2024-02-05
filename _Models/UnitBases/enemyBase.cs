@@ -24,6 +24,7 @@ public interface enemyCollection
     void Update();
     void Draw();
     void MapBounds(Point mapSize, Point tileSize);
+    Task SetInvulnerableTemporarily(int durationInMilliseconds);
     Rectangle GetBounds(string boundType);
 }
 
@@ -35,6 +36,7 @@ public abstract class enemyBase : enemyCollection
     public Vector2 CENTER { get; set; } // Centro do inimigo
     public float speed;   //Velocidade
     public Vector2 _minPos, _maxPos;
+    public MovementAI MoveAI { get; set; }
 
     //Variaveis de estado do sprite
     public bool mirror;  //Espelhamento 
@@ -68,6 +70,7 @@ public abstract class enemyBase : enemyCollection
     public abstract void Draw(); //Função de desenho dos inimigos
     public abstract Rectangle GetBounds(string boundType); //Função para pegar os limites dos inimigos
     public abstract void MapBounds(Point mapSize, Point tileSize);
+    public abstract Task SetInvulnerableTemporarily(int durationInMilliseconds);
 
 
 }

@@ -45,7 +45,7 @@ namespace MyGame
                 {
                     _inimigo.HP -= 10;
                     _inimigo.HEROATTACKPOS = _hero.CENTER;
-                    _inimigo.INVULSTATE = true;
+                    _inimigo.SetInvulnerableTemporarily(300);
                     Console.WriteLine(_inimigo.HP);
 
                 }
@@ -62,13 +62,32 @@ namespace MyGame
                     if (_objType == typeof(enemySwarm)) _inimigo.ATTACKHITTIME = false;
                 }
 
-                //Permite que o inimigo volte a levar golpes quando terminar a animação de um
-                if (!Hero.ATTACKING) _inimigo.INVULSTATE = false;
+
+                foreach (var _projetil in _projeteis)
+                {
+                    if (_projetil.Friendly)
+                    {
+                        Rectangle _projectileBounds = _projetil.GetBounds(); // hitbox dos inimigos
+                        if (_projectileBounds.Intersects(_enemybounds))
+                        {
+                            if (!_projetil.enemyHited)
+                            {
+                                _inimigo.HP -= 10;
+                                _projetil.enemyHited = true;
+                                _inimigo.HEROATTACKPOS = _hero.CENTER;
+                                _inimigo.SetInvulnerableTemporarily(300);
+                                _projetil.Lifespan = 0.5f;
+                            }
+
+                        }
+                    }
+                }
+
             }
             foreach (var _projetil in _projeteis) //Gerenciador para casos de colisões com Projeteis
             {
                 Rectangle _projectileBounds = _projetil.GetBounds(); // Caixa de colisão do projétil
-                if (_projectileBounds.Intersects(_herobounds) && !Hero.RECOIL && !Hero.DASH) //Caso entre em contato com heroi...
+                if (_projectileBounds.Intersects(_herobounds) && !_projetil.Friendly && !Hero.RECOIL && !Hero.DASH) //Caso entre em contato com heroi...
                 {
                     if (_projetil.ProjectileType == "Arrow") // Caso seja do tipo 'Arrow'
                     {
@@ -96,6 +115,7 @@ namespace MyGame
                         }
 
                     }
+
                 }
             }
         }

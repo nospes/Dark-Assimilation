@@ -56,8 +56,14 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Run.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_cast.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_hit.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_proj.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

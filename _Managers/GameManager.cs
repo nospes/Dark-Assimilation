@@ -25,43 +25,47 @@ public class GameManager
         inimigos.Add(new enemyMage(new(300, 800))
         {
             ID = 2,
-            MoveAI = new DistanceMovementAI
+            MoveAI = new IdleAI
             {
-                target = _hero
+                target = _hero,
+                AIenemyType = new DistanceMovementAI { target = _hero }
             }
         });
-        
-
-
-                        inimigos.Add(new enemyArcher(new(600, 100))
-                        {
-                            ID = 1,
-                            MoveAI = new DistanceMovementAI
-                            {
-                                target = _hero
-                            }
-                        });
 
 
 
-                inimigos.Add(new enemySwarm(new(500, 500))
-                {
-                    ID = 3,
-                    MoveAI = new FollowHeroAI
-                    {
-                        target = _hero
-                    }
-                });
+        inimigos.Add(new enemyArcher(new(1000, 300))
+        {
+            ID = 1,
+            MoveAI = new IdleAI
+            {
+                target = _hero,
+                AIenemyType = new DistanceMovementAI { target = _hero }
+            }
+        });
 
-                inimigos.Add(new enemySkeleton(new(100, 300))
-                {
-                    ID = 4,
-                    MoveAI = new FollowHeroAI
-                    {
-                        target = _hero
-                    }
-                });
-        
+
+
+        inimigos.Add(new enemySwarm(new(1000, 1000))
+        {
+            ID = 3,
+            MoveAI = new IdleAI
+            {
+                target = _hero,
+                AIenemyType = new FollowHeroAI { target = _hero }
+            }
+        });
+
+        inimigos.Add(new enemySkeleton(new(100, 300))
+        {
+            ID = 4,
+            MoveAI = new IdleAI
+            {
+                target = _hero,
+                AIenemyType = new FollowHeroAI { target = _hero }
+            }
+        });
+
 
 
         _collisionManager = new CollisionManager(_hero, inimigos); //Cria gerenciador de colisões entre inimigos e jogador
@@ -74,7 +78,7 @@ public class GameManager
 
     }
 
-    private void CalculateTranslation() // Gerenciador dos limites de camera de acordo com o mapa.
+    private void CalculateTranslation() // Gerenciador da camera
     {
         var dx = (Globals.WindowSize.X / 2) - _hero.CENTER.X;
         dx = MathHelper.Clamp(dx, -_map.MapSize.X + Globals.WindowSize.X + (_map.TileSize.X / 2), _map.TileSize.X / 2);
@@ -83,6 +87,8 @@ public class GameManager
         _translation = Matrix.CreateTranslation(dx, dy, 0f);
 
     }
+
+
 
     public void Update()
     {
@@ -108,6 +114,7 @@ public class GameManager
         ProjectileManager.Update();
         _collisionManager.CheckCollisions(); //Checa as colisões
         CalculateTranslation(); //Atualiza a posição da camera
+        _hero._heromatrix = _translation;
 
     }
 
@@ -119,9 +126,8 @@ public class GameManager
         {
             inimigo.Draw(); //Para cada inimigo no mapa, ele é desenhado
         }
-
-        ProjectileManager.Draw();
         _hero.Draw(); //Desenha o heroi
+        ProjectileManager.Draw();
         Globals.SpriteBatch.End();
     }
 }

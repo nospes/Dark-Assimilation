@@ -65,7 +65,7 @@ Foi adicionado o enemySwarm, são inimigos que geralmente andam acompanhados, el
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.4
+Versão 0.4.4 -
 Foi adicionado um sistema complexo para gerenciar projéteis, primeiramente o ProjectileData.cs guarda todos os atributos dos projéteis que são passados pelo seu conjurador, Projectile.cs define e atualiza todas as funções atreladas ao projétil especifico e o ProjectileManager.cs gerencia os projéteis lançados com ajuda de uma lista permitindo que o Gerenciador do jogo possa lidar com eles de forma mais limpa. 
 Projeteis agora tem uma caixa de colisão coerente com sua posição e a origem de desenho deles foi alterada no construtor de animação e agora se da início no centro do 'sprite'. Essa lógica não foi aplicada para os demais objetos do jogo pois a lógica de colisão deles já está atrelada a origem do canto superior esquerdo no 'spritesheet' e o motivo dessa decisão é que as caixas de colisões dos projeteis não acompanhavam corretamente a sua rotação.
 
@@ -81,5 +81,13 @@ Foi adicionado o ultimo inimigo básico do jogo, enemyMage, ao entrar no alcance
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5 
+Versão 0.5 -
 Foi adicionado a Inteligencia Artificial para selecionar o perfil do jogador de acordo com os dados coletados durante a gameplay. Atualmente ele apenas recebe dados criados do C#, processa via Python e retorna o perfil do jogador. Atualmente o modelo leva em consideração os seguintes parametros para definir o perfil; As médias de: tempo total, tempo para derrotar o inimigo depois do primeiro golpe, quantidade de dash's, durante o combate com cada tipo de inimigo. Nas atualizações futuras os dados vão ser coletados in-game e o perfil do jogador será utilizado para definição dos inimigos, que serão pequenas variações com atributos, habilidades alteradas.
+
+////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.5.1 -
+Foi adicionado IdleAI para todos os inimigos, agora eles ficam em estado de espera até o jogador entrar no alcance deles, ao entrar é acionado um novo comportamento pré-selecionado.
+A ação de Cast/Conjuração agora lança um projétil ma direção do mouse com tempo de recarga que causa dano ao entrar em contato com inimigos.
+Foi adicionado os controles com o mouse, agora botão esquerdo da o ataque básico, o do meio usa o avanço e o direito usa magias, todos os controles se orientão pela direção do mouse
+Está sendo adicionado o sistema para receber dados dos inimigos masatualmente ocorre um erro por tentar acessar o arquivo de muitas partes do codigo.

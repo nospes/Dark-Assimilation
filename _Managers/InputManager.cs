@@ -18,36 +18,45 @@ public static class InputManager
 
         //Verifica se o teclado tem alguma tecla pressonada
         var keyboardState = Keyboard.GetState();
+        var mouseState = Mouse.GetState();
 
         //Caso o numero de teclas pressionadas seja maior que 0 e seja alguma da lista ele toma ações de acordo com cada caso
-        if (keyboardState.GetPressedKeyCount() > 0 && !Hero.CAST && !Hero.ATTACKING && !Hero.RECOIL && !Hero.DEATH)
+        if (!Hero.CAST && !Hero.ATTACKING && !Hero.RECOIL && !Hero.DEATH)
         {
 
 
             if (!Hero.DASH)
             {
-                if (keyboardState.IsKeyDown(Keys.K)) Hero.ATTACKING = true;
+                if (mouseState.LeftButton == ButtonState.Pressed) Hero.ATTACKING = true;
                 else
                 {
-                    if (keyboardState.IsKeyDown(Keys.L) && !Hero.skillCD.CheckCooldown) Hero.CAST = true;
-                    if (keyboardState.IsKeyDown(Keys.A)) _direction.X--;
-                    if (keyboardState.IsKeyDown(Keys.D)) _direction.X++;
-                    if (keyboardState.IsKeyDown(Keys.W)) _direction.Y--;
-                    if (keyboardState.IsKeyDown(Keys.S)) _direction.Y++;
+                    if (mouseState.RightButton == ButtonState.Pressed && !Hero.skillCD.CheckCooldown)
+                    {
+                        Hero.CAST = true;
+                    }
+                    else
+                    {
+                        if (keyboardState.IsKeyDown(Keys.A)) _direction.X--;
+                        if (keyboardState.IsKeyDown(Keys.D)) _direction.X++;
+                        if (keyboardState.IsKeyDown(Keys.W)) _direction.Y--;
+                        if (keyboardState.IsKeyDown(Keys.S)) _direction.Y++;
+                    }
                 }
                 if (_direction != Vector2.Zero) _lastdir = _direction;
 
             }
-            if (keyboardState.IsKeyDown(Keys.J))
+            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.MiddleButton == ButtonState.Pressed)
             {
 
                 if (!Hero.dashCD.CheckCooldown)
                 {
                     Hero.DASH = true;
-                    _direction += _lastdir;
+                    Hero.DASHPOSLOCK = true;
                 }
             }
         }
+
+        if(keyboardState.IsKeyDown(Keys.P)) PythonBridge.ExecutePythonScript();
     }
 
 

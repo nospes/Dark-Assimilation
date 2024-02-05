@@ -5,7 +5,7 @@ public class enemyArcher : enemyBase
     // Variaveis para Animações
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _textureDash, _textureSkill;  //Spritesheets
-    public MovementAI MoveAI { get; set; } //Definição de comportamento
+     //Definição de comportamento
 
 
 
@@ -66,7 +66,8 @@ public class enemyArcher : enemyBase
             Homing = false,
             ProjectileType = "Arrow",
             Scale = 1.75f,
-            Speed = 500
+            Speed = 500,
+            Friendly = false
         };
         ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciador
         ENEMYSKILL_LOCK = false;    //Ao lançar o projétil ativa a trava impedindo que lance varias flechas 
@@ -115,6 +116,30 @@ public class enemyArcher : enemyBase
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
+     public override async Task SetInvulnerableTemporarily(int durationInMilliseconds)
+    {
+        INVULSTATE = true; // Ativa a ivulnerabilidade
+
+        await Task.Delay(durationInMilliseconds); // Espera X tempo
+
+        INVULSTATE = false; // Desativa após o tempo
+    }
+
+    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
+    bool _dataPassed = false;
+    private async Task SerializeDataOnDeath()
+    {
+        if (!_dataPassed)
+        {
+            // Example metrics - replace these with actual calculations/values
+            int averageCombatTime = 120; // Example value
+            int damageWindow = 30; // Example value
+            int totalDashes = 5; // Example value
+            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
+            _dataPassed = true;
+        }
+    }
+
 
     //Variaveis para o temporizador entre ataques
     float _preattackcdtimer = 0f, _preattackcdduration = 1.6f;
@@ -125,7 +150,7 @@ public class enemyArcher : enemyBase
     //Variaveis para recarga do avanço/dash
     float _dashtimer = 0f, _dashduration = 3f; bool _dashcdlock = false;
 
-    public override void Update()
+    public override async void Update()
     {
 
         // Definindo o centro do frame de acordo com a posição atual
@@ -221,6 +246,7 @@ public class enemyArcher : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("archer_Death");
+            await SerializeDataOnDeath();
         }
         else if (ATTACKSTATE) //Caso de Ataque
         {

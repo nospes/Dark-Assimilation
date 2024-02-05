@@ -32,7 +32,7 @@ public class Game1 : Game
 
         _gameManager = new();
         _gameManager.Init();
-        PythonBridge.ExecutePythonScript();
+        
         // TODO: Add your initialization logic here
 
         base.Initialize();

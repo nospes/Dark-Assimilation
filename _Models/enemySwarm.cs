@@ -5,8 +5,6 @@ public class enemySwarm : enemyBase
     // Variaveis para Animações
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle_blue, _textureIdle_green, _textureIdle_purple, _textureIdle_yellow, _textureHit_blue, _textureHit_green, _textureHit_purple, _textureHit_yellow, _textureAttack, _texturePreattack, _textureDeath_blue, _textureDeath_yellow, _textureDeath_purple, _textureDeath_green;  //Spritesheets
-    //Definição de comportamento
-    public MovementAI MoveAI { get; set; }
 
     private int _colorselect;
 
@@ -107,7 +105,7 @@ public class enemySwarm : enemyBase
                 //Caixa de colisão para Reação do monstro
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
             case "attackbox1":
-            //Tem uma Attackbox levemente menor que sua Hitbox, dando mais janela para jogador atacar sem receber dano
+                //Tem uma Attackbox levemente menor que sua Hitbox, dando mais janela para jogador atacar sem receber dano
                 return new Rectangle(_left + 5, _top + 5, (int)((basehitboxSize.X - 5) * scale), (int)((basehitboxSize.Y - 5) * scale));
             default:
                 //Caso nenhuma caixa de colisão válida seja selecionada
@@ -120,6 +118,32 @@ public class enemySwarm : enemyBase
         _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
+
+    public override async Task SetInvulnerableTemporarily(int durationInMilliseconds)
+    {
+        INVULSTATE = true; // Ativa a ivulnerabilidade
+
+        await Task.Delay(durationInMilliseconds); // Espera X tempo
+
+        INVULSTATE = false; // Desativa após o tempo
+    }
+
+    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
+    bool _dataPassed = false;
+
+    private async Task SerializeDataOnDeath()
+    {
+        if (!_dataPassed)
+        {
+            // Example metrics - replace these with actual calculations/values
+            int averageCombatTime = 120; // Example value
+            int damageWindow = 30; // Example value
+            int totalDashes = 5; // Example value
+            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
+            _dataPassed = true;
+        }
+    }
+
 
     //Variaveis para o temporizador entre pré-ataque e ataque (nesse caso avanço)
     float _preattacktimer = 0f, _preattackduration = 1.25f;
@@ -136,7 +160,7 @@ public class enemySwarm : enemyBase
     //Variavel para direção do avanço ao jogador
     Vector2 _dashdir;
 
-    public override void Update()
+    public override async void Update()
     {
         //Se HP for 0, ou seja morrer, não causa dano.
         if (HP <= 0) ATTACKHITTIME = false;
@@ -306,6 +330,8 @@ public class enemySwarm : enemyBase
                     break;
             }
         }
+
+        if(HP < 0) await SerializeDataOnDeath();
 
         //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
         if (!ATTACKSTATE)

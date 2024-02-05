@@ -16,12 +16,12 @@ public class Hero
 
 
     //Atributos do hitbox
-    private Vector2 _baseHitBoxsize, _minPos, _maxPos; //Tamanho da hitbox base e posições maximas e minimas do mapa
+    private Vector2 _baseHitBoxsize, _minPos, _maxPos, _dashdir; //Tamanho da hitbox base e posições maximas e minimas do mapa
     public static Vector2 SCALEDHITBOXSIZE; //Hitbox escalonada
     public Vector2 CENTER; //Centro do sprite escalonado e atualizado com a posição atual
 
     //Estados
-    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, DASH = false, RECOIL = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
+    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, CASTED = false, CASTLOCK = false, DASH = false, DASHPOSLOCK = false, RECOIL = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
 
     //Atributos de combate
     public int HP; //Vida
@@ -30,6 +30,8 @@ public class Hero
     //Gerenciadores de tempo de recarga
     public static SkillManager dashCD, skillCD, attackCD; //Gerenciadores
     private bool _dashCDlock = true, _skillCDlock = true; //Variaveis de controle para os gerenciadores
+
+    public Matrix _heromatrix;
 
 
     //Definindo bases do Hero/Jogador
@@ -121,12 +123,59 @@ public class Hero
     public Rectangle AttackBounds()
     {
 
+        var mouseState = Mouse.GetState();
+        if (mouseState.LeftButton == ButtonState.Pressed)
+        {
+            var mousePosition = new Vector2(mouseState.X, mouseState.Y);
+            mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_heromatrix));
+            Vector2 direction = mousePosition - CENTER;
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+            }
+            if (direction.X > 0) _mirror = false;
+            else _mirror = true;
+        }
         var _hitsize = new Vector2(24 * _scale, 30 * _scale); //Define o tamanho
 
         if (!_mirror) //Caso não esteja espelhado ele retorna o seguinte retangulo
             return new Rectangle((int)CENTER.X, (int)(CENTER.Y - _hitsize.Y / 2), (int)_hitsize.X, (int)_hitsize.Y);
         else //Caso esteja
             return new Rectangle((int)(CENTER.X - _hitsize.X), (int)(CENTER.Y - _hitsize.Y / 2), (int)_hitsize.X, (int)_hitsize.Y);
+    }
+
+    public void SpellCast()
+    {
+
+        Random rnd = new Random();
+        if (!CASTLOCK)
+        {
+            var mouseState = Mouse.GetState();
+            var mousePosition = new Vector2(mouseState.X, mouseState.Y);
+            mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_heromatrix));
+            // Calculate the direction from the center of the hero to the mouse position
+            Vector2 direction = mousePosition - CENTER;
+            // Normalize the direction vector if it's not a zero vector
+            if (direction != Vector2.Zero)
+            {
+                direction.Normalize();
+            }
+
+            //Definindo atributos do projétil
+            ProjectileData pd = new()
+            {
+                Position = CENTER,
+                Direction = direction,
+                Lifespan = 3,
+                Homing = false,
+                ProjectileType = "IceProj",
+                Scale = 1.75f,
+                Speed = 300,
+                Friendly = true
+            };
+            ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciado
+            CASTLOCK = true;
+        }
     }
 
 
@@ -139,14 +188,24 @@ public class Hero
         //Tempo de invulnerabilidade após levar dano
         if (RECOIL)
         {
+            ATTACKING = false;
+            CAST = false;
             POSITION += (Vector2.Normalize((CENTER - lastHitpos))) * 2;
             //Temporizador para fim da invulnerabilidade
             _recoiltimer += (float)Globals.TotalSeconds;
+            _anims.Reset(2);
+            _anims.Reset(3);
             if (_recoiltimer >= _recoiltimerduration)
             {
                 RECOIL = false;
                 _recoiltimer = 0f;
             }
+        }
+
+        if (CASTED)
+        {
+            CASTED = false;
+            SpellCast();
         }
 
 
@@ -169,19 +228,33 @@ public class Hero
         //Movimenta o jogador com os comandos dado pelo Inputmanager.cs
         if (!ATTACKING && !CAST && !RECOIL)
         {
+
             if (InputManager.Moving) // Caso esteja se movendo ele anda nas direções do 'Direction' com base na speed e no tempo de jogo
             {
                 POSITION += Vector2.Normalize(InputManager.Direction) * SPEED * Globals.TotalSeconds;
             }
             else if (DASH) //A mesma coisa que movimento, porem como um avanço rapido
             {
-                POSITION += Vector2.Normalize(InputManager.Lastdir) * SPEED * Globals.TotalSeconds;
+                if (DASHPOSLOCK)
+                {
+                    var mouseState = Mouse.GetState();
+                    var mousePosition = new Vector2(mouseState.X, mouseState.Y);
+                    mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_heromatrix));
+                    // Calculate the direction from the center of the hero to the mouse position
+                    _dashdir = mousePosition - CENTER;
+                    if (_dashdir.X > 0) _mirror = false;
+                    else _mirror = true;
+                    DASHPOSLOCK = false;
+                }
+                POSITION += Vector2.Normalize(_dashdir) * SPEED * Globals.TotalSeconds;
             }
+
+
             POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos); //Caso o jogador tente ultrapassar os limites do mapa ele retorna
         }
 
         //Se a vida chega a 0 entra em estado de morte
-        if(HP<=0) DEATH = true;
+        if (HP <= 0) DEATH = true;
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
         if (DEATH) _anims.Update(5);
         else if (RECOIL) _anims.Update(6);
@@ -222,8 +295,9 @@ public class Hero
         else _dashCDlock = false;
 
         //cooldown da skill
-        skillCD.skillCooldown(3.00f, () =>
+        skillCD.skillCooldown(3f, () =>
             {
+                CASTLOCK = false;
                 //Console.WriteLine("Cooldown de 3 terminado. Você pode realizar a ação agora.");
             });
         if (!CAST)
@@ -237,6 +311,7 @@ public class Hero
         else _skillCDlock = false;
 
 
+
     }
 
 
@@ -245,11 +320,11 @@ public class Hero
     {
 
         //hitbox check
-        Rectangle rect = AttackBounds();
-        if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
+        //Rectangle rect = AttackBounds();
+        //if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
 
         //Passa os parametros de desenho apra AnimationManager.cs definir de fato os atributos do seu Spritesheet para então passar para Animation.cs
-        if(!SLOWED)_anims.Draw(POSITION, _scale, _mirror);
+        if (!SLOWED) _anims.Draw(POSITION, _scale, _mirror);
         else _anims.Draw(POSITION, _scale, _mirror, 0, Color.Purple); // Caso jogador esteja sob efeito de SLOWED ele fica roxo
 
 
