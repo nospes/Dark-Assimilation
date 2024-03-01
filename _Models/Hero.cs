@@ -21,10 +21,10 @@ public class Hero
     public Vector2 CENTER; //Centro do sprite escalonado e atualizado com a posição atual
 
     //Estados
-    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, CASTED = false, CASTLOCK = false, DASH = false, DASHPOSLOCK = false, RECOIL = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
+    public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, CASTED = false, CASTLOCK = false, DASH = false, DASHPOSLOCK = false, RECOIL = false, KNOCKBACK = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
 
     //Atributos de combate
-    public int HP; //Vida
+    public int HP, HERODMG; //Vida
     public static Vector2 lastHitpos; //Guarda posição do ultimo inimigo que acertou o heroi, utilizado no calculo de Knockback
 
     //Gerenciadores de tempo de recarga
@@ -60,7 +60,8 @@ public class Hero
         //Definição de Atributos do jogador
         POSITION = pos;
         SPEED = 200;
-        HP = 100;
+        HP = 500;
+        HERODMG = 10;
 
 
         // Tamanho base da hitbox
@@ -180,12 +181,47 @@ public class Hero
 
 
     //Variaveis de temporizadores
-    float _recoiltimer = 0f, _recoiltimerduration = 0.3f; //Contador e Duração de invulnerabilidade
+    bool knockbackInitiated = false; // Flag to ensure knockback is initiated only once per recoil phase
+    float _recoiltimer = 0f, _knockbackTimer = 0f, _knockbackDuration = 0.2f, _recoiltimerduration = 0.4f; //Contador e Duração de invulnerabilidade
     public void Update()
     {
 
 
-        //Tempo de invulnerabilidade após levar dano
+        if (RECOIL)
+        {
+            //Trava para ativaro knockback apenas uma vez
+            if (!knockbackInitiated)
+            {
+                KNOCKBACK = true;//Inicia o efeito de recuo
+                knockbackInitiated = true;
+            }
+
+            //Temporizador para o fim da invulnerabildidade
+            _recoiltimer += (float)Globals.TotalSeconds;
+            if (_recoiltimer >= _recoiltimerduration)
+            {
+                RECOIL = false;
+                _recoiltimer = 0f;
+                knockbackInitiated = false;
+            }
+        }
+
+        if (KNOCKBACK)
+        {
+            ATTACKING = false;
+            CAST = false;
+            POSITION += (Vector2.Normalize((CENTER - lastHitpos))) * 2;
+            //Temporizador para fim do recuo
+            _anims.Reset(2);
+            _anims.Reset(3);
+            _knockbackTimer += (float)Globals.TotalSeconds;
+            if (_knockbackTimer >= _knockbackDuration)
+            {
+                KNOCKBACK = false;
+                _knockbackTimer = 0f;
+            }
+        }
+        /*Tempo de invulnerabilidade após levar dano
         if (RECOIL)
         {
             ATTACKING = false;
@@ -200,7 +236,7 @@ public class Hero
                 RECOIL = false;
                 _recoiltimer = 0f;
             }
-        }
+        }*/
 
         if (CASTED)
         {
@@ -226,7 +262,7 @@ public class Hero
         CENTER = POSITION + _origin * _scale;
 
         //Movimenta o jogador com os comandos dado pelo Inputmanager.cs
-        if (!ATTACKING && !CAST && !RECOIL)
+        if (!ATTACKING && !CAST && !KNOCKBACK)
         {
 
             if (InputManager.Moving) // Caso esteja se movendo ele anda nas direções do 'Direction' com base na speed e no tempo de jogo
@@ -257,7 +293,7 @@ public class Hero
         if (HP <= 0) DEATH = true;
         //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
         if (DEATH) _anims.Update(5);
-        else if (RECOIL) _anims.Update(6);
+        else if (KNOCKBACK) _anims.Update(6);
         else if (CAST) _anims.Update(3);
         else if (ATTACKING) _anims.Update(2);
         else if (DASH) _anims.Update(4);
@@ -280,7 +316,7 @@ public class Hero
 
         //atualiza o tempo de recarga da ação com base no valor passado
         //cooldown do DASH
-        dashCD.skillCooldown(1.5f, () =>
+        dashCD.skillCooldown(0.7f, () =>
             {
                 //Console.WriteLine("Cooldown de 1 terminado. Você pode realizar a ação agora.");
             });
@@ -311,6 +347,7 @@ public class Hero
         else _skillCDlock = false;
 
 
+        Console.WriteLine(POSITION);
 
     }
 
@@ -327,6 +364,9 @@ public class Hero
         if (!SLOWED) _anims.Draw(POSITION, _scale, _mirror);
         else _anims.Draw(POSITION, _scale, _mirror, 0, Color.Purple); // Caso jogador esteja sob efeito de SLOWED ele fica roxo
 
+
+        Color brightRed = new Color(255, 0, 0); // Maximum red
+        if (RECOIL) _anims.Draw(POSITION, _scale, _mirror, 0, brightRed);
 
 
 

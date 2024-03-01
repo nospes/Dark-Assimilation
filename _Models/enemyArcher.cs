@@ -5,8 +5,6 @@ public class enemyArcher : enemyBase
     // Variaveis para Animações
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _textureDash, _textureSkill;  //Spritesheets
-     //Definição de comportamento
-
 
 
     public enemyArcher(Vector2 pos)
@@ -42,7 +40,7 @@ public class enemyArcher : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 100;
+        HP = 70;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -51,6 +49,8 @@ public class enemyArcher : enemyBase
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+        enemydataType = 3;
+        ALERT = false;
 
     }
 
@@ -116,7 +116,7 @@ public class enemyArcher : enemyBase
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
-     public override async Task SetInvulnerableTemporarily(int durationInMilliseconds)
+    public override async Task SetInvulnerableTemporarily(int durationInMilliseconds)
     {
         INVULSTATE = true; // Ativa a ivulnerabilidade
 
@@ -125,20 +125,6 @@ public class enemyArcher : enemyBase
         INVULSTATE = false; // Desativa após o tempo
     }
 
-    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
-    bool _dataPassed = false;
-    private async Task SerializeDataOnDeath()
-    {
-        if (!_dataPassed)
-        {
-            // Example metrics - replace these with actual calculations/values
-            int averageCombatTime = 120; // Example value
-            int damageWindow = 30; // Example value
-            int totalDashes = 5; // Example value
-            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
-            _dataPassed = true;
-        }
-    }
 
 
     //Variaveis para o temporizador entre ataques
@@ -148,7 +134,7 @@ public class enemyArcher : enemyBase
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
     //Variaveis para recarga do avanço/dash
-    float _dashtimer = 0f, _dashduration = 3f; bool _dashcdlock = false;
+    float _dashtimer = 0f, _dashduration = 5f; bool _dashcdlock = false;
 
     public override async void Update()
     {
@@ -156,9 +142,16 @@ public class enemyArcher : enemyBase
         // Definindo o centro do frame de acordo com a posição atual
         CENTER = position + origin * scale;
 
+        //Atualiza continuamente o status dos contabilizadores de combate
+        UpdateBattleStats();
+
+        //Conta a quantidade de Dashs/Avanços que o jogador fez em combate
+        if (battleStats.inBattle) battleStats.IncrementDashCount();
+
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
+            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f; // Reinicia a duração do recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
@@ -166,7 +159,7 @@ public class enemyArcher : enemyBase
             {
                 ATTACKSTATE = false; //Desativa o ataque
                 PREATTACKHITCD = true; //Ativa o tempo de recarga de ataque
-                if(_preattackcdtimer>0.6)_preattackcdtimer = 0.9f; //Restitue parte do seu tempo
+                if (_preattackcdtimer > 0.6) _preattackcdtimer = 0.9f; //Restitue parte do seu tempo
                 _anims.Reset("archer_Attack"); //Reseta a animação de ataque para começar ela do inicio novamente
             }
 
@@ -246,6 +239,7 @@ public class enemyArcher : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("archer_Death");
+            battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
             await SerializeDataOnDeath();
         }
         else if (ATTACKSTATE) //Caso de Ataque

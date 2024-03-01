@@ -1,5 +1,5 @@
 namespace MyGame;
-//Essa AI segue o heroi independente do alcance
+//Essa AI segue o heroi independente do alcance, segue uma logica similar do DistanceMovementAI.cs porem sem distancia minima
 public class FollowHeroAI : MovementAI
 {
 

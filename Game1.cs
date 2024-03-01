@@ -25,17 +25,20 @@ public class Game1 : Game
     {
         Globals.WindowSize = new(1280, 720);
         _graphics.PreferredBackBufferWidth = Globals.WindowSize.X;
-        _graphics.PreferredBackBufferHeight =  Globals.WindowSize.Y;
+        _graphics.PreferredBackBufferHeight = Globals.WindowSize.Y;
         _graphics.ApplyChanges();
+
 
         Globals.Content = Content;
 
         _gameManager = new();
         _gameManager.Init();
-        
+
         // TODO: Add your initialization logic here
 
         base.Initialize();
+        PythonBridge.ClearJsonData();
+        PythonBridge.ExecutePythonScript();
     }
 
     protected override void LoadContent()

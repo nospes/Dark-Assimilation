@@ -89,9 +89,9 @@ public class Animation
         //GERENCIADOR DE ANIMAÇÕES PARA O PLAYER
         if (_enemy == null && _objType != null)
         {
-            if (Hero.ATTACKING && !Hero.RECOIL) //Calculos de frames especificos para janelas de golpes
+            if (Hero.ATTACKING && !Hero.KNOCKBACK) //Calculos de frames especificos para janelas de golpes
             {
-                if (Hero.RECOIL) Reset(); //Adicionado RECOIL nas condições para não bugar com ataque infinito
+                if (Hero.KNOCKBACK) Reset(); //Adicionado RECOIL nas condições para não bugar com ataque infinito
                 //Gerenciador de animação entre os golpes
                 if (_frame == 6 || _frame == 11 || _frame == _frames - 1) Hero.ATTACKING = false;
                 //Gerenciador de janela de colisão para os golpes

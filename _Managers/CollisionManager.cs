@@ -41,12 +41,12 @@ namespace MyGame
                 }
 
                 //Caso um frame de golpe do player acerte o inimigo;
-                if (_heroAttackbounds.Intersects(_enemybounds) && Hero.ATTACKHITTIME && !_inimigo.INVULSTATE && !Hero.RECOIL)
+                if (_heroAttackbounds.Intersects(_enemybounds) && Hero.ATTACKHITTIME && !_inimigo.INVULSTATE && !Hero.KNOCKBACK)
                 {
                     _inimigo.HP -= 10;
                     _inimigo.HEROATTACKPOS = _hero.CENTER;
                     _inimigo.SetInvulnerableTemporarily(300);
-                    Console.WriteLine(_inimigo.HP);
+                    //Console.WriteLine(_inimigo.HP);
 
                 }
 
@@ -60,15 +60,16 @@ namespace MyGame
 
                     // Caso inimigo seja do tipo enemySwarm...
                     if (_objType == typeof(enemySwarm)) _inimigo.ATTACKHITTIME = false;
-                }
+                } //else if(_inimigo.ENGAGED) 
 
 
+                //Projeteis aliados
                 foreach (var _projetil in _projeteis)
                 {
                     if (_projetil.Friendly)
                     {
                         Rectangle _projectileBounds = _projetil.GetBounds(); // hitbox dos inimigos
-                        if (_projectileBounds.Intersects(_enemybounds))
+                        if (_projectileBounds.Intersects(_enemybounds)) // Caso entre em contato com HITBOX inimiga...
                         {
                             if (!_projetil.enemyHited)
                             {
@@ -116,6 +117,16 @@ namespace MyGame
 
                     }
 
+                }
+                else if (Hero.RECOIL || Hero.DASH)
+                {
+                    if (_projectileBounds.Intersects(_herobounds) && !_projetil.Friendly)
+                    {
+                        if (_projetil.ProjectileType == "DarkProj" && _projetil.Lifespan > 1) // Caso seja do tipo 'Arrow'
+                        {
+                            _projetil.Lifespan = 1; //Destroe o projetil, nesse caso ele para de causar dano no ultimo segundo de vida
+                        }
+                    }
                 }
             }
         }

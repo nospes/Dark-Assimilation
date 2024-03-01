@@ -39,7 +39,7 @@ public class enemySkeleton : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 100;
+        HP = 120;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -48,6 +48,8 @@ public class enemySkeleton : enemyBase
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+        enemydataType = 1;
+        ALERT = false;
 
     }
 
@@ -107,23 +109,6 @@ public class enemySkeleton : enemyBase
         INVULSTATE = false; // Desativa após o tempo
     }
 
-
-    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
-    bool _dataPassed = false;
-
-    private async Task SerializeDataOnDeath()
-    {
-        if (!_dataPassed)
-        {
-            // Example metrics - replace these with actual calculations/values
-            int averageCombatTime = 120; // Example value
-            int damageWindow = 30; // Example value
-            int totalDashes = 5; // Example value
-            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
-            _dataPassed = true;
-        }
-    }
-
     //Variaveis para o temporizador entre pré-ataque e ataque
     float _preattacktimer = 0f, _preattackduration = 1f;
 
@@ -139,9 +124,16 @@ public class enemySkeleton : enemyBase
         // Definindo o centro do frame de acordo com a posição atual
         CENTER = position + origin * scale;
 
+        //Atualiza continuamente o status dos contabilizadores de combate
+        UpdateBattleStats();
+
+        //Conta a quantidade de Dashs/Avanços que o jogador fez em combate
+        if(battleStats.inBattle) battleStats.IncrementDashCount();
+
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso cancele o pré-ataque ele reduz ou reinicia o temporizador
         if (INVULSTATE)
         {
+            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f;
             if (PREATTACKSTATE && _preattacktimer >= 0.75) _preattacktimer = 0.9f;
@@ -203,7 +195,8 @@ public class enemySkeleton : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("bigskel_Death");
-            await SerializeDataOnDeath();
+                battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
+                await SerializeDataOnDeath(); // Escreve os dados no JSON
         }
         else if (ATTACKSTATE) //Caso de Ataque
         {
@@ -227,9 +220,9 @@ public class enemySkeleton : enemyBase
         };
 
         //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
-        if (Globals.HEROLASTPOS.X - CENTER.X > 0)
+        if (Globals.HEROLASTPOS.X - CENTER.X > 0 && !ATTACKSTATE)
             mirror = false;
-        else if (Globals.HEROLASTPOS.X - CENTER.X < 0)
+        else if (Globals.HEROLASTPOS.X - CENTER.X < 0 && !ATTACKSTATE)
             mirror = true;
 
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -246,8 +239,8 @@ public class enemySkeleton : enemyBase
     public override void Draw()
     {
         //hitbox test
-        Rectangle Erect = GetBounds($"attackbox{ATTACKTYPE}");
-        if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
+        //Rectangle Erect = GetBounds($"attackbox{ATTACKTYPE}");
+        //if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Reaction box test
         //Rectangle Erect = GetBounds($"reactionbox");

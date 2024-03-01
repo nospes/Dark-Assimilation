@@ -21,7 +21,7 @@ public static class InputManager
         var mouseState = Mouse.GetState();
 
         //Caso o numero de teclas pressionadas seja maior que 0 e seja alguma da lista ele toma ações de acordo com cada caso
-        if (!Hero.CAST && !Hero.ATTACKING && !Hero.RECOIL && !Hero.DEATH)
+        if (!Hero.CAST && !Hero.ATTACKING && !Hero.KNOCKBACK && !Hero.DEATH)
         {
 
 
@@ -57,6 +57,8 @@ public static class InputManager
         }
 
         if(keyboardState.IsKeyDown(Keys.P)) PythonBridge.ExecutePythonScript();
+        if(keyboardState.IsKeyDown(Keys.O)) PythonBridge.ClearJsonData();
+        if(keyboardState.IsKeyDown(Keys.D1)) GameManager.EnemySpawnlock();
     }
 
 

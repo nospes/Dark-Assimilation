@@ -64,7 +64,7 @@ public class enemySwarm : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 100;
+        HP = 50;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -74,6 +74,8 @@ public class enemySwarm : enemyBase
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
         ATTACKHITTIME = true;
+        enemydataType = 2;
+        ALERT = false;
 
         _colorselect = new Random().Next(1, 3);
 
@@ -86,7 +88,7 @@ public class enemySwarm : enemyBase
         int _left = (int)CENTER.X - (int)(basehitboxSize.X * scale) / 2; //Define limites de acordo com centro, parametros da hitbox e sprite
         int _top = (int)CENTER.Y - (int)(basehitboxSize.Y * scale) / 2; //Mesma coisa, porem verticalmente
 
-        int _reactionSize = 150 * scale;  //Tamanho da caixa de colisão
+        int _reactionSize = 125 * scale;  //Tamanho da caixa de colisão
 
         Vector2 _attackOffset1 = new Vector2(_left - 32, _top - 28); //Define a posição dos golpes utilizando dos limites pré-definidos e valores absolutos definidos pela animação
         Vector2 _attackOffset1M = new Vector2(_left - 114, _top - 28); //Versão espelhada
@@ -106,7 +108,7 @@ public class enemySwarm : enemyBase
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
             case "attackbox1":
                 //Tem uma Attackbox levemente menor que sua Hitbox, dando mais janela para jogador atacar sem receber dano
-                return new Rectangle(_left + 5, _top + 5, (int)((basehitboxSize.X - 5) * scale), (int)((basehitboxSize.Y - 5) * scale));
+                return new Rectangle(_left + 10, _top + 10, (int)((basehitboxSize.X - 10) * scale), (int)((basehitboxSize.Y - 10) * scale));
             default:
                 //Caso nenhuma caixa de colisão válida seja selecionada
                 throw new InvalidOperationException($"Tipo de caixa de colisão desconhecido: {boundType}"); ;
@@ -126,22 +128,6 @@ public class enemySwarm : enemyBase
         await Task.Delay(durationInMilliseconds); // Espera X tempo
 
         INVULSTATE = false; // Desativa após o tempo
-    }
-
-    // Variaveis e Funções atreladas ao IA / PythonBridge.cs
-    bool _dataPassed = false;
-
-    private async Task SerializeDataOnDeath()
-    {
-        if (!_dataPassed)
-        {
-            // Example metrics - replace these with actual calculations/values
-            int averageCombatTime = 120; // Example value
-            int damageWindow = 30; // Example value
-            int totalDashes = 5; // Example value
-            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
-            _dataPassed = true;
-        }
     }
 
 
@@ -168,9 +154,16 @@ public class enemySwarm : enemyBase
         // Definindo o centro do frame de acordo com a posição atual
         CENTER = position + origin * scale;
 
+        //Atualiza continuamente o status dos contabilizadores de combate
+        UpdateBattleStats();
+
+        //Conta a quantidade de Dashs/Avanços que o jogador fez em combate
+        if (battleStats.inBattle) battleStats.IncrementDashCount();
+
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
+            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f; // Tempo de recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
@@ -331,7 +324,11 @@ public class enemySwarm : enemyBase
             }
         }
 
-        if(HP < 0) await SerializeDataOnDeath();
+        if (HP < 0)
+        {
+            battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
+            await SerializeDataOnDeath();
+        }
 
         //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
         if (!ATTACKSTATE)

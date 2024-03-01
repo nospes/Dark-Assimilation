@@ -39,7 +39,7 @@ public class enemyMage : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 100;
+        HP = 90;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -48,6 +48,8 @@ public class enemyMage : enemyBase
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+        enemydataType = 4;
+        ALERT = false;
 
     }
 
@@ -131,7 +133,7 @@ public class enemyMage : enemyBase
         int _left = (int)CENTER.X - (int)(basehitboxSize.X * scale) / 2; //Define limites de acordo com centro, parametros da hitbox e sprite
         int _top = (int)CENTER.Y - (int)(basehitboxSize.Y * scale) / 2; //Mesma coisa, porem verticalmente
 
-        int _reactionSize = 180 * scale;  //Tamanho da caixa de colisão
+        int _reactionSize = 170 * scale;  //Tamanho da caixa de colisão
 
         Vector2 _attackOffset1 = new Vector2(_left - 32, _top - 28); //Define a posição dos golpes utilizando dos limites pré-definidos e valores absolutos definidos pela animação
         Vector2 _attackOffset1M = new Vector2(_left - 114, _top - 28); //Versão espelhada
@@ -175,19 +177,7 @@ public class enemyMage : enemyBase
     }
 
     // Variaveis e Funções atreladas ao IA / PythonBridge.cs
-    bool _dataPassed = false;
-    private async Task SerializeDataOnDeath()
-    {
-        if (!_dataPassed)
-        {
-            // Example metrics - replace these with actual calculations/values
-            int averageCombatTime = 120; // Example value
-            int damageWindow = 30; // Example value
-            int totalDashes = 5; // Example value
-            await PythonBridge.UpdateCombatDataAsync("enemySkeleton", averageCombatTime, damageWindow, totalDashes);
-            _dataPassed = true;
-        }
-    }
+
 
 
     //Variaveis para o temporizador entre pré-ataque e ataque
@@ -205,9 +195,17 @@ public class enemyMage : enemyBase
         // Definindo o centro do frame de acordo com a posição atual
         CENTER = position + (origin + new Vector2(0, 25)) * scale;
 
+        //Atualiza continuamente o status dos contabilizadores de combate
+        UpdateBattleStats();
+
+        //Conta a quantidade de Dashs/Avanços que o jogador fez em combate
+        if (battleStats.inBattle) battleStats.IncrementDashCount();
+
+
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
+            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _preattacktimer = 0f;
             _recoilingtimer = 0f;
@@ -265,6 +263,7 @@ public class enemyMage : enemyBase
         //Ao terminar a ação de ataque ativa a trava ENEMYSKILL_LOCK disparando uma magia com a função CastProj() ou CastSpell();
         if (ENEMYSKILL_LOCK)
         {
+            if(!ALERT) ALERT = true;
             Random random = new Random(); //Escolhe aleatoriamente um dos efeitos para lançar
             if (random.Next(0, 100) >= 50) CastProj();
             else CastSkill();
@@ -285,6 +284,7 @@ public class enemyMage : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("necro_Death");
+            battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
             await SerializeDataOnDeath();
         }
         else if (ATTACKSTATE) //Caso de Ataque

@@ -66,7 +66,8 @@ Foi adicionado o enemySwarm, são inimigos que geralmente andam acompanhados, el
 ////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.4.4 -
-Foi adicionado um sistema complexo para gerenciar projéteis, primeiramente o ProjectileData.cs guarda todos os atributos dos projéteis que são passados pelo seu conjurador, Projectile.cs define e atualiza todas as funções atreladas ao projétil especifico e o ProjectileManager.cs gerencia os projéteis lançados com ajuda de uma lista permitindo que o Gerenciador do jogo possa lidar com eles de forma mais limpa. 
+Foi adicionado um sistema complexo para gerenciar projéteis, primeiramente o ProjectileData.cs guarda todos os atributos dos projéteis que são passados pelo seu conjurador, Projectile.cs define e atualiza todas as funções atreladas ao projétil especifico e o ProjectileManager.cs gerencia os projéteis lançados com ajuda de uma lista permitindo que o Gerenciador do jogo possa lidar com eles de forma mais limpa.
+
 Projeteis agora tem uma caixa de colisão coerente com sua posição e a origem de desenho deles foi alterada no construtor de animação e agora se da início no centro do 'sprite'. Essa lógica não foi aplicada para os demais objetos do jogo pois a lógica de colisão deles já está atrelada a origem do canto superior esquerdo no 'spritesheet' e o motivo dessa decisão é que as caixas de colisões dos projeteis não acompanhavam corretamente a sua rotação.
 
 A posição atual do heroi foi adicionado a uma variavel global, agora podendo ser acessado mais fácilmente. 
@@ -82,12 +83,25 @@ Foi adicionado o ultimo inimigo básico do jogo, enemyMage, ao entrar no alcance
 ////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5 -
-Foi adicionado a Inteligencia Artificial para selecionar o perfil do jogador de acordo com os dados coletados durante a gameplay. Atualmente ele apenas recebe dados criados do C#, processa via Python e retorna o perfil do jogador. Atualmente o modelo leva em consideração os seguintes parametros para definir o perfil; As médias de: tempo total, tempo para derrotar o inimigo depois do primeiro golpe, quantidade de dash's, durante o combate com cada tipo de inimigo. Nas atualizações futuras os dados vão ser coletados in-game e o perfil do jogador será utilizado para definição dos inimigos, que serão pequenas variações com atributos, habilidades alteradas.
+Foi adicionado a Inteligencia Artificial para selecionar o perfil do jogador de acordo com os dados coletados durante a gameplay. Atualmente ele apenas recebe dados criados do C#, processa via Python e retorna o perfil do jogador. P modelo leva em consideração os seguintes parametros para definir o perfil; As médias de: tempo total, tempo para derrotar o inimigo depois do primeiro golpe, quantidade de dash's, durante o combate com cada tipo de inimigo. Nas atualizações futuras os dados vão ser coletados in-game e o perfil do jogador será utilizado para definição dos inimigos, que serão pequenas variações com atributos ou habilidades alteradas.
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.1 -
 Foi adicionado IdleAI para todos os inimigos, agora eles ficam em estado de espera até o jogador entrar no alcance deles, ao entrar é acionado um novo comportamento pré-selecionado.
-A ação de Cast/Conjuração agora lança um projétil ma direção do mouse com tempo de recarga que causa dano ao entrar em contato com inimigos.
-Foi adicionado os controles com o mouse, agora botão esquerdo da o ataque básico, o do meio usa o avanço e o direito usa magias, todos os controles se orientão pela direção do mouse
-Está sendo adicionado o sistema para receber dados dos inimigos masatualmente ocorre um erro por tentar acessar o arquivo de muitas partes do codigo.
+A ação de Cast/Conjuração agora lança um projétil na direção do mouse com tempo de recarga que causa dano ao entrar em contato com inimigos.
+
+Foi adicionado os controles com o mouse, agora botão esquerdo da o ataque básico, o do meio usa o avanço e o direito usa magias, todos os controles se usam de orientação a posição do mouse
+Está sendo adicionado o sistema para receber dados dos inimigos mas atualmente ocorre um erro por tentar acessar o arquivo de muitas partes do codigo.
+
+////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.5.2
+O erro de acesso do arquivo foi concertado e agora a data de combate dos inimigos é passada ao JSON sempre que eles morrem, atualmente ao teclar a letra P é iniciado o script de python para calcular os perfis do jogador com cada inimigo.
+Dados de combate são devidamente coletados durante combate atualmente são (Combat Time - Tempo de combate / Damage Window - Tempo de combate APÓS o primeiro golpe / Total Dashes - Totais de dash / Enemy Type - Tipo do inimigo)
+
+Agora o ProfileSelector.py organiza e faz as predições utilizando como base cada tipo de inimigo, tendo em vista que cada um se comporta e tem atributos diferentes é mais justo que eles tenham diferentes pesos.
+Foi adicionado a variavel KNOCKBACK no jogador que admnistra o tempo de recuo e de trava para ações durante o mesmo, a variavel RECOIL agora admnistra apenas o tempo de IVULNERABILIDADE, isso permite que o jogador tenha um tempo maior de resposta após receber danos, atualmente a diferença é de 0.2 para recuo e 0.4 para ivulnerabilidade.
+
+Agora inimigos próximos são alertados quando um deles entra em combate com a função EnemyEngagement() presente no GameManager.cs, acionando a IA de combate respectiva deles.
+Foram ajustados o alcance de ativação da IA de combate de todos os inimigos e ajustadas as caixas de reações para não ficarem longes da ideia original; EnemySwarm agora entra em combate antes de utilizar seu avanço impedindo bugs relacionados a ativação do alerta, EnemyArcher propositalmente atira fora do alcance de sua área de combate, EnemyMage tambem ativa habilidades fora do seu alcance de combate mas diferente do EnemyArcher ele entra em combate quando as ativa e alerta inimigos próximos.

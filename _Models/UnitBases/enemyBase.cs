@@ -9,7 +9,9 @@ public interface enemyCollection
     Vector2 CENTER { get; set; }
     Vector2 HEROATTACKPOS { get; set; }
     bool ENEMYSKILL_LOCK { get; set; }
+    bool ALERT { get; set; }
     //Estados
+    MovementAI MoveAI { get; set; }
     bool DEATHSTATE { get; set; }
     bool PREATTACKSTATE { get; set; }
     bool ATTACKSTATE { get; set; }
@@ -26,6 +28,8 @@ public interface enemyCollection
     void MapBounds(Point mapSize, Point tileSize);
     Task SetInvulnerableTemporarily(int durationInMilliseconds);
     Rectangle GetBounds(string boundType);
+
+
 }
 
 public abstract class enemyBase : enemyCollection
@@ -35,8 +39,9 @@ public abstract class enemyBase : enemyCollection
     public Vector2 position; //Posição
     public Vector2 CENTER { get; set; } // Centro do inimigo
     public float speed;   //Velocidade
-    public Vector2 _minPos, _maxPos;
-    public MovementAI MoveAI { get; set; }
+    public Vector2 _minPos, _maxPos; // Limites do mapa
+    public MovementAI MoveAI { get; set; } // Tipo de AI do inimigo
+    public int enemydataType; // Tipo de inimigo, usado na seleção de perfil com KNN
 
     //Variaveis de estado do sprite
     public bool mirror;  //Espelhamento 
@@ -63,14 +68,45 @@ public abstract class enemyBase : enemyCollection
     public Vector2 origin;   //Centro do frame atual no spritesheet
     public bool ENEMYSKILL_LOCK { get; set; } // Variavel para travas de habilidades inimigas
     public bool Recoling = false; //Recuo para danos
+    public bool ALERT { get; set; } // Variavel usada para inimigos serem alertados por outros
+
+
 
 
     //Referencia-se as funções presentes dentro dos portadores dessa herança
     public abstract void Update(); //Função de update dos inimigos
     public abstract void Draw(); //Função de desenho dos inimigos
     public abstract Rectangle GetBounds(string boundType); //Função para pegar os limites dos inimigos
-    public abstract void MapBounds(Point mapSize, Point tileSize);
-    public abstract Task SetInvulnerableTemporarily(int durationInMilliseconds);
+    public abstract void MapBounds(Point mapSize, Point tileSize); // Limites do mapa
+    public abstract Task SetInvulnerableTemporarily(int durationInMilliseconds); // Frame de ivulnerabilidade após dano
+
+    //Variaveis para calculo de perfil do jogador
+
+    public bool _dataPassed = false; // Verifica se a data já foi passada
+    public BattleStats battleStats = new BattleStats(); // Cria a classe para guardar os dados de combate em cad a inimigo
+
+
+    //Usado para atualizar os Dados de Combate de cada inimigo
+    protected void UpdateBattleStats()
+    {
+        battleStats.Update();
+    }
+
+    //Passa os dados coletados para serem convertidos em um JSON no PythonBridge.cs
+    protected async Task SerializeDataOnDeath()
+    {
+        if (!_dataPassed)
+        {
+            // Use actual metrics from battleStats
+            var averageCombatTime = (int)battleStats.FinalBattleTime.TotalSeconds;
+            var timeAfterFirstHit = (int)battleStats.FinalTimeAfterFirstHit.TotalSeconds;
+            int totalDashes = (int)battleStats.FinalDashCount;
+            int enemyType = enemydataType;
+
+            await PythonBridge.UpdateCombatDataAsync(enemydataType, averageCombatTime, timeAfterFirstHit, totalDashes);
+            _dataPassed = true;
+        }
+    }
 
 
 }
