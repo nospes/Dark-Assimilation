@@ -44,11 +44,14 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_yellow.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_yellow_death.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Swarm/swarm_yellow_hurt.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/Props/pentagramm.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/Props/Soul_spr.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile1.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile2.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile3.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile4.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/tile5.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Map/Wall.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Cast.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Dash.png</File>
@@ -59,8 +62,47 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_cast.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_hit.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_proj.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/baseFont.spritefont</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/border_UI.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/A.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/D.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/MOUSEBUTTONLEFT.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/MOUSEBUTTONMIDDLE.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/MOUSEBUTTONRIGHT.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/S.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/SPACE.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/W.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/frameActive_UI.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/frameNormal_UI.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/CRIT_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/DMG_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/FIERCE_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/SPEED_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/SPELL_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/VIT_upgrade.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

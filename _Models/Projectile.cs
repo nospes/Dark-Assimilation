@@ -130,8 +130,7 @@ public class Projectile
                 else _anims.Reset("icespell_hit");
                 break;
             default:
-                // You can handle an unexpected ProjectileType here
-                break;
+                throw new InvalidOperationException($"Tipo de projétil desconhecido: {ProjectileType}"); ;
         }
 
         //Rectangle Erect = GetBounds();

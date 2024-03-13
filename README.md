@@ -105,3 +105,34 @@ Foi adicionado a variavel KNOCKBACK no jogador que admnistra o tempo de recuo e 
 
 Agora inimigos próximos são alertados quando um deles entra em combate com a função EnemyEngagement() presente no GameManager.cs, acionando a IA de combate respectiva deles.
 Foram ajustados o alcance de ativação da IA de combate de todos os inimigos e ajustadas as caixas de reações para não ficarem longes da ideia original; EnemySwarm agora entra em combate antes de utilizar seu avanço impedindo bugs relacionados a ativação do alerta, EnemyArcher propositalmente atira fora do alcance de sua área de combate, EnemyMage tambem ativa habilidades fora do seu alcance de combate mas diferente do EnemyArcher ele entra em combate quando as ativa e alerta inimigos próximos.
+
+Os projéteis do Enemymage agora são dissipados ao colidir com o jogador enquanto ele está durante alguma ivulnerabilidade(DASH ou RECOIL).
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.5.3
+Foi introduzido o spawn e despawn de inimigos em horda, deixando a lógica de gerar inimigos mais clara.
+
+Adicionado recurso de Pause através do botão 'P'.
+
+Ajustado diversos atributos dos inimigos como tempos de reação, vida total e etc...
+
+Todos os Spawns tiveram suas posições alteradas, agora a fase 2 contem spawns diferentes e mais populados.
+
+Implementado efeitos de Fadein e Fadeout para uma transição visual mais suave entre cenas.
+
+Desenvolvido sistema de "Mudança de Sala", que pausa o jogo, ajusta a posição do herói, executa o script de predição do Python, remove inimigos existentes e gera uma nova leva de adversários.
+Introduzido o teleportador para mudança de sala, atualmente é nescessário matar 4 inimigos para ativar o portal.
+
+Foi adicionado o Gerenciador de Aleatoriedade(RandomManager) para lidar com as chances aleatorias do jogo.
+
+Foram adicionadas diversas variaveis do jogador em relação aos seus atributos, como dano, velocidade de movimento e de ataque etc...essas variaveis já foram implementadas e seus valores levemente ajustados.
+Implementação da chance de critico aos golpes do jogador, inicialmente começa em 10% e causa 1.4x a mais de dano.
+
+As imagens e o Gerenciador dos futuros Aprimoramentos foram adicionadas mas ainda não foram implementados.
+
+Corrigidos e ajustados diversos inputs do jogador, incluindo:
+>Correção do bug de dano infinito na janela de ataque e ajuste na animação de ataque para não mudar de direção enquanto ataca.
+>Corrigido o bug de avanço inconsistente; agora, ele tem duração de 0.3 segundos, velocidade de 700, e o cooldown do dash foi aumentado de 0.7 para 0.9 segundos.
+>Ajustado o bug da conjuração sempre seguir o mouse; agora, leva em consideração a orientação no momento do conjuro.
+

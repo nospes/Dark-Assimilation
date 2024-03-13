@@ -39,7 +39,7 @@ public class enemySkeleton : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 120;
+        HP = 150;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -50,6 +50,7 @@ public class enemySkeleton : enemyBase
         ATTACKTYPE = 1;
         enemydataType = 1;
         ALERT = false;
+        SPAWN = true;
 
     }
 
@@ -128,7 +129,7 @@ public class enemySkeleton : enemyBase
         UpdateBattleStats();
 
         //Conta a quantidade de Dashs/Avanços que o jogador fez em combate
-        if(battleStats.inBattle) battleStats.IncrementDashCount();
+        if (battleStats.inBattle) battleStats.IncrementDashCount();
 
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso cancele o pré-ataque ele reduz ou reinicia o temporizador
         if (INVULSTATE)
@@ -136,7 +137,7 @@ public class enemySkeleton : enemyBase
             battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f;
-            if (PREATTACKSTATE && _preattacktimer >= 0.75) _preattacktimer = 0.9f;
+            if (PREATTACKSTATE && _preattacktimer >= 0.4) _preattacktimer = 0.99f;
         }
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
@@ -195,8 +196,8 @@ public class enemySkeleton : enemyBase
         if (HP <= 0) //Caso de morte
         {
             _anims.Update("bigskel_Death");
-                battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
-                await SerializeDataOnDeath(); // Escreve os dados no JSON
+            battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
+            await SerializeDataOnDeath(); // Escreve os dados no JSON
         }
         else if (ATTACKSTATE) //Caso de Ataque
         {

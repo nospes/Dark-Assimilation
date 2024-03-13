@@ -43,11 +43,11 @@ public class AnimationManager
     }
 
 
-    public void Draw(Vector2 position, float scale, bool mirror, float rotation = 0,  Color? color = null)
+    public void Draw(Vector2 position, float scale, bool mirror, float rotation = 0,  Color? color = null, int depth = 1)
     {
         Color drawColor = color ?? Color.White; //Se não for definida uma cor é utilizada a padrão: White
         //Com os quadros de animações definidos, ele passa os parametros para Animation.cs começar a desenhar
         //Utilizando o frame atual do Update() presente no Animation.cs
-        _anims[_lastKey].Draw(position, scale, mirror, rotation, drawColor);
+        _anims[_lastKey].Draw(position, scale, mirror, rotation, drawColor, depth);
     }
 }

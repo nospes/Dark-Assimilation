@@ -18,6 +18,7 @@ public interface enemyCollection
     bool INVULSTATE { get; set; }
     int ATTACKTYPE { get; set; }
     bool DASHSTATE { get; set; }
+    bool SPAWN {get; set; }
     //Temporizadores
     bool ATTACKHITTIME { get; set; }
     bool PREATTACKHITCD { get; set; }
@@ -59,6 +60,7 @@ public abstract class enemyBase : enemyCollection
     public bool ATTACKHITTIME { get; set; } //Estado de tempo de dano - Permite heroi levar dano enquanto verdadeiro
     public bool PREATTACKHITCD { get; set; }//Trava para tempo de recarga entre ataques
     public bool DASHSTATE { get; set; }//Estado de Avanço - Presente em alguns inimigos
+    public bool SPAWN {get; set;} //Se o inimigo está Spawnado
 
 
     //Variaveis de colisão e combate
@@ -98,12 +100,13 @@ public abstract class enemyBase : enemyCollection
         if (!_dataPassed)
         {
             // Use actual metrics from battleStats
-            var averageCombatTime = (int)battleStats.FinalBattleTime.TotalSeconds;
-            var timeAfterFirstHit = (int)battleStats.FinalTimeAfterFirstHit.TotalSeconds;
-            int totalDashes = (int)battleStats.FinalDashCount;
-            int enemyType = enemydataType;
+            var averageCombatTime = (int)battleStats.FinalBattleTime.TotalSeconds; // Tempo total de combate
+            var timeAfterFirstHit = (int)battleStats.FinalTimeAfterFirstHit.TotalSeconds; //Tempo de combate depois do primeiro dano
+            int totalDashes = (int)battleStats.FinalDashCount; // Total de avanços durante combate
+            int enemyType = enemydataType; // Tipo do inimigo derrotado
 
-            await PythonBridge.UpdateCombatDataAsync(enemydataType, averageCombatTime, timeAfterFirstHit, totalDashes);
+            await PythonBridge.UpdateCombatDataAsync(enemydataType, averageCombatTime, timeAfterFirstHit, totalDashes); //Passando os dados
+            Pentagram.enemyCount += 1; // Variavel para portal
             _dataPassed = true;
         }
     }

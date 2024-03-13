@@ -6,7 +6,7 @@ public class enemyMage : enemyBase
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _texturePreattack;  //Spritesheets
 
-
+    private RandomGenerator spellChance;
 
     public enemyMage(Vector2 pos)
     {
@@ -39,7 +39,7 @@ public class enemyMage : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 90;
+        HP = 110;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -50,6 +50,7 @@ public class enemyMage : enemyBase
         ATTACKTYPE = 1;
         enemydataType = 4;
         ALERT = false;
+        SPAWN = true;
 
     }
 
@@ -147,7 +148,7 @@ public class enemyMage : enemyBase
             case "hitbox":
                 //Caixa de colisão do monstro
                 //Com base nas coordenadas _Top e _Left cria um retangulo de tamanho pré-definido multiplicado pelo scale
-                return new Rectangle(_left, _top, (int)(basehitboxSize.X * scale), (int)(basehitboxSize.Y * scale));
+                return new Rectangle(_left+28, _top, (int)(basehitboxSize.X * scale)-60, (int)(basehitboxSize.Y * scale));
             case "reactionbox":
                 //Caixa de colisão para Reação do monstro
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
@@ -163,7 +164,7 @@ public class enemyMage : enemyBase
 
     public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
     {
-        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)-144); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -264,8 +265,8 @@ public class enemyMage : enemyBase
         if (ENEMYSKILL_LOCK)
         {
             if(!ALERT) ALERT = true;
-            Random random = new Random(); //Escolhe aleatoriamente um dos efeitos para lançar
-            if (random.Next(0, 100) >= 50) CastProj();
+            spellChance = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
+            if (spellChance.NextInt(0, 100) > 45) CastProj();
             else CastSkill();
 
         }
@@ -282,7 +283,7 @@ public class enemyMage : enemyBase
 
         //Define as animações de acordo com os estados
         if (HP <= 0) //Caso de morte
-        {
+        {  
             _anims.Update("necro_Death");
             battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
             await SerializeDataOnDeath();

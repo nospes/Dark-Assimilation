@@ -1,5 +1,2 @@
 Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
-"C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Attack.png","C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Creatures/Necromancer/necro_Attack.xnb","TextureProcessor","Texture2DContent",1810481,901205,0,3815808
-"C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_cast.png","C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Player/Spells/spell_ice_cast.xnb","TextureProcessor","Texture2DContent",449,18517,0,0115985
-"C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_hit.png","C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Player/Spells/spell_ice_hit.xnb","TextureProcessor","Texture2DContent",1277,49237,0,0076554
-"C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_proj.png","C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/Player/Spells/spell_ice_proj.xnb","TextureProcessor","Texture2DContent",1467,61525,0,0098543
+"C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/baseFont.spritefont","C:/Users/User/Desktop/Dev/monogame/MyGame/Content/bin/DesktopGL/UI/baseFont.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21538,0,3858882

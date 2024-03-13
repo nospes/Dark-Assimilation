@@ -20,6 +20,7 @@ public static class InputManager
         var keyboardState = Keyboard.GetState();
         var mouseState = Mouse.GetState();
 
+        
         //Caso o numero de teclas pressionadas seja maior que 0 e seja alguma da lista ele toma ações de acordo com cada caso
         if (!Hero.CAST && !Hero.ATTACKING && !Hero.KNOCKBACK && !Hero.DEATH)
         {
@@ -30,9 +31,11 @@ public static class InputManager
                 if (mouseState.LeftButton == ButtonState.Pressed) Hero.ATTACKING = true;
                 else
                 {
+                    
                     if (mouseState.RightButton == ButtonState.Pressed && !Hero.skillCD.CheckCooldown)
                     {
                         Hero.CAST = true;
+                        Hero.castPos = new Vector2(mouseState.X, mouseState.Y);
                     }
                     else
                     {
@@ -45,10 +48,10 @@ public static class InputManager
                 if (_direction != Vector2.Zero) _lastdir = _direction;
 
             }
-            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.MiddleButton == ButtonState.Pressed)
+            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.MiddleButton == ButtonState.Pressed )
             {
 
-                if (!Hero.dashCD.CheckCooldown)
+                if (!Hero.dashCD.CheckCooldown && !Hero.DASH)
                 {
                     Hero.DASH = true;
                     Hero.DASHPOSLOCK = true;
@@ -56,9 +59,10 @@ public static class InputManager
             }
         }
 
-        if(keyboardState.IsKeyDown(Keys.P)) PythonBridge.ExecutePythonScript();
-        if(keyboardState.IsKeyDown(Keys.O)) PythonBridge.ClearJsonData();
-        if(keyboardState.IsKeyDown(Keys.D1)) GameManager.EnemySpawnlock();
+        if(keyboardState.IsKeyDown(Keys.D0)) PythonBridge.ExecutePythonScript();
+        if(keyboardState.IsKeyDown(Keys.D9)) PythonBridge.ClearJsonData();
+
+        if(keyboardState.IsKeyDown(Keys.P)) GameManager.PauseGame();
     }
 
 

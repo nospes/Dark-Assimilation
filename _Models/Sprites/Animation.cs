@@ -17,7 +17,7 @@ public class Animation
     private bool _active = true; //Define se está ativo a animação
     private readonly enemyCollection _enemy; //Metodo de acesso de objetos especificos(inimigos)
     private Type _enemyType; //Tipo de inimigo
-    private object _objType; //Tipo de objeto
+    private Type _objType; //Tipo de objeto
     private Vector2 Origin; //Meio do sprite
 
     public Animation(Texture2D texture, int framesX, int framesY, float frameTime, object objectInstance = null, enemyCollection enemyInstance = null, int row = 1)
@@ -41,7 +41,9 @@ public class Animation
             _sourceRectangles.Add(new(i * frameWidth, (row - 1) * frameHeight, frameWidth, frameHeight));
         }
 
-        _objType = objectInstance; //Salva obj para trabalhar com ele 
+
+        _objType = objectInstance?.GetType();
+        //Console.WriteLine(objectInstance);
         _enemy = enemyInstance; //Salva tipo enemyInstance no _enemy
 
         _enemyType = _enemy?.GetType(); //Salva o TIPO do objeto, no caso inimigos, para poder comparar condições
@@ -87,29 +89,29 @@ public class Animation
 
 
         //GERENCIADOR DE ANIMAÇÕES PARA O PLAYER
-        if (_enemy == null && _objType != null)
+        if (_objType == typeof(Hero))
         {
+            
             if (Hero.ATTACKING && !Hero.KNOCKBACK) //Calculos de frames especificos para janelas de golpes
             {
-                if (Hero.KNOCKBACK) Reset(); //Adicionado RECOIL nas condições para não bugar com ataque infinito
                 //Gerenciador de animação entre os golpes
-                if (_frame == 6 || _frame == 11 || _frame == _frames - 1) Hero.ATTACKING = false;
+                //
                 //Gerenciador de janela de colisão para os golpes
                 if (_frame == 3 || _frame == 7 || _frame == 12) Hero.ATTACKHITTIME = true;
-                else Hero.ATTACKHITTIME = false;
+                else if (Hero.ATTACKHITTIME)
+                {
+                    if (_frame == 6 || _frame == 11 || _frame == _frames - 1) Hero.ATTACKING = false;
+                }
+
 
 
             }
             //Conjuração
-            if (Hero.CAST){
-                if(_frame >= 4 && _frame <= 6 ) Hero.CASTED = true;
-                if(_frame == _frames - 1) {Reset(); Hero.CAST = false;}
-            }
-            //Dash
-            if (_frame == _frames - 1 && Hero.DASH)
+            if (Hero.CAST)
             {
-                Reset();
-                Hero.DASH = false;
+                if (_frame > 6) Hero.CASTED = true;
+                if(_frame == _frames-1) Hero.CAST = false;
+               
             }
             if (_frame == _frames - 1 && Hero.DEATH) Globals.Exitgame = true;
         }
@@ -126,10 +128,10 @@ public class Animation
                 Reset();
                 _enemy.ATTACKSTATE = false;
                 _enemy.PREATTACKHITCD = true;
-                if (_enemyType == typeof(enemyArcher) || _enemyType == typeof(enemyMage)) _enemy.ENEMYSKILL_LOCK = true;
+                if (_objType == typeof(enemyArcher) || _objType == typeof(enemyMage)) _enemy.ENEMYSKILL_LOCK = true;
             }
             //Caso o inimigo seja do tipo enemySkeleton...
-            if (_enemyType == typeof(enemySkeleton))
+            if (_objType == typeof(enemySkeleton))
             {
                 if (_enemy.ATTACKSTATE && _enemy.HP > 0)
                 {
@@ -146,7 +148,7 @@ public class Animation
                     else _enemy.ATTACKHITTIME = false; //Caso não esteja nesses frames, o golpe não tem hitbox
                 }
             }
-            if (_enemyType == typeof(enemyArcher))
+            if (_objType == typeof(enemyArcher))
             {
 
                 if (_frame == _frames - 1 && _enemy.DASHSTATE && _enemy.HP > 0)
@@ -162,7 +164,7 @@ public class Animation
 
     }
 
-    public void Draw(Vector2 pos, float scale, bool fliped, float rotation = 0, Color? color = null)
+    public void Draw(Vector2 pos, float scale, bool fliped, float rotation = 0, Color? color = null, int depth = 1)
     {
 
         Color drawColor = color ?? Color.White; //Se não for definida uma cor é utilizada a cor padrão: White
@@ -170,9 +172,9 @@ public class Animation
         {
             //Utilizando SpriteBatch localizado em Global.cs ele desenha na tela um sprite com parametros passados pelo Animation Manager.
             if (!fliped)
-                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, 1);
+                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.None, depth);
             else
-                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.FlipHorizontally, 1);
+                Globals.SpriteBatch.Draw(_texture, pos, _sourceRectangles[_frame], drawColor, rotation, Vector2.Zero, new Vector2(scale, scale), SpriteEffects.FlipHorizontally, depth);
         }
         else
         {

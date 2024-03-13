@@ -24,7 +24,8 @@ public class Hero
     public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, CASTED = false, CASTLOCK = false, DASH = false, DASHPOSLOCK = false, RECOIL = false, KNOCKBACK = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
 
     //Atributos de combate
-    public int HP, HERODMG; //Vida
+    public int HP, heroAAdmg, heroSpelldmg, baseSpeed, spellTier; //Vida
+    public float atkSpeed, castSpeed, dashTotalCD, critChance, critMult;
     public static Vector2 lastHitpos; //Guarda posição do ultimo inimigo que acertou o heroi, utilizado no calculo de Knockback
 
     //Gerenciadores de tempo de recarga
@@ -37,6 +38,20 @@ public class Hero
     //Definindo bases do Hero/Jogador
     public Hero(Vector2 pos)
     {
+
+        //Definição de Atributos do jogador
+        POSITION = pos;
+        HP = 100;
+        baseSpeed = 250;
+        heroAAdmg = 10;
+        heroSpelldmg = 10;
+        dashTotalCD = 0.95f;
+        atkSpeed = 0.075f;
+        castSpeed = 0.06f;
+        spellTier = 1;
+        critChance = 10f;
+        critMult = 1.4f;
+
         //Definindo texturas
         _textureIdle ??= Globals.Content.Load<Texture2D>("Player/hero.Idle");
         _textureMove ??= Globals.Content.Load<Texture2D>("Player/hero.Run");
@@ -47,21 +62,14 @@ public class Hero
         _textureRecoil ??= Globals.Content.Load<Texture2D>("Player/hero.Hurt");
 
 
-
         //Definindo area dos sprites sheets para fazer a animação
         _anims.AddAnimation(0, new(_textureIdle, 4, 1, 0.2f, this));
         _anims.AddAnimation(1, new(_textureMove, 6, 1, 0.1f, this));
-        _anims.AddAnimation(2, new(_textureAttack, 20, 1, 0.07f, this));
-        _anims.AddAnimation(3, new(_textureCast, 9, 1, 0.09f, this));
+        _anims.AddAnimation(2, new(_textureAttack, 20, 1, atkSpeed, this));
+        _anims.AddAnimation(3, new(_textureCast, 9, 1, castSpeed, this));
         _anims.AddAnimation(4, new(_textureDash, 5, 1, 0.1f, this));
         _anims.AddAnimation(5, new(_textureDeath, 5, 1, 0.2f, this));
         _anims.AddAnimation(6, new(_textureRecoil, 4, 1, 0.04f, this));
-
-        //Definição de Atributos do jogador
-        POSITION = pos;
-        SPEED = 200;
-        HP = 500;
-        HERODMG = 10;
 
 
         // Tamanho base da hitbox
@@ -116,7 +124,7 @@ public class Hero
     // Define até onde o jogador pode se movimentar
     public void MapBounds(Point mapSize, Point tileSize)
     {
-        _minPos = new((-tileSize.X / 2) - SCALEDHITBOXSIZE.X, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - SCALEDHITBOXSIZE.X, (-tileSize.Y / 2) + 78); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -134,8 +142,8 @@ public class Hero
             {
                 direction.Normalize();
             }
-            if (direction.X > 0) _mirror = false;
-            else _mirror = true;
+            if (direction.X > 0 && !ATTACKHITTIME) _mirror = false;
+            else if (!ATTACKHITTIME) _mirror = true;
         }
         var _hitsize = new Vector2(24 * _scale, 30 * _scale); //Define o tamanho
 
@@ -145,14 +153,14 @@ public class Hero
             return new Rectangle((int)(CENTER.X - _hitsize.X), (int)(CENTER.Y - _hitsize.Y / 2), (int)_hitsize.X, (int)_hitsize.Y);
     }
 
+    public static Vector2 castPos;
     public void SpellCast()
     {
 
         Random rnd = new Random();
         if (!CASTLOCK)
         {
-            var mouseState = Mouse.GetState();
-            var mousePosition = new Vector2(mouseState.X, mouseState.Y);
+            var mousePosition = new Vector2(castPos.X, castPos.Y);
             mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_heromatrix));
             // Calculate the direction from the center of the hero to the mouse position
             Vector2 direction = mousePosition - CENTER;
@@ -182,7 +190,9 @@ public class Hero
 
     //Variaveis de temporizadores
     bool knockbackInitiated = false; // Flag to ensure knockback is initiated only once per recoil phase
-    float _recoiltimer = 0f, _knockbackTimer = 0f, _knockbackDuration = 0.2f, _recoiltimerduration = 0.4f; //Contador e Duração de invulnerabilidade
+    float _recoiltimer = 0f, _knockbackTimer = 0f, _knockbackDuration = 0.2f, _recoiltimerduration = 0.4f; //Contador e Duração de invulnerabilidade e recuo
+    float _dashDuration = 0.3f, _dashTimer = 0f; // Contador e duração do DASH
+
     public void Update()
     {
 
@@ -221,22 +231,7 @@ public class Hero
                 _knockbackTimer = 0f;
             }
         }
-        /*Tempo de invulnerabilidade após levar dano
-        if (RECOIL)
-        {
-            ATTACKING = false;
-            CAST = false;
-            POSITION += (Vector2.Normalize((CENTER - lastHitpos))) * 2;
-            //Temporizador para fim da invulnerabilidade
-            _recoiltimer += (float)Globals.TotalSeconds;
-            _anims.Reset(2);
-            _anims.Reset(3);
-            if (_recoiltimer >= _recoiltimerduration)
-            {
-                RECOIL = false;
-                _recoiltimer = 0f;
-            }
-        }*/
+
 
         if (CASTED)
         {
@@ -244,19 +239,21 @@ public class Hero
             SpellCast();
         }
 
+        if (!CAST) _anims.Reset(3);
+
 
         //define speed, aumentando-o caso esteja durante o dash ou reduzindo em caso de slow, dash quebra slow
         if (SLOWED && !DASH)
         {
-            if (SPEED > 150) SPEED = 150;
+            if (SPEED > 150) SPEED = 100;
             if (SPEED > 0) SPEED -= 1;
         }
         else if (DASH)
         {
-            SPEED = 500;
+            SPEED = baseSpeed * 2.5f;
             SLOWED = false;
         }
-        else SPEED = 200;
+        else SPEED = baseSpeed;
 
         //Atualiza o centro do sprite utilizando posição atual + origem base + escalonamento da imagem
         CENTER = POSITION + _origin * _scale;
@@ -265,7 +262,7 @@ public class Hero
         if (!ATTACKING && !CAST && !KNOCKBACK)
         {
 
-            if (InputManager.Moving) // Caso esteja se movendo ele anda nas direções do 'Direction' com base na speed e no tempo de jogo
+            if (InputManager.Moving && !DASH) // Caso esteja se movendo ele anda nas direções do 'Direction' com base na speed e no tempo de jogo
             {
                 POSITION += Vector2.Normalize(InputManager.Direction) * SPEED * Globals.TotalSeconds;
             }
@@ -280,8 +277,22 @@ public class Hero
                     _dashdir = mousePosition - CENTER;
                     if (_dashdir.X > 0) _mirror = false;
                     else _mirror = true;
+
+                    _dashTimer = _dashDuration;
+
                     DASHPOSLOCK = false;
                 }
+
+                if (_dashTimer > 0)
+                {
+                    _dashTimer -= Globals.TotalSeconds;
+                    if (_dashTimer <= 0)
+                    {
+                        // When the timer runs out, stop dashing
+                        DASH = false;
+                    }
+                }
+
                 POSITION += Vector2.Normalize(_dashdir) * SPEED * Globals.TotalSeconds;
             }
 
@@ -291,12 +302,12 @@ public class Hero
 
         //Se a vida chega a 0 entra em estado de morte
         if (HP <= 0) DEATH = true;
-        //Define uma animação de acordo com a tecla apertada, caso nenhuma esteja ele volta para Idle.
+        //Atualiza para uma animação de acordo com o estado, caso nenhum esteja ativo ele volta para Idle.
         if (DEATH) _anims.Update(5);
-        else if (KNOCKBACK) _anims.Update(6);
-        else if (CAST) _anims.Update(3);
+        else if (KNOCKBACK) { _anims.Update(6); _anims.Reset(2); } // Além de Atualizar, Reseta Animação de Ataque
+        else if (CAST) { _anims.Update(3); _anims.Reset(2); } // Além de Atualizar, Reseta Animação de Ataque
         else if (ATTACKING) _anims.Update(2);
-        else if (DASH) _anims.Update(4);
+        else if (DASH) { _anims.Update(4); _anims.Reset(2); } // Além de Atualizar, Reseta Animação de Ataque
         else if (InputManager.Direction != Vector2.Zero)
         {
             _anims.Update(1);
@@ -310,13 +321,13 @@ public class Hero
 
 
         //Espelha o sprite de acordo com a direção
-        if (InputManager.Direction.X > 0) _mirror = false;
-        else if (InputManager.Direction.X < 0) _mirror = true;
+        if (InputManager.Direction.X > 0 && !DASH && !ATTACKING) _mirror = false;
+        else if (InputManager.Direction.X < 0 && !DASH && !ATTACKING) _mirror = true;
 
 
         //atualiza o tempo de recarga da ação com base no valor passado
         //cooldown do DASH
-        dashCD.skillCooldown(0.7f, () =>
+        dashCD.skillCooldown(dashTotalCD, () =>
             {
                 //Console.WriteLine("Cooldown de 1 terminado. Você pode realizar a ação agora.");
             });
@@ -347,8 +358,8 @@ public class Hero
         else _skillCDlock = false;
 
 
-        Console.WriteLine(POSITION);
 
+        if (!ATTACKING) ATTACKHITTIME = false;
     }
 
 
@@ -367,7 +378,6 @@ public class Hero
 
         Color brightRed = new Color(255, 0, 0); // Maximum red
         if (RECOIL) _anims.Draw(POSITION, _scale, _mirror, 0, brightRed);
-
 
 
     }

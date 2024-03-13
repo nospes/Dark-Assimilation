@@ -64,7 +64,7 @@ public class enemySwarm : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 50;
+        HP = 70;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -76,6 +76,7 @@ public class enemySwarm : enemyBase
         ATTACKHITTIME = true;
         enemydataType = 2;
         ALERT = false;
+        SPAWN = true;
 
         _colorselect = new Random().Next(1, 3);
 
@@ -117,7 +118,7 @@ public class enemySwarm : enemyBase
     }
     public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
     {
-        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)+100); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -324,7 +325,7 @@ public class enemySwarm : enemyBase
             }
         }
 
-        if (HP < 0)
+        if (HP <= 0)
         {
             battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
             await SerializeDataOnDeath();

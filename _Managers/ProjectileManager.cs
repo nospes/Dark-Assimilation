@@ -20,6 +20,7 @@ public static class ProjectileManager
         Projectiles.RemoveAll((p) => p.Lifespan <= 0); //Remove todos projeteis com Lifespan menor que zero
     }
 
+
     public static void Draw()
     {
         foreach (var p in Projectiles) //Desenha os projeteis

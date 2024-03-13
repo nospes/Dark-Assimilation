@@ -37,14 +37,13 @@ public class Game1 : Game
         // TODO: Add your initialization logic here
 
         base.Initialize();
-        PythonBridge.ClearJsonData();
-        PythonBridge.ExecutePythonScript();
     }
 
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Globals.SpriteBatch = _spriteBatch;
+        
 
 
         // TODO: use this.Content to load your game content here

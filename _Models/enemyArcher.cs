@@ -6,7 +6,6 @@ public class enemyArcher : enemyBase
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _textureDash, _textureSkill;  //Spritesheets
 
-
     public enemyArcher(Vector2 pos)
     {
         //Atribuindo spritesheets a variaveis de Texture2D
@@ -40,7 +39,8 @@ public class enemyArcher : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 70;
+        HP = 90;
+        _dashTotalduration = 3f;
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -51,6 +51,7 @@ public class enemyArcher : enemyBase
         ATTACKTYPE = 1;
         enemydataType = 3;
         ALERT = false;
+        SPAWN = true;
 
     }
 
@@ -112,7 +113,7 @@ public class enemyArcher : enemyBase
 
     public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
     {
-        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)+34); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -134,7 +135,7 @@ public class enemyArcher : enemyBase
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
     //Variaveis para recarga do avanço/dash
-    float _dashtimer = 0f, _dashduration = 5f; bool _dashcdlock = false;
+    float _dashtimer = 0f, _dashTotalduration; bool _dashcdlock = false;
 
     public override async void Update()
     {
@@ -198,6 +199,7 @@ public class enemyArcher : enemyBase
             }
         }
 
+
         //Ao entrar em DASHSTATE  faz um recuo e aplica tempo de recarga dele
         if (DASHSTATE)
         {
@@ -214,7 +216,7 @@ public class enemyArcher : enemyBase
         if (_dashcdlock)
         {
             _dashtimer += (float)Globals.TotalSeconds;
-            if (_dashtimer >= _dashduration)
+            if (_dashtimer >= _dashTotalduration)
             {
                 _dashcdlock = false;
                 _dashtimer = 0f;
