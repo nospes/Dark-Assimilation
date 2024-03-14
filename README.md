@@ -28,14 +28,18 @@ Versão 0.3.5 - Heranças de inimigos atualizadas para suportar funções das un
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4 - Foi adicionado a animação de 'conjuração', mecanica de 'dash' e tempo de recarga para todas as essas ações, foi corrigida a caixa de colisão para os estados do heroi, incluindo os golpes e movimentações.
+Versão 0.4
+
+Foi adicionado a animação de 'conjuração', mecanica de 'dash' e tempo de recarga para todas as essas ações, foi corrigida a caixa de colisão para os estados do heroi, incluindo os golpes e movimentações.
 Foi implementado tilesets, camera e limitações do mapa, agora o jogador tem um espaço limitado para se movimentar e a camera o segue enquanto ele explora o ambiente finito. Algumas partes do código foram simplificadas e compactadas para deixar mais claro ao entendimento e leitura dele.
 
 Tambem foram adicionados os comportamentos básicos para inimigos e sua herança relacionada, agora inimigos podem ter entre 3 comportamentos pré-definidos, entre eles; 'GuardMovement', que protege uma área especifica e sempre retorna a ela ao sair do alcance, 'FollowHero', que segue inimigo independente do alcance, e 'DistanceMovement', que segue o heroi com uma distancia minima entre eles.
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.1 - Adicionado nos arquivos do jogo diversos sprites dos futuros inimigos, com isso o 'enemySkeleton' foi alterado para sprite do 'BigSkeleton', uma tropa que tem intuito de ser grande, lenta, resistente e de alto dano. Foi otimizada a lógica do alvo posição para movimentação das IA para alvejar o centro do heroi.
+Versão 0.4.1 
+
+Adicionado nos arquivos do jogo diversos sprites dos futuros inimigos, com isso o 'enemySkeleton' foi alterado para sprite do 'BigSkeleton', uma tropa que tem intuito de ser grande, lenta, resistente e de alto dano. Foi otimizada a lógica do alvo posição para movimentação das IA para alvejar o centro do heroi.
 
 Inimigos agora perdem vida ao serem atingidos e entram em estado de 'Hit'/'Machucados' parando algumas ações deles temporariamente, quando um alvo alcança 0 de vida ele entra em animação de morte e logo depois dela são devidamente deletados.
 Também foi refinado a lógica na prioridade de ações, caixas e tempo de colisões dos golpes do herói, visando uma jogabilidade mais fluida, além da padronização de certos nomes de variáveis e simplificação de condições complexas. 
@@ -45,7 +49,8 @@ Foi implementado nos tempos de recarga a lógica de 'Action' e 'Invoke', permiti
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.2 -
+Versão 0.4.2 
+
 Sistema de 'Knockback' foi adicionado ao jogo, quando um inimigo ou jogador entra em estado de 'Hit' ele sofre um leve recuo na direção oposta do atacante e não pode agir temporariamente, foi presenciado um bug que faz com que receber dano em meio a um golpe deixa a caixa de colisão do ataque pra sempre causando danos fenomenais, embora já tenha sido corrigido é preciso ficar de olho em testes futuros.
 
 Foi adicionado a animação de receber dano ao heroi, ela entra em ação enquanto o jogador recebe knockback. 
@@ -55,7 +60,8 @@ Dash agora ignora frames de colisão durante o avanço.
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.3 -
+Versão 0.4.3 
+
 Ajustada a área de reação do enemySkeleton para ser mais condizente com a área de dano. 
 Tamanho total do enemySkeleton foi aumentado e com isso sua caixa de colisão tambem foi ajustada, ele estava com tamanho muito similar ao jogador e outros inimigos com isso ele pode se tornar uma ameaça maior(literalmente) como era a ideia inicial.
 
@@ -65,7 +71,8 @@ Foi adicionado o enemySwarm, são inimigos que geralmente andam acompanhados, el
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.4 -
+Versão 0.4.4 
+
 Foi adicionado um sistema complexo para gerenciar projéteis, primeiramente o ProjectileData.cs guarda todos os atributos dos projéteis que são passados pelo seu conjurador, Projectile.cs define e atualiza todas as funções atreladas ao projétil especifico e o ProjectileManager.cs gerencia os projéteis lançados com ajuda de uma lista permitindo que o Gerenciador do jogo possa lidar com eles de forma mais limpa.
 
 Projeteis agora tem uma caixa de colisão coerente com sua posição e a origem de desenho deles foi alterada no construtor de animação e agora se da início no centro do 'sprite'. Essa lógica não foi aplicada para os demais objetos do jogo pois a lógica de colisão deles já está atrelada a origem do canto superior esquerdo no 'spritesheet' e o motivo dessa decisão é que as caixas de colisões dos projeteis não acompanhavam corretamente a sua rotação.
@@ -82,12 +89,14 @@ Foi adicionado o ultimo inimigo básico do jogo, enemyMage, ao entrar no alcance
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5 -
+Versão 0.5 
+
 Foi adicionado a Inteligencia Artificial para selecionar o perfil do jogador de acordo com os dados coletados durante a gameplay. Atualmente ele apenas recebe dados criados do C#, processa via Python e retorna o perfil do jogador. P modelo leva em consideração os seguintes parametros para definir o perfil; As médias de: tempo total, tempo para derrotar o inimigo depois do primeiro golpe, quantidade de dash's, durante o combate com cada tipo de inimigo. Nas atualizações futuras os dados vão ser coletados in-game e o perfil do jogador será utilizado para definição dos inimigos, que serão pequenas variações com atributos ou habilidades alteradas.
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.1 -
+Versão 0.5.1 
+
 Foi adicionado IdleAI para todos os inimigos, agora eles ficam em estado de espera até o jogador entrar no alcance deles, ao entrar é acionado um novo comportamento pré-selecionado.
 A ação de Cast/Conjuração agora lança um projétil na direção do mouse com tempo de recarga que causa dano ao entrar em contato com inimigos.
 
@@ -97,6 +106,7 @@ Está sendo adicionado o sistema para receber dados dos inimigos mas atualmente 
 ////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.2
+
 O erro de acesso do arquivo foi concertado e agora a data de combate dos inimigos é passada ao JSON sempre que eles morrem, atualmente ao teclar a letra P é iniciado o script de python para calcular os perfis do jogador com cada inimigo.
 Dados de combate são devidamente coletados durante combate atualmente são (Combat Time - Tempo de combate / Damage Window - Tempo de combate APÓS o primeiro golpe / Total Dashes - Totais de dash / Enemy Type - Tipo do inimigo)
 
@@ -106,12 +116,15 @@ Foi adicionado a variavel KNOCKBACK no jogador que admnistra o tempo de recuo e 
 Agora inimigos próximos são alertados quando um deles entra em combate com a função EnemyEngagement() presente no GameManager.cs, acionando a IA de combate respectiva deles.
 Foram ajustados o alcance de ativação da IA de combate de todos os inimigos e ajustadas as caixas de reações para não ficarem longes da ideia original; EnemySwarm agora entra em combate antes de utilizar seu avanço impedindo bugs relacionados a ativação do alerta, EnemyArcher propositalmente atira fora do alcance de sua área de combate, EnemyMage tambem ativa habilidades fora do seu alcance de combate mas diferente do EnemyArcher ele entra em combate quando as ativa e alerta inimigos próximos.
 
-Os projéteis do Enemymage agora são dissipados ao colidir com o jogador enquanto ele está durante alguma ivulnerabilidade(DASH ou RECOIL).
+Os projéteis do Enemymage agora perdem efeito de seguir o jogador ao colidir com o mesmo enquanto ele está durante alguma ivulnerabilidade(DASH ou RECOIL).
 
 //////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.3
+
 Foi introduzido o spawn e despawn de inimigos em horda, deixando a lógica de gerar inimigos mais clara.
+
+Adicionado uma 'trava' de segurança para lista dos inimigos evitando bugs de acesso simultaneos na mesma.
 
 Adicionado recurso de Pause através do botão 'P'.
 
@@ -127,6 +140,7 @@ Introduzido o teleportador para mudança de sala, atualmente é nescessário mat
 Foi adicionado o Gerenciador de Aleatoriedade(RandomManager) para lidar com as chances aleatorias do jogo.
 
 Foram adicionadas diversas variaveis do jogador em relação aos seus atributos, como dano, velocidade de movimento e de ataque etc...essas variaveis já foram implementadas e seus valores levemente ajustados.
+
 Implementação da chance de critico aos golpes do jogador, inicialmente começa em 10% e causa 1.4x a mais de dano.
 
 As imagens e o Gerenciador dos futuros Aprimoramentos foram adicionadas mas ainda não foram implementados.
@@ -136,3 +150,18 @@ Corrigidos e ajustados diversos inputs do jogador, incluindo:
 >Corrigido o bug de avanço inconsistente; agora, ele tem duração de 0.3 segundos, velocidade de 700, e o cooldown do dash foi aumentado de 0.7 para 0.9 segundos.
 >Ajustado o bug da conjuração sempre seguir o mouse; agora, leva em consideração a orientação no momento do conjuro.
 
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.5.3b
+
+Essa é uma versão intermediaria criada para melhorar a experiencia do jogador nos proximos cenários de testes.
+
+Inicalmente toda lógica de criação de inimigos no jogo foram realocadas para um novo construtor, EnemyManager.cs, deixando o gerenciador de jogo(GameManager.cs) mais limpo. 
+
+Implementado agora 3 fases com Spawns cada vez mais distintos e desafiadores de acordo com o avanço do jogador
+
+Inimigos agora entram em alerta ao receber danos fora do alcance de detecção do jogador.
+
+Adicionado interface temporaria de feedback para o jogador, contendo vida, tempos de recarga e total de FPS que o jogo está rodando.
+
+Foi implementado um sistema que dificulta o agrupamento de inimigos na mesma posição.

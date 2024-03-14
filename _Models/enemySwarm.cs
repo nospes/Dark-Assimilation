@@ -53,7 +53,7 @@ public class enemySwarm : enemyBase
         _anims.AddAnimation("swarm_Attack", new(_textureAttack, 16, 1, 0.1f, this, this));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
-        position = pos;
+        POSITION = pos;
         speed = 100f;
         scale = 2;
 
@@ -133,16 +133,16 @@ public class enemySwarm : enemyBase
 
 
     //Variaveis para o temporizador entre pré-ataque e ataque (nesse caso avanço)
-    float _preattacktimer = 0f, _preattackduration = 1.25f;
+    float _preattacktimer = 0f, _preattackduration = 1f;
 
     //Variaveis para o temporizador entre ataques (nesse caso avanços)
-    float _preattackcdtimer = 0f, _preattackcdduration = 2.5f;
+    float _preattackcdtimer = 0f, _preattackcdduration = 2f;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
     //Variaveis entre janela de danos
-    float _attackhittimetimer = 0f, _attackhittimeduration = 2f;
+    float _attackhittimetimer = 0f, _attackhittimeduration = 2.5f;
 
     //Variavel para direção do avanço ao jogador
     Vector2 _dashdir;
@@ -153,7 +153,7 @@ public class enemySwarm : enemyBase
         if (HP <= 0) ATTACKHITTIME = false;
 
         // Definindo o centro do frame de acordo com a posição atual
-        CENTER = position + origin * scale;
+        CENTER = POSITION + origin * scale;
 
         //Atualiza continuamente o status dos contabilizadores de combate
         UpdateBattleStats();
@@ -224,7 +224,7 @@ public class enemySwarm : enemyBase
 
             Vector2 _knockbackdist;
             _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
-            if (!ATTACKSTATE) position.X += _knockbackdist.X; // Aplica o recuo apenas na horizontal
+            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y); // Aplica o recuo apenas na horizontal
             _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
             if (_recoilingtimer >= _recoilingduration)
             {
@@ -243,7 +243,7 @@ public class enemySwarm : enemyBase
         else if (ATTACKSTATE && !Recoling) //Ao entrar em estado de Ataque e caso não esteja recebendo Dano...
         {
             int _dashspeed = 6; //Define velocidade do avanço
-            position -= _dashdir * _dashspeed; //Avança na direção pré definida
+            POSITION -= _dashdir * _dashspeed; //Avança na direção pré definida
         }
 
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
@@ -346,7 +346,7 @@ public class enemySwarm : enemyBase
         if (INVULSTATE || PREATTACKSTATE || ATTACKSTATE || HP <= 0 || Recoling) actionstate = true;
         else actionstate = false; //Caso não esteja em nenhum desses estados ele pode voltar a se mover
 
-        position = Vector2.Clamp(position, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
+        POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
 
     }
 
@@ -360,7 +360,7 @@ public class enemySwarm : enemyBase
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(position, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror);
 
         //hitbox test
         //Rectangle Erect = GetBounds($"hitbox");

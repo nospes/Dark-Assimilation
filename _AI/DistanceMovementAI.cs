@@ -19,14 +19,14 @@ public class DistanceMovementAI : MovementAI
         {
             dir.Normalize();
             enemy.walkState = true;
-            enemy.position += dir * enemy.speed * Globals.TotalSeconds;
+            enemy.POSITION += dir * enemy.speed * Globals.TotalSeconds;
         }
 
         else if (length < distance - 2)
         {
             dir.Normalize();
             enemy.walkState = true;
-            enemy.position -= dir * enemy.speed * Globals.TotalSeconds;
+            enemy.POSITION -= dir * enemy.speed * Globals.TotalSeconds;
         }
         else enemy.walkState = false; // Se não está andando, desativa a animação de andar.
 

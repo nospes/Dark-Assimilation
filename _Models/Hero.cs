@@ -25,7 +25,7 @@ public class Hero
 
     //Atributos de combate
     public int HP, heroAAdmg, heroSpelldmg, baseSpeed, spellTier; //Vida
-    public float atkSpeed, castSpeed, dashTotalCD, critChance, critMult;
+    public float atkSpeed, castSpeed, dashTotalCD, critChance, critMult, skillTotalCD;
     public static Vector2 lastHitpos; //Guarda posição do ultimo inimigo que acertou o heroi, utilizado no calculo de Knockback
 
     //Gerenciadores de tempo de recarga
@@ -34,6 +34,7 @@ public class Hero
 
     public Matrix _heromatrix;
 
+    private SpriteFont font;
 
     //Definindo bases do Hero/Jogador
     public Hero(Vector2 pos)
@@ -42,6 +43,7 @@ public class Hero
         //Definição de Atributos do jogador
         POSITION = pos;
         HP = 100;
+        font = Globals.Content.Load<SpriteFont>("UI/baseFont");
         baseSpeed = 250;
         heroAAdmg = 10;
         heroSpelldmg = 10;
@@ -49,6 +51,7 @@ public class Hero
         atkSpeed = 0.075f;
         castSpeed = 0.06f;
         spellTier = 1;
+        skillTotalCD = 5f;
         critChance = 10f;
         critMult = 1.4f;
 
@@ -162,9 +165,9 @@ public class Hero
         {
             var mousePosition = new Vector2(castPos.X, castPos.Y);
             mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_heromatrix));
-            // Calculate the direction from the center of the hero to the mouse position
+            // Calcula a direção do centro do herói até a posição do mouse
             Vector2 direction = mousePosition - CENTER;
-            // Normalize the direction vector if it's not a zero vector
+            // Normaliza o vetor caso não seja Vector.Zero
             if (direction != Vector2.Zero)
             {
                 direction.Normalize();
@@ -342,7 +345,7 @@ public class Hero
         else _dashCDlock = false;
 
         //cooldown da skill
-        skillCD.skillCooldown(3f, () =>
+        skillCD.skillCooldown(skillTotalCD, () =>
             {
                 CASTLOCK = false;
                 //Console.WriteLine("Cooldown de 3 terminado. Você pode realizar a ação agora.");
@@ -362,10 +365,9 @@ public class Hero
         if (!ATTACKING) ATTACKHITTIME = false;
     }
 
-
-
     public void Draw()
     {
+
 
         //hitbox check
         //Rectangle rect = AttackBounds();
@@ -376,9 +378,63 @@ public class Hero
         else _anims.Draw(POSITION, _scale, _mirror, 0, Color.Purple); // Caso jogador esteja sob efeito de SLOWED ele fica roxo
 
 
-        Color brightRed = new Color(255, 0, 0); // Maximum red
+        Color brightRed = new Color(255, 0, 0);
         if (RECOIL) _anims.Draw(POSITION, _scale, _mirror, 0, brightRed);
 
-
+        BasicInterface(); // Interface Temporaria
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    //INTERFACE TEMPORARIA DO JOGADOR
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void BasicInterface()
+    {
+        FpsCounter();// CONTADOR DE FPS
+
+        var textpos = new Vector2(CENTER.X - (Globals.WindowSize.X / 2), CENTER.Y - (Globals.WindowSize.Y / 2));
+        if (textpos.X < -60) textpos.X = -60;
+        if (textpos.Y < -60) textpos.Y = -60;
+        if (textpos.X > 820) textpos.X = 820;
+        if (textpos.Y > 1400) textpos.Y = 1400;
+        //MOSTRA HP
+        Globals.SpriteBatch.DrawString(font, "HP: " + HP.ToString(), textpos, Color.Red, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
+        //MOSTRA O FPS
+        Globals.SpriteBatch.DrawString(font, "FPS: " + fps.ToString(), new Vector2(textpos.X, textpos.Y + 150), Color.Red, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
+        //CD'S
+        //DASH
+        Globals.SpriteBatch.DrawString(font, "DASH CD: " + (dashTotalCD-dashCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 50), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
+        //SKILL
+        Globals.SpriteBatch.DrawString(font, "SKILL CD: " + (skillTotalCD-skillCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 100), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
+
+        Console.WriteLine(textpos);
+        //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+    }
+
+    //METODO PARA CONTAGEM DE FPS
+    int frameCount = 0;
+    double elapsedTime = 0.0;
+    int fps = 0;
+    public void FpsCounter()
+    {
+        // Increase frame count
+        frameCount++;
+
+        // Increase elapsed time
+        elapsedTime += Globals.TotalSeconds;
+
+        // If one second has passed
+        if (elapsedTime >= 1.0)
+        {
+            // Update FPS value to match the number of frames rendered in the last second
+            fps = frameCount;
+
+            // Reset for the next second
+            frameCount = 0;
+            elapsedTime = 0;
+        }
+
+        // Other game update logic...
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 }

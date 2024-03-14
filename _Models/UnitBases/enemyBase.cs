@@ -1,12 +1,21 @@
 namespace MyGame;
 
+public enum EnemyType
+{
+    Mage,
+    Archer,
+    Swarm,
+    Skeleton
+}
+
 public interface enemyCollection
 {
     //Interface da coleção de inimigos permite acessar variaveis de qualquer enemyBase em outras classes
     //Atributos de indentificação, combate e posição
     int ID { get; set; }
     int HP { get; set; }
-    Vector2 CENTER { get; set; }
+    Vector2 CENTER { get; set; } 
+    Vector2 POSITION {get;set;}
     Vector2 HEROATTACKPOS { get; set; }
     bool ENEMYSKILL_LOCK { get; set; }
     bool ALERT { get; set; }
@@ -18,7 +27,7 @@ public interface enemyCollection
     bool INVULSTATE { get; set; }
     int ATTACKTYPE { get; set; }
     bool DASHSTATE { get; set; }
-    bool SPAWN {get; set; }
+    bool SPAWN { get; set; }
     //Temporizadores
     bool ATTACKHITTIME { get; set; }
     bool PREATTACKHITCD { get; set; }
@@ -37,7 +46,7 @@ public abstract class enemyBase : enemyCollection
 {
     //Variaveis de posição e movimento e indentificação
     public int ID { get; set; }
-    public Vector2 position; //Posição
+    public Vector2 POSITION {get; set;} //Posição
     public Vector2 CENTER { get; set; } // Centro do inimigo
     public float speed;   //Velocidade
     public Vector2 _minPos, _maxPos; // Limites do mapa
@@ -60,7 +69,7 @@ public abstract class enemyBase : enemyCollection
     public bool ATTACKHITTIME { get; set; } //Estado de tempo de dano - Permite heroi levar dano enquanto verdadeiro
     public bool PREATTACKHITCD { get; set; }//Trava para tempo de recarga entre ataques
     public bool DASHSTATE { get; set; }//Estado de Avanço - Presente em alguns inimigos
-    public bool SPAWN {get; set;} //Se o inimigo está Spawnado
+    public bool SPAWN { get; set; } //Se o inimigo está Spawnado
 
 
     //Variaveis de colisão e combate
@@ -113,3 +122,4 @@ public abstract class enemyBase : enemyCollection
 
 
 }
+

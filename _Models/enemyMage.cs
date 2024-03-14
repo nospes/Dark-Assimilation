@@ -28,7 +28,7 @@ public class enemyMage : enemyBase
         _anims.AddAnimation("necro_Attack", new(_textureAttack, 11, 1, 0.15f, this, this));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
-        position = pos;
+        POSITION = pos;
         speed = 100f;
         scale = 3;
 
@@ -185,7 +185,7 @@ public class enemyMage : enemyBase
     float _preattacktimer = 0f, _preattackduration = 0f;
 
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 1.75f;
+    float _preattackcdtimer = 0f, _preattackcdduration = 1.25f;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -194,7 +194,7 @@ public class enemyMage : enemyBase
     public override async void Update()
     {
         // Definindo o centro do frame de acordo com a posição atual
-        CENTER = position + (origin + new Vector2(0, 25)) * scale;
+        CENTER = POSITION + (origin + new Vector2(0, 25)) * scale;
 
         //Atualiza continuamente o status dos contabilizadores de combate
         UpdateBattleStats();
@@ -238,7 +238,7 @@ public class enemyMage : enemyBase
         {
             Vector2 _knockbackdist;
             _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
-            if (!ATTACKSTATE) position.X += _knockbackdist.X; // Aplica o recuo apenas na horizontal
+            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y);; // Aplica o recuo apenas na horizontal
             _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
             if (_recoilingtimer >= _recoilingduration)
             {
@@ -321,7 +321,7 @@ public class enemyMage : enemyBase
         if (INVULSTATE || PREATTACKSTATE || ATTACKSTATE || HP <= 0 || Recoling) actionstate = true;
         else actionstate = false; //Caso não esteja em nenhum desses estados ele pode voltar a se mover
 
-        position = Vector2.Clamp(position, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
+        POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
     }
 
 
@@ -336,7 +336,7 @@ public class enemyMage : enemyBase
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(position, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror);
 
     }
 }

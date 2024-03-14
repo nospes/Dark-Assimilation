@@ -17,7 +17,7 @@ public class FollowHeroAI : MovementAI
             {
                 enemy.walkState = true;
                 dir.Normalize();
-                enemy.position += dir * enemy.speed * Globals.TotalSeconds;
+                enemy.POSITION += dir * enemy.speed * Globals.TotalSeconds;
             }
             else enemy.walkState = false;
         }

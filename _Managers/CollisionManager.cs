@@ -27,7 +27,7 @@ namespace MyGame
             Rectangle _pentagramBounds = _pentagram.GetBounds(); // Hitbox do teleportador
             Rectangle _soulBounds = _soul.GetBounds(); // Hitbox do seletor de upgrades
             _projeteis = ProjectileManager.Projectiles;
-            
+
 
             foreach (var _inimigo in _inimigos)
             {
@@ -60,6 +60,7 @@ namespace MyGame
                     else _inimigo.HP -= _hero.heroAAdmg;
                     _inimigo.HEROATTACKPOS = _hero.CENTER;
                     _inimigo.SetInvulnerableTemporarily(300);
+
                     //Console.WriteLine(_inimigo.HP);
 
                 }
@@ -83,7 +84,7 @@ namespace MyGame
                     if (_projetil.Friendly)
                     {
                         Rectangle _projectileBounds = _projetil.GetBounds(); // hitbox dos inimigos
-                        if (_projectileBounds.Intersects(_enemybounds)) // Caso entre em contato com HITBOX inimiga...
+                        if (_projectileBounds.Intersects(_enemybounds) && !_inimigo.DEATHSTATE) // Caso entre em contato com HITBOX inimiga...
                         {
                             if (!_projetil.enemyHited)
                             {
@@ -92,6 +93,7 @@ namespace MyGame
                                 _inimigo.HEROATTACKPOS = _hero.CENTER;
                                 _inimigo.SetInvulnerableTemporarily(300);
                                 _projetil.Lifespan = 0.5f;
+                                _inimigo.ALERT = true;
                             }
 
                         }
@@ -144,11 +146,28 @@ namespace MyGame
                 }
             }
 
-
-            if (_heroBounds.Intersects(_pentagramBounds) && Pentagram.enemyCount >= 4)
+            //Gerenciador de Áreas
+            if (_heroBounds.Intersects(_pentagramBounds))
             {
-                _pentagram.teleport = true;
-                _pentagram.gamearea += 1;
+                if (_pentagram.gamearea == 0 && Pentagram.enemyCount >= 4) // Fase 1 > 2
+                {
+                    _pentagram.teleport = true;
+                    Pentagram.enemyCount = 0;
+                    _pentagram.gamearea += 1;
+
+                }
+                if (_pentagram.gamearea == 1 && Pentagram.enemyCount >= 7) // Fase 2 > 3 
+                {
+                    _pentagram.teleport = true;
+                    _pentagram.gamearea += 1;
+                    Pentagram.enemyCount = 0;
+                }
+                if (_pentagram.gamearea == 2 && Pentagram.enemyCount >= 8) // Fase 3 > FIM
+                {
+                    _pentagram.teleport = true;
+                    _pentagram.gamearea += 1;
+                    Pentagram.enemyCount = 0;
+                }
             }
             if (_heroBounds.Intersects(_soulBounds) && Hero.ATTACKHITTIME && _soul.alive)
             {

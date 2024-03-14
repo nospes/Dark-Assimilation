@@ -4,7 +4,7 @@ namespace MyGame;
 public class SkillManager
 {
 
-    private float cooldownTimer = 0f;
+    public float cooldownTimer = 0f;
     public bool CheckCooldown = false;
 
     public void skillCooldown(float cooldownDuration,  Action onCooldownEnd) //Recebe a duração e uma ação ao terminar o efeito...

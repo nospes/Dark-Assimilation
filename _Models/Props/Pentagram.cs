@@ -37,14 +37,25 @@ public class Pentagram
     public Rectangle GetBounds()
     {
         //Limites do topo e da esquerda da caixa de colisão
-        return new Rectangle((int)position.X+30, (int)position.Y+110, (int)(basehitbox.X* scale) -70, (int)(basehitbox.Y * scale)-150);
+        return new Rectangle((int)position.X + 30, (int)position.Y + 110, (int)(basehitbox.X * scale) - 70, (int)(basehitbox.Y * scale) - 150);
 
     }
 
 
     public void Update()
     {
-        if(enemyCount>=4)_anims.Update("pentagram_on");
+        if (gamearea == 0 && enemyCount >= 4) // Fase 1 > 2
+        {
+            _anims.Update("pentagram_on");
+        }
+        else if (gamearea == 1 && enemyCount >= 7) // Fase 2 > 3 
+        {
+            _anims.Update("pentagram_on");
+        }
+        else if (gamearea == 2 && enemyCount >= 8) // Fase 3 > FIM
+        {
+            _anims.Update("pentagram_on");
+        }
         else _anims.Update("pentagram_off");
     }
 

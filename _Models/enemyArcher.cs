@@ -28,7 +28,7 @@ public class enemyArcher : enemyBase
         _anims.AddAnimation("archer_Skill", new(_textureSkill, 4, 1, 0.1f, this, this));
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
-        position = pos;
+        POSITION = pos;
         speed = 100f;
         scale = 3;
 
@@ -40,7 +40,7 @@ public class enemyArcher : enemyBase
 
         //Pré definição de atributos de combate e animação para evitar bugs
         HP = 90;
-        _dashTotalduration = 3f;
+        _dashTotalduration = 4f; // CD do dash
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
@@ -129,7 +129,7 @@ public class enemyArcher : enemyBase
 
 
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 1.6f;
+    float _preattackcdtimer = 0f, _preattackcdduration = 1.15f;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -141,7 +141,7 @@ public class enemyArcher : enemyBase
     {
 
         // Definindo o centro do frame de acordo com a posição atual
-        CENTER = position + origin * scale;
+        CENTER = POSITION + origin * scale;
 
         //Atualiza continuamente o status dos contabilizadores de combate
         UpdateBattleStats();
@@ -189,7 +189,7 @@ public class enemyArcher : enemyBase
         {
             Vector2 _knockbackdist;
             _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
-            if (!ATTACKSTATE) position.X += _knockbackdist.X; // Aplica o recuo apenas na horizontal
+            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y); // Aplica o recuo apenas na horizontal
             _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
             if (_recoilingtimer >= _recoilingduration)
             {
@@ -207,7 +207,7 @@ public class enemyArcher : enemyBase
             PREATTACKSTATE = false; // Cancela o pré ataque
             PREATTACKHITCD = true;  //Ativa o CD porem...
             _preattackcdtimer = 1.6f; //Restitue 100% do tempo de recarga do golpe
-            position += Vector2.Normalize(CENTER - HEROATTACKPOS) * 7; // Aplica o recuo durante o DASHSTATE
+            POSITION += Vector2.Normalize(CENTER - HEROATTACKPOS) * 7; // Aplica o recuo durante o DASHSTATE
             _dashcdlock = true; //Ativa o tempo de recarga o dash
 
         }
@@ -281,7 +281,7 @@ public class enemyArcher : enemyBase
         if (INVULSTATE || PREATTACKSTATE || ATTACKSTATE || HP <= 0 || Recoling || DASHSTATE) actionstate = true;
         else actionstate = false; //Caso não esteja em nenhum desses estados ele pode voltar a se mover
 
-        position = Vector2.Clamp(position, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
+        POSITION = Vector2.Clamp(POSITION, _minPos, _maxPos); // não permite que inimigo passe das bordas do mapa
 
     }
 
@@ -295,7 +295,7 @@ public class enemyArcher : enemyBase
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(position, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror);
 
 
     }

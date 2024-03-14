@@ -17,7 +17,7 @@ public class IdleAI : MovementAI
         {
             enemy.battleStats.StartBattle(); // Começa o combate
             enemy.MoveAI = AIenemyType; // Pega a AI padrão do inimigo e aplica nele
-            GameManager.EnemyEngagement(enemy.CENTER); // Alerta os inimigos próximos dessa unidade
+            GameManager.EnemyMgr.EnemyEngagement(enemy.CENTER); // Alerta os inimigos próximos dessa unidade
         }
 
     }
