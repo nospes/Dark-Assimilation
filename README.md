@@ -120,7 +120,7 @@ Os projéteis do Enemymage agora perdem efeito de seguir o jogador ao colidir co
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.3
+Versão 0.5.3 -
 
 Foi introduzido o spawn e despawn de inimigos em horda, deixando a lógica de gerar inimigos mais clara.
 
@@ -152,7 +152,7 @@ Corrigidos e ajustados diversos inputs do jogador, incluindo:
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.3b
+Versão 0.5.3b -
 
 Essa é uma versão intermediaria criada para melhorar a experiencia do jogador nos proximos cenários de testes.
 
@@ -165,3 +165,15 @@ Inimigos agora entram em alerta ao receber danos fora do alcance de detecção d
 Adicionado interface temporaria de feedback para o jogador, contendo vida, tempos de recarga e total de FPS que o jogo está rodando.
 
 Foi implementado um sistema que dificulta o agrupamento de inimigos na mesma posição.
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.5.3c -
+
+Atualizado para versão .NET 7.0 com intuito de suportar a nova biblioteca de interface GeonBit.UI.
+
+Foi adicionado uma pré fase contendo apenas um inimigo, o motivo é que os construtores do jogo 'travam' sempre que o primeiro inimigo é derrotado, a fase 0 permite que o jogador derrote o primeiro inimigo e não seja punido pelo travamento da partida.
+
+Projéteis em curso agora são deletados ao mudar de cena.
+
+Esse update foi criado para ter um ponto de restauração no GIT antes da adição da Biblioteca GeonBit.UI no projeto.

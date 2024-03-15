@@ -8,7 +8,7 @@ public class Pentagram
     private Vector2 position, origin, basehitbox;
     private int scale;
     public int gamearea;
-    public bool teleport;
+    public bool teleport, teleportON;
     public static int enemyCount;
 
     public Pentagram(Vector2 pos)
@@ -29,6 +29,7 @@ public class Pentagram
         origin = new(basehitbox.X / 2, basehitbox.Y / 2); //Atribui o centro do frame X e Y a um vetor
         scale = 2;
         teleport = false;
+        teleportON = false;
         enemyCount = 0;
         gamearea = 0;
 
@@ -44,19 +45,31 @@ public class Pentagram
 
     public void Update()
     {
-        if (gamearea == 0 && enemyCount >= 4) // Fase 1 > 2
+        if (gamearea == 0 && enemyCount >= 1) // Fase 1 > 2
         {
             _anims.Update("pentagram_on");
+            teleportON = true;
         }
-        else if (gamearea == 1 && enemyCount >= 7) // Fase 2 > 3 
+        else if (gamearea == 1 && enemyCount >= 4) // Fase 2 > 3 
         {
             _anims.Update("pentagram_on");
+            teleportON = true;
         }
-        else if (gamearea == 2 && enemyCount >= 8) // Fase 3 > FIM
+        else if (gamearea == 2 && enemyCount >= 7) // Fase 3 > 4
         {
             _anims.Update("pentagram_on");
+            teleportON = true;
         }
-        else _anims.Update("pentagram_off");
+        else if (gamearea == 3 && enemyCount >= 8) // Fase 4 > FIM
+        {
+            _anims.Update("pentagram_on");
+            teleportON = true;
+        }
+        else // Caso esteja desligado
+        {
+            _anims.Update("pentagram_off");
+            teleportON = false;
+        }
     }
 
     public void Draw()

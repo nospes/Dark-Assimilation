@@ -1,11 +1,11 @@
 {
   "runtimeTarget": {
-    "name": ".NETCoreApp,Version=v6.0",
+    "name": ".NETCoreApp,Version=v7.0",
     "signature": ""
   },
   "compilationOptions": {},
   "targets": {
-    ".NETCoreApp,Version=v6.0": {
+    ".NETCoreApp,Version=v7.0": {
       "MyGame/1.0.0": {
         "dependencies": {
           "MonoGame.Content.Builder.Task": "3.8.1.303",

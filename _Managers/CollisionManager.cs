@@ -149,24 +149,12 @@ namespace MyGame
             //Gerenciador de Áreas
             if (_heroBounds.Intersects(_pentagramBounds))
             {
-                if (_pentagram.gamearea == 0 && Pentagram.enemyCount >= 4) // Fase 1 > 2
+                if (_pentagram.teleportON)
                 {
                     _pentagram.teleport = true;
                     Pentagram.enemyCount = 0;
                     _pentagram.gamearea += 1;
 
-                }
-                if (_pentagram.gamearea == 1 && Pentagram.enemyCount >= 7) // Fase 2 > 3 
-                {
-                    _pentagram.teleport = true;
-                    _pentagram.gamearea += 1;
-                    Pentagram.enemyCount = 0;
-                }
-                if (_pentagram.gamearea == 2 && Pentagram.enemyCount >= 8) // Fase 3 > FIM
-                {
-                    _pentagram.teleport = true;
-                    _pentagram.gamearea += 1;
-                    Pentagram.enemyCount = 0;
                 }
             }
             if (_heroBounds.Intersects(_soulBounds) && Hero.ATTACKHITTIME && _soul.alive)

@@ -405,8 +405,6 @@ public class Hero
         Globals.SpriteBatch.DrawString(font, "DASH CD: " + (dashTotalCD-dashCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 50), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
         //SKILL
         Globals.SpriteBatch.DrawString(font, "SKILL CD: " + (skillTotalCD-skillCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 100), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
-
-        Console.WriteLine(textpos);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 

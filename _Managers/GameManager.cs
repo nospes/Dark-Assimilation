@@ -28,7 +28,7 @@ namespace MyGame
             _collisionManager = new CollisionManager(_hero, _enemyManager.Enemies, _pentagram, _soul); // Gerenciador de colisões
             _hero.MapBounds(_map.MapSize, _map.TileSize); // Limites do mapa
 
-            _enemyManager.EnemyBatch(1); // Cria os primeiros spawns de inimigos
+            _enemyManager.SpawnEnemy(new Vector2(1200, 1000), EnemyType.Mage); // Cria os primeiros spawns de inimigos
         }
 
         public void Update()
@@ -48,7 +48,7 @@ namespace MyGame
                 }
 
                 //_soul.Update();
-                _enemyManager.Update(); 
+                _enemyManager.Update();
                 ProjectileManager.Update();
                 _collisionManager.CheckCollisions();
                 CalculateTranslation();
@@ -125,16 +125,28 @@ namespace MyGame
         //Metodo para completar a mudança de fase
         public async void endChangeArea()
         {
-            if (_pentagram.gamearea > 2) Globals.Exitgame = true;
+            if (_pentagram.gamearea > 3) Globals.Exitgame = true;
             else
             {
                 _hero.POSITION = new Vector2(1000, 1000);
                 await ExecutePythonScriptAsync();
                 _enemyManager.DeleteEnemies();
-                if(_pentagram.gamearea==1)_enemyManager.EnemyBatch(2); 
-                else if(_pentagram.gamearea==2)_enemyManager.EnemyBatch(3);
+                ProjectileManager.DeleteAll();
                 _fadeEffectManager.StartFadeIn();
                 pause = false;
+
+                switch (_pentagram.gamearea)
+                {
+                    case 1:
+                        _enemyManager.EnemyBatch(1);
+                        break;
+                    case 2:
+                        _enemyManager.EnemyBatch(2);
+                        break;
+                    case 3:
+                        _enemyManager.EnemyBatch(3);
+                        break;
+                }
             }
         }
 

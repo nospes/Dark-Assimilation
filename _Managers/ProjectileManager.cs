@@ -7,25 +7,45 @@ public static class ProjectileManager
 
     public static void AddProjectile(ProjectileData data)
     {
-        Projectiles.Add(new(data)); //Adicona o projétil a lista com os atributos passados pelo Data
+        lock (Projectiles)
+        {
+            Projectiles.Add(new(data)); //Adicona o projétil a lista com os atributos passados pelo Data
+        }
     }
 
     public static void Update()
     {
-        foreach (var p in Projectiles)  //Todos os projeteis...
+        lock (Projectiles)
         {
-            p.Update();//Atualiza os projeteis
+            foreach (var p in Projectiles)  //Todos os projeteis...
+            {
+                p.Update();//Atualiza os projeteis
 
+            }
+            Projectiles.RemoveAll((p) => p.Lifespan <= 0); //Remove todos projeteis com Lifespan menor que zero
         }
-        Projectiles.RemoveAll((p) => p.Lifespan <= 0); //Remove todos projeteis com Lifespan menor que zero
     }
 
 
     public static void Draw()
     {
-        foreach (var p in Projectiles) //Desenha os projeteis
+        lock (Projectiles)
         {
-            p.Draw();
+            foreach (var p in Projectiles) //Desenha os projeteis
+            {
+                p.Draw();
+            }
+        }
+    }
+
+    public static void DeleteAll()
+    {
+        lock (Projectiles)
+        {
+            foreach (var p in Projectiles)
+            {
+                p.Lifespan = 0;
+            }
         }
     }
 }
