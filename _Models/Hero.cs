@@ -53,7 +53,7 @@ public class Hero
         atkSpeed = 0.075f;
         castSpeed = 0.06f;
         spellTier = 1;
-        skillTotalCD = 5f;
+        skillTotalCD = 4f;
         critChance = 5f;
         critMult = 1.4f;
 

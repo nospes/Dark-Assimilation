@@ -28,7 +28,7 @@ Versão 0.3.5 - Heranças de inimigos atualizadas para suportar funções das un
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4
+Versão 0.4 -
 
 Foi adicionado a animação de 'conjuração', mecanica de 'dash' e tempo de recarga para todas as essas ações, foi corrigida a caixa de colisão para os estados do heroi, incluindo os golpes e movimentações.
 Foi implementado tilesets, camera e limitações do mapa, agora o jogador tem um espaço limitado para se movimentar e a camera o segue enquanto ele explora o ambiente finito. Algumas partes do código foram simplificadas e compactadas para deixar mais claro ao entendimento e leitura dele.
@@ -37,7 +37,7 @@ Tambem foram adicionados os comportamentos básicos para inimigos e sua herança
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.1 
+Versão 0.4.1 -
 
 Adicionado nos arquivos do jogo diversos sprites dos futuros inimigos, com isso o 'enemySkeleton' foi alterado para sprite do 'BigSkeleton', uma tropa que tem intuito de ser grande, lenta, resistente e de alto dano. Foi otimizada a lógica do alvo posição para movimentação das IA para alvejar o centro do heroi.
 
@@ -49,7 +49,7 @@ Foi implementado nos tempos de recarga a lógica de 'Action' e 'Invoke', permiti
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.2 
+Versão 0.4.2 -
 
 Sistema de 'Knockback' foi adicionado ao jogo, quando um inimigo ou jogador entra em estado de 'Hit' ele sofre um leve recuo na direção oposta do atacante e não pode agir temporariamente, foi presenciado um bug que faz com que receber dano em meio a um golpe deixa a caixa de colisão do ataque pra sempre causando danos fenomenais, embora já tenha sido corrigido é preciso ficar de olho em testes futuros.
 
@@ -60,7 +60,7 @@ Dash agora ignora frames de colisão durante o avanço.
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.3 
+Versão 0.4.3 -
 
 Ajustada a área de reação do enemySkeleton para ser mais condizente com a área de dano. 
 Tamanho total do enemySkeleton foi aumentado e com isso sua caixa de colisão tambem foi ajustada, ele estava com tamanho muito similar ao jogador e outros inimigos com isso ele pode se tornar uma ameaça maior(literalmente) como era a ideia inicial.
@@ -71,7 +71,7 @@ Foi adicionado o enemySwarm, são inimigos que geralmente andam acompanhados, el
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.4.4 
+Versão 0.4.4 -
 
 Foi adicionado um sistema complexo para gerenciar projéteis, primeiramente o ProjectileData.cs guarda todos os atributos dos projéteis que são passados pelo seu conjurador, Projectile.cs define e atualiza todas as funções atreladas ao projétil especifico e o ProjectileManager.cs gerencia os projéteis lançados com ajuda de uma lista permitindo que o Gerenciador do jogo possa lidar com eles de forma mais limpa.
 
@@ -89,13 +89,13 @@ Foi adicionado o ultimo inimigo básico do jogo, enemyMage, ao entrar no alcance
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5 
+Versão 0.5 -
 
 Foi adicionado a Inteligencia Artificial para selecionar o perfil do jogador de acordo com os dados coletados durante a gameplay. Atualmente ele apenas recebe dados criados do C#, processa via Python e retorna o perfil do jogador. P modelo leva em consideração os seguintes parametros para definir o perfil; As médias de: tempo total, tempo para derrotar o inimigo depois do primeiro golpe, quantidade de dash's, durante o combate com cada tipo de inimigo. Nas atualizações futuras os dados vão ser coletados in-game e o perfil do jogador será utilizado para definição dos inimigos, que serão pequenas variações com atributos ou habilidades alteradas.
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.1 
+Versão 0.5.1 -
 
 Foi adicionado IdleAI para todos os inimigos, agora eles ficam em estado de espera até o jogador entrar no alcance deles, ao entrar é acionado um novo comportamento pré-selecionado.
 A ação de Cast/Conjuração agora lança um projétil na direção do mouse com tempo de recarga que causa dano ao entrar em contato com inimigos.
@@ -105,7 +105,7 @@ Está sendo adicionado o sistema para receber dados dos inimigos mas atualmente 
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.2
+Versão 0.5.2 -
 
 O erro de acesso do arquivo foi concertado e agora a data de combate dos inimigos é passada ao JSON sempre que eles morrem, atualmente ao teclar a letra P é iniciado o script de python para calcular os perfis do jogador com cada inimigo.
 Dados de combate são devidamente coletados durante combate atualmente são (Combat Time - Tempo de combate / Damage Window - Tempo de combate APÓS o primeiro golpe / Total Dashes - Totais de dash / Enemy Type - Tipo do inimigo)
@@ -152,7 +152,7 @@ Corrigidos e ajustados diversos inputs do jogador, incluindo:
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.3b -
+Versão 0.5.4 -
 
 Essa é uma versão intermediaria criada para melhorar a experiencia do jogador nos proximos cenários de testes.
 
@@ -168,7 +168,7 @@ Foi implementado um sistema que dificulta o agrupamento de inimigos na mesma pos
 
 //////////////////////////////////////////////////////////////////////////////////////
 
-Versão 0.5.3c -
+Versão 0.5.5 -
 
 Atualizado para versão .NET 7.0 com intuito de suportar a nova biblioteca de interface GeonBit.UI.
 
@@ -206,3 +206,7 @@ A implementação do objeto Soul.cs foi concluida, esse objeto gerencia quando o
 Junto ao Soul.cs tambem foi criado um SoulManager.cs para gerenciar as funções de adição, atualização, desenho e exclusão de Almas/Soul.cs.
 
 Agora collisionManagers.cs é chamado entre as trocas de fase para manipular suas listas de colisão de forma coesa.
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.6.1 - Redução no tempo de recarga da magia em 1 segundo.

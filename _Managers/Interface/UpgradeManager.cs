@@ -235,8 +235,8 @@ namespace MyGame
                         break;
                     case 5://Spell Upgrade
                         _hero.skillTotalCD -= 0.4f;
-                        if (_hero.skillTotalCD == 4.6f) _hero.spellTier = 2;
-                        if (_hero.skillTotalCD == 4.2f) _hero.spellTier = 3;
+                        if (_hero.skillTotalCD == 3.6f) _hero.spellTier = 2;
+                        if (_hero.skillTotalCD == 3.2f) _hero.spellTier = 3;
                         break;
                     case 6://Attack Speed Upgrade
                         _hero.atkSpeed -= 0.005f;
