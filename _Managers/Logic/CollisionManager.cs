@@ -169,7 +169,7 @@ namespace MyGame
             foreach (var _soul in _souls)
             {
                 Rectangle _soulBounds = _soul.GetBounds();
-                if (_heroBounds.Intersects(_soulBounds) && Hero.ATTACKHITTIME && _soul.alive)
+                if (_heroAttackbounds.Intersects(_soulBounds) && Hero.ATTACKHITTIME && _soul.alive)
                 {
                     _soul.alive = false;
                     Soul.UPGRADEMENU = true;

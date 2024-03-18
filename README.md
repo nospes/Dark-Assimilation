@@ -210,3 +210,11 @@ Agora collisionManagers.cs é chamado entre as trocas de fase para manipular sua
 //////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.6.1 - Redução no tempo de recarga da magia em 1 segundo.
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.6.2 - 
+
+Os spawns foram alterados para ficarem mais ou menos do mesmo nivel de habilidade, permitindo com que seja mais clara a coleta de dados.
+
+Agora a alma é ativada usando a caixa de colisão do ataque do heroi e não a o heroi em si.

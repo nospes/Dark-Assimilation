@@ -33,9 +33,11 @@ namespace MyGame
 
             _hero.MapBounds(_map.MapSize, _map.TileSize); // Limites do mapa
 
-            _enemyManager.SpawnEnemy(new Vector2(1200, 1000), EnemyType.Mage); // Cria os primeiros spawns de inimigos
+            _enemyManager.SpawnEnemy(new Vector2(1300, 1000), EnemyType.Mage); // Cria os primeiros spawns de inimigos
+            _enemyManager.SpawnEnemy(new Vector2(1575, 1200), EnemyType.Swarm);
+            
             _soulManager.AddSoul(new Vector2(1000, 1200));
-            //_soulManager.AddSoul(new Vector2(1200, 1100));
+
         }
 
         public void Update()
