@@ -80,21 +80,25 @@ namespace MyGame
         private const float MinimumDistance = 40f; // Distancia minima entre os inimigos
         private void ApplyAvoidance() // Metodo para evitar que os inimigos todos se agrupem na mesma posição
         {
-            foreach (var enemy1 in Enemies)
+            lock (Enemies)
             {
-                foreach (var enemy2 in Enemies)
+                foreach (var enemy1 in Enemies)
                 {
-                    if (enemy1 == enemy2) continue; // Não checa caso seja duas unidades iguais
+                    foreach (var enemy2 in Enemies)
+                {
+                        if (enemy1 == enemy2) continue; // Não checa caso seja duas unidades iguais
 
-                    float distance = Vector2.Distance(enemy1.CENTER, enemy2.CENTER);
-                    if (distance < MinimumDistance)
-                    {
-                        Vector2 direction = Vector2.Normalize(enemy1.POSITION - enemy2.POSITION);
-                        enemy1.POSITION += direction * 2;
-                        enemy2.POSITION -= direction * 2;
+                        float distance = Vector2.Distance(enemy1.CENTER, enemy2.CENTER);
+                        if (distance < MinimumDistance)
+                        {
+                            Vector2 direction = Vector2.Normalize(enemy1.POSITION - enemy2.POSITION);
+                            enemy1.POSITION += direction * 2;
+                            enemy2.POSITION -= direction * 2;
+                        }
                     }
                 }
             }
+
         }
 
         // Gera um único inimigo de um tipo especificado em uma posição especificada

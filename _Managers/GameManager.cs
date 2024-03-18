@@ -5,40 +5,48 @@ namespace MyGame
         //Referencia direta a unidades
         private Hero _hero;
         private Pentagram _pentagram;
-        private Soul _soul;
+        private SoulManager _soulManager;
         //Gerenciador de mapa e camera
         private Map _map;
         private Matrix _translation;
         //Referencia aos gerenciadores de jogo
         private CollisionManager _collisionManager;
         private static FadeEffectManager _fadeEffectManager;
-        private static Upgrademanager _upgradeManager;
         private static EnemyManager _enemyManager;
         public static EnemyManager EnemyMgr => _enemyManager;
 
         public void Init()
         {
+
             _map = new Map(); // Cria o mapa
+
             _hero = new Hero(new Vector2(1000, 1000)); // Cria o jogador
             _enemyManager = new EnemyManager(_hero, _map); // Passa parametros de mapa e jogador para o gerenciador de inimigos
+
             _pentagram = new Pentagram(new Vector2(1000, 800)); // Cria o teleportador
-            _soul = new Soul(new Vector2(1000, 1300)); // Cria o metodo para upgrades
+
+            _soulManager = new SoulManager();
+            UpgradeManagerUI.UpgradeHero.Init(_hero);
+
             _fadeEffectManager = new FadeEffectManager(); // Gerenciador de fade de tela
-            _upgradeManager = new Upgrademanager(); // Gerenciador de upgrades
-            _collisionManager = new CollisionManager(_hero, _enemyManager.Enemies, _pentagram, _soul); // Gerenciador de colisões
+            _collisionManager = new CollisionManager(_hero, _enemyManager.Enemies, _pentagram, _soulManager._souls); // Gerenciador de colisões
+
             _hero.MapBounds(_map.MapSize, _map.TileSize); // Limites do mapa
 
             _enemyManager.SpawnEnemy(new Vector2(1200, 1000), EnemyType.Mage); // Cria os primeiros spawns de inimigos
+            _soulManager.AddSoul(new Vector2(1000, 1200));
+            //_soulManager.AddSoul(new Vector2(1200, 1100));
         }
 
         public void Update()
         {
             InputManager.Update(); // Atualiza os inputs do jogador
 
-            if (!pause) // Caso não esteja pausado, atualiza todas as unidades do jogo
+            if (!PAUSE) // Caso não esteja pausado, atualiza todas as unidades do jogo
             {
                 Globals.HEROLASTPOS = _hero.CENTER;
                 _hero.Update();
+
                 _pentagram.Update();
                 if (_pentagram.teleport)
                 {
@@ -47,19 +55,20 @@ namespace MyGame
                     initChangeArea();
                 }
 
-                //_soul.Update();
+                _soulManager.Update();
+
                 _enemyManager.Update();
                 ProjectileManager.Update();
                 _collisionManager.CheckCollisions();
+
                 CalculateTranslation();
                 _hero._heromatrix = _translation;
             }
 
             // Ui's
             _fadeEffectManager.Update();
-            _upgradeManager.Update();
 
-            //Temporizador de jogo
+            //Temporizador para ações atrasadas
             if (_isActionScheduled)
             {
                 _delayTimer -= (float)Globals.TotalSeconds;
@@ -76,11 +85,17 @@ namespace MyGame
             //Desenha todas as unidades no mapa aplicando a diferença de camera
             Globals.SpriteBatch.Begin(transformMatrix: _translation);
             _map.Draw();
+
+            //Props
             _pentagram.Draw();
+            _soulManager.Draw();
+
+            //Unidades
             _enemyManager.Draw();
             _hero.Draw();
             ProjectileManager.Draw();
-            _upgradeManager.Draw(_hero.CENTER);
+
+            //UI
             _fadeEffectManager.Draw(_hero.CENTER);
             Globals.SpriteBatch.End();
         }
@@ -90,7 +105,7 @@ namespace MyGame
         ////////////////////////////////////////////////////////////////////////
 
         //Metodo para Pausar o jogo
-        static bool pause = false;
+        public static bool PAUSE = false;
         private static DateTime lastPauseTime = DateTime.MinValue;
         public static void PauseGame()
         {
@@ -99,16 +114,16 @@ namespace MyGame
             {
                 return;
             }
-            pause = !pause;
+            PAUSE = !PAUSE;
             lastPauseTime = DateTime.Now;
-            if (pause) _fadeEffectManager.StartFadeOut();
+            if (PAUSE) _fadeEffectManager.StartFadeOut();
             else _fadeEffectManager.StartFadeIn();
         }
 
         //Inicio da troca de fase
         public void initChangeArea()
         {
-            pause = true;
+            PAUSE = true;
             _fadeEffectManager.StartFadeOut();
             ScheduleAction(endChangeArea, 0.5f);
         }
@@ -125,17 +140,21 @@ namespace MyGame
         //Metodo para completar a mudança de fase
         public async void endChangeArea()
         {
-            if (_pentagram.gamearea > 3) Globals.Exitgame = true;
+            if (_pentagram.gamearea > 3) Globals.Exitgame = true; // Termina o jogo ao chegar em certa fase
             else
             {
-                _hero.POSITION = new Vector2(1000, 1000);
-                await ExecutePythonScriptAsync();
-                _enemyManager.DeleteEnemies();
-                ProjectileManager.DeleteAll();
-                _fadeEffectManager.StartFadeIn();
-                pause = false;
+                _hero.POSITION = new Vector2(1000, 1000); // Arruma a posição do heroi
+                _hero.HP += _hero.hpRegen; // Regenera Hp do heroi
 
-                switch (_pentagram.gamearea)
+                await ExecutePythonScriptAsync(); // Executa a predição de perfil
+
+                _enemyManager.DeleteEnemies(); // Deleta os inimigos
+                ProjectileManager.DeleteAll(); // Deleta os projéteis
+                _soulManager.DeleteSouls(); // Delete as almas
+
+                _soulManager.AddPrePositionSouls(); // Adiciona almas da fase
+
+                switch (_pentagram.gamearea) // Adiciona leva de inimigos de acordo com a fase
                 {
                     case 1:
                         _enemyManager.EnemyBatch(1);
@@ -147,6 +166,12 @@ namespace MyGame
                         _enemyManager.EnemyBatch(3);
                         break;
                 }
+
+                //Atualiza o gerenciador de colisões para as novas unidades
+                _collisionManager = new CollisionManager(_hero, _enemyManager.Enemies, _pentagram, _soulManager._souls);
+
+                _fadeEffectManager.StartFadeIn(); // Tira a camada de transição da tela
+                PAUSE = false; // Despausa o jogo
             }
         }
 

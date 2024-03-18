@@ -72,8 +72,6 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/S.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/SPACE.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/W.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/frameActive_UI.png</File>
-    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/frameNormal_UI.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/CRIT_upgrade.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/DMG_upgrade.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/FIERCE_upgrade.png</File>
@@ -82,8 +80,6 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/VIT_upgrade.png</File>
   </SourceFiles>
   <DestFiles>
-    <File xsi:nil="true" />
-    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

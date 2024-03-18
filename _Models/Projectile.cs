@@ -82,7 +82,6 @@ public class Projectile
         {
             if (Homing && Lifespan > 1) Direction = Vector2.Normalize(Globals.HEROLASTPOS - Position); //Se for do tipo Homing a direção sempre é atualizada para posição do heroi, para de mudar a duração quando projétil acaba
             if (ProjectileType != "DarkSpell") Rotation = (float)Math.Atan2(Direction.Y, Direction.X); //Rotação do projétil em relação ao personagem, não rotaciona caso seja um efeito de campo
-            if (Lifespan <= 0f && ProjectileType == "DarkProj") _anims.Reset("darkprojEnd_spr"); // Reincia a animação do fim do projétil
         }
         Position += Vector2.Normalize(Direction) * speed * Globals.TotalSeconds; //Faz os projeteis se moverem
         Lifespan -= Globals.TotalSeconds;   //Diminui o tempo de duração, caso chegue em 0 ele deleta automaticamente
@@ -123,6 +122,7 @@ public class Projectile
                     _anims.Update("darkprojEnd_spr"); //Começa animação de fim
                     speed = 0; //Tira velocidade do projétil
                 }
+                if(Lifespan <= 0.1)_anims.Reset("darkprojEnd_spr");
                 break;
             case "IceProj":
                 _anims.Update("icespell_proj");

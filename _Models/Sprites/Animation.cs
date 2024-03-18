@@ -12,7 +12,7 @@ public class Animation
     //Variaveis relacionadas a quantidade de frames, tempo entre frames e se o sprite está ativo ou não.
     private readonly int _frames; //Total de Frames
     private int _frame; //Frame atual
-    private readonly float _frameTime; //Tempo entre cada frame
+    private float _frameTime; //Tempo entre cada frame
     private float _frameTimeLeft;  //Tempo restante de frame
     private bool _active = true; //Define se está ativo a animação
     private readonly enemyCollection _enemy; //Metodo de acesso de objetos especificos(inimigos)
@@ -72,6 +72,15 @@ public class Animation
 
     }
 
+    public void UpdateFrameTime(float newFrameTime)
+    {
+        if (newFrameTime > 0)
+        {
+            _frameTime = newFrameTime;
+            _frameTimeLeft = _frameTime;
+        }
+    }
+
     public void Update()
     {
         //Se não está ativo, não atualiza o sprite
@@ -91,7 +100,7 @@ public class Animation
         //GERENCIADOR DE ANIMAÇÕES PARA O PLAYER
         if (_objType == typeof(Hero))
         {
-            
+
             if (Hero.ATTACKING && !Hero.KNOCKBACK) //Calculos de frames especificos para janelas de golpes
             {
                 //Gerenciador de animação entre os golpes
@@ -110,8 +119,8 @@ public class Animation
             if (Hero.CAST)
             {
                 if (_frame > 6) Hero.CASTED = true;
-                if(_frame == _frames-1) Hero.CAST = false;
-               
+                if (_frame == _frames - 1) Hero.CAST = false;
+
             }
             if (_frame == _frames - 1 && Hero.DEATH) Globals.Exitgame = true;
         }

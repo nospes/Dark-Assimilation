@@ -36,6 +36,14 @@ public class AnimationManager
         }
     }
 
+        public void ChangeAnimationSpeed(object key, float frameSpeed)
+    {
+        if (_anims.TryGetValue(key, out Animation value))
+        {
+            value.UpdateFrameTime(frameSpeed);
+        }
+    }
+
 
     public bool ContainsAnimation(string key)
     {

@@ -24,7 +24,7 @@ public class Hero
     public static bool ATTACKING = false, ATTACKHITTIME = false, CAST = false, CASTED = false, CASTLOCK = false, DASH = false, DASHPOSLOCK = false, RECOIL = false, KNOCKBACK = false, DEATH = false, SLOWED = false; //Variaveis de estados do jogador
 
     //Atributos de combate
-    public int HP, heroAAdmg, heroSpelldmg, baseSpeed, spellTier; //Vida
+    public int HP, heroAAdmg, heroSpelldmg, baseSpeed, spellTier, hpRegen; //Vida
     public float atkSpeed, castSpeed, dashTotalCD, critChance, critMult, skillTotalCD;
     public static Vector2 lastHitpos; //Guarda posição do ultimo inimigo que acertou o heroi, utilizado no calculo de Knockback
 
@@ -40,10 +40,12 @@ public class Hero
     public Hero(Vector2 pos)
     {
 
+        font = Globals.Content.Load<SpriteFont>("UI/baseFont");// FONTE PARA UI TEMPORARIA
+
         //Definição de Atributos do jogador
         POSITION = pos;
         HP = 100;
-        font = Globals.Content.Load<SpriteFont>("UI/baseFont");
+        hpRegen = 10;
         baseSpeed = 250;
         heroAAdmg = 10;
         heroSpelldmg = 10;
@@ -52,7 +54,7 @@ public class Hero
         castSpeed = 0.06f;
         spellTier = 1;
         skillTotalCD = 5f;
-        critChance = 10f;
+        critChance = 5f;
         critMult = 1.4f;
 
         //Definindo texturas
@@ -157,10 +159,21 @@ public class Hero
     }
 
     public static Vector2 castPos;
+    public Vector2 RotateVector(Vector2 vector, float degrees)
+    {
+        float radians = MathHelper.ToRadians(degrees);
+        float sin = MathF.Sin(radians);
+        float cos = MathF.Cos(radians);
+
+        return new Vector2(
+            vector.X * cos - vector.Y * sin,
+            vector.X * sin + vector.Y * cos);
+    }
     public void SpellCast()
     {
 
         Random rnd = new Random();
+        float angleOffset = 12f;
         if (!CASTLOCK)
         {
             var mousePosition = new Vector2(castPos.X, castPos.Y);
@@ -173,19 +186,53 @@ public class Hero
                 direction.Normalize();
             }
 
-            //Definindo atributos do projétil
-            ProjectileData pd = new()
+            if (spellTier >= 1)
             {
-                Position = CENTER,
-                Direction = direction,
-                Lifespan = 3,
-                Homing = false,
-                ProjectileType = "IceProj",
-                Scale = 1.75f,
-                Speed = 300,
-                Friendly = true
-            };
-            ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciado
+                //Definindo atributos do projétil
+                ProjectileData pd = new()
+                {
+                    Position = CENTER,
+                    Direction = direction,
+                    Lifespan = 3,
+                    Homing = false,
+                    ProjectileType = "IceProj",
+                    Scale = 1.75f,
+                    Speed = 300,
+                    Friendly = true
+                };
+                ProjectileManager.AddProjectile(pd);// Adicionando o projétil ao gerenciado
+            }
+            if (spellTier >= 2)
+            {
+                ProjectileData pd2 = new()
+                {
+                    Position = CENTER,
+                    Direction = RotateVector(direction, -angleOffset),
+                    Lifespan = 3,
+                    Homing = false,
+                    ProjectileType = "IceProj",
+                    Scale = 1.75f,
+                    Speed = 300,
+                    Friendly = true
+                };
+                ProjectileManager.AddProjectile(pd2);// Adicionando o projétil ao gerenciado
+            }
+            if (spellTier >= 3)
+            {
+                //Definindo atributos do projétil
+                ProjectileData pd3 = new()
+                {
+                    Position = CENTER,
+                    Direction = RotateVector(direction, angleOffset),
+                    Lifespan = 3,
+                    Homing = false,
+                    ProjectileType = "IceProj",
+                    Scale = 1.75f,
+                    Speed = 300,
+                    Friendly = true
+                };
+                ProjectileManager.AddProjectile(pd3);// Adicionando o projétil ao gerenciado
+            }
             CASTLOCK = true;
         }
     }
@@ -195,6 +242,7 @@ public class Hero
     bool knockbackInitiated = false; // Flag to ensure knockback is initiated only once per recoil phase
     float _recoiltimer = 0f, _knockbackTimer = 0f, _knockbackDuration = 0.2f, _recoiltimerduration = 0.4f; //Contador e Duração de invulnerabilidade e recuo
     float _dashDuration = 0.3f, _dashTimer = 0f; // Contador e duração do DASH
+    float _atkSpeedTracker, _castSpeedTracker;
 
     public void Update()
     {
@@ -320,6 +368,18 @@ public class Hero
             _anims.Update(0);
         }
 
+        //Atualiza a velocidade de ataque e conjuro do jogador
+        if (_castSpeedTracker != castSpeed)
+        {
+            _anims.ChangeAnimationSpeed(3, castSpeed);
+            _castSpeedTracker = castSpeed;
+        }
+        if (_atkSpeedTracker != atkSpeed)
+        {
+            _anims.ChangeAnimationSpeed(2, atkSpeed);
+            _atkSpeedTracker = atkSpeed;
+        }
+
 
 
 
@@ -402,9 +462,9 @@ public class Hero
         Globals.SpriteBatch.DrawString(font, "FPS: " + fps.ToString(), new Vector2(textpos.X, textpos.Y + 150), Color.Red, 0, Vector2.Zero, 1f, SpriteEffects.None, 0);
         //CD'S
         //DASH
-        Globals.SpriteBatch.DrawString(font, "DASH CD: " + (dashTotalCD-dashCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 50), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
+        Globals.SpriteBatch.DrawString(font, "DASH CD: " + (dashTotalCD - dashCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 50), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
         //SKILL
-        Globals.SpriteBatch.DrawString(font, "SKILL CD: " + (skillTotalCD-skillCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 100), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
+        Globals.SpriteBatch.DrawString(font, "SKILL CD: " + (skillTotalCD - skillCD.cooldownTimer).ToString("F2"), new Vector2(textpos.X, textpos.Y + 100), Color.Red, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 0);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     }
 

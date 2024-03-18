@@ -1,4 +1,5 @@
 ﻿namespace MyGame;
+using Myra;
 
 public class Game1 : Game
 {
@@ -7,8 +8,7 @@ public class Game1 : Game
     public static SpriteBatch _spriteBatch;
     private GameManager _gameManager;
     public static Texture2D pixel;
-
-
+    private UpgradeManagerUI _upgradeManager;
 
 
     public Game1()
@@ -34,7 +34,6 @@ public class Game1 : Game
         _gameManager = new();
         _gameManager.Init();
 
-        // TODO: Add your initialization logic here
 
         base.Initialize();
     }
@@ -43,22 +42,26 @@ public class Game1 : Game
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
         Globals.SpriteBatch = _spriteBatch;
-        
 
+        MyraEnvironment.Game = this;
+        _upgradeManager = new UpgradeManagerUI();
 
-        // TODO: use this.Content to load your game content here
     }
+
 
     protected override void Update(GameTime gameTime)
     {
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape) || Globals.Exitgame)
             Exit();
 
-
-        // TODO: Add your update logic here
-
         Globals.Update(gameTime);
+
         _gameManager.Update();
+        if (Soul.MENUUPDATE)
+        {
+            _upgradeManager.UpdatePanelData();
+            Soul.MENUUPDATE = false;
+        }
 
         base.Update(gameTime);
     }
@@ -70,10 +73,9 @@ public class Game1 : Game
         GraphicsDevice.Clear(Color.CornflowerBlue);
         pixel = new Texture2D(GraphicsDevice, 1, 1);
         pixel.SetData(new[] { Color.Red });
-        // TODO: Add your drawing code here
 
         _gameManager.Draw();
-
+        if (Soul.UPGRADEMENU) _upgradeManager.Render();
         base.Draw(gameTime);
     }
 }

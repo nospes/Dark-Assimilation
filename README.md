@@ -177,3 +177,32 @@ Foi adicionado uma pré fase contendo apenas um inimigo, o motivo é que os cons
 Projéteis em curso agora são deletados ao mudar de cena.
 
 Esse update foi criado para ter um ponto de restauração no GIT antes da adição da Biblioteca GeonBit.UI no projeto.
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.6 - 
+
+Foi implementada a Biblioteca de construções de UI Myra, a decisão por ela ao invés de previamente citada GeonBit.UI é que ela é muito mais leve e adiciona APENAS elementos para organizar e gerar UI's.
+
+Foram adicionadas janelas, botões e fontes nos arquivos do jogo para a construção de uma UI coesa.
+
+Alguns códigos foram rearranjados em novas pastas para melhorar a organização dos mesmos.
+
+Foi implementado o sistema UpgradeManager.cs, essa classe gerencia a janela de aprimoramentos e toda a lógica relacionado aos dados do jogador. Os seguintes aprimoramentos foram implementados:
+> Damage Upgrade - Aumenta o dano dos ataques e magias.
+> Speed Upgrade - Aumenta velocidade de movimento e reduz a recarga do avanço.
+> Critical Upgrade - Aumenta chance e dano critico
+> Vitality Upgrade - Aumenta a vida máxima e a restauração de vida entre fases.
+> Spell Upgrade - Reduz tempo de recarga e aprimora os efeitos de Magias.
+> Fierce Upgrade - Reduz tempo total de animação de Ataque e Conjuro.
+
+Foram criadas diversas condições e funções para implementação dos novos efeitos:
+>Heroi agora recupera passivamente 10 de vida por sala, aumentando com os aprimoramentos
+>Foi adicionado uma função no AnimationManager.cs que atualiza a velocidade dos frames de qualquer animação já criada
+>Magia do heroi agora pode ser aprimorada para lançar até 3 novos projéteis no mesmo conjuro
+
+A implementação do objeto Soul.cs foi concluida, esse objeto gerencia quando o heroi ganha seus aprimoramentos. Ela é ativada ao usar um ataque básico dentro dos limites de colisão dela, fazendo com que o jogo pause e apareça 3 opções aleatorias de aprimoramento para o jogador, após consumi-la ela some. Podem aparecer até 2 almas por fase e são comumente atreladas a uma posição proxima aos Spawns dos inimigos.
+
+Junto ao Soul.cs tambem foi criado um SoulManager.cs para gerenciar as funções de adição, atualização, desenho e exclusão de Almas/Soul.cs.
+
+Agora collisionManagers.cs é chamado entre as trocas de fase para manipular suas listas de colisão de forma coesa.

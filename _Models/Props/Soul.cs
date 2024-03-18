@@ -6,8 +6,10 @@ public class Soul
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _texture;
     private Vector2 position, origin, basehitbox;
-    private float scale;
+    public float scale;
     public bool alive;
+    public static bool UPGRADEMENU, MENUUPDATE;
+    
     public Soul(Vector2 pos)
     {
         _texture ??= Globals.Content.Load<Texture2D>("Map/Props/Soul_spr");

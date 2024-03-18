@@ -2,6 +2,83 @@
   "version": 3,
   "targets": {
     "net7.0": {
+      "AssetManagementBase/0.6.7": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/AssetManagementBase.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/AssetManagementBase.dll": {}
+        }
+      },
+      "Cyotek.Drawing.BitmapFont/2.0.4": {
+        "type": "package",
+        "compile": {
+          "lib/net5.0/Cyotek.Drawing.BitmapFont.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net5.0/Cyotek.Drawing.BitmapFont.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "DdsKtxXna.MonoGame/0.4.4": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/DdsKtxXna.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/DdsKtxXna.dll": {}
+        }
+      },
+      "FontStashSharp.Base/1.1.9": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/FontStashSharp.Base.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FontStashSharp.Base.dll": {}
+        }
+      },
+      "FontStashSharp.MonoGame/1.3.6": {
+        "type": "package",
+        "dependencies": {
+          "Cyotek.Drawing.BitmapFont": "2.0.4",
+          "FontStashSharp.Base": "1.1.9",
+          "FontStashSharp.Rasterizers.StbTrueTypeSharp": "1.1.9",
+          "StbImageSharp": "2.27.13"
+        },
+        "compile": {
+          "lib/netstandard2.0/FontStashSharp.MonoGame.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FontStashSharp.MonoGame.dll": {}
+        }
+      },
+      "FontStashSharp.Rasterizers.StbTrueTypeSharp/1.1.9": {
+        "type": "package",
+        "dependencies": {
+          "FontStashSharp.Base": "1.1.9",
+          "StbTrueTypeSharp": "1.26.12"
+        },
+        "compile": {
+          "lib/netstandard2.0/FontStashSharp.Rasterizers.StbTrueTypeSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/FontStashSharp.Rasterizers.StbTrueTypeSharp.dll": {}
+        }
+      },
+      "info.lundin.math.dll/1.2.6": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/info.lundin.math.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/info.lundin.math.dll": {}
+        }
+      },
       "MonoGame.Content.Builder.Task/3.8.1.303": {
         "type": "package",
         "build": {
@@ -55,6 +132,20 @@
           }
         }
       },
+      "Myra/1.5.5": {
+        "type": "package",
+        "dependencies": {
+          "FontStashSharp.MonoGame": "1.3.6",
+          "XNAssets.MonoGame": "0.7.1",
+          "info.lundin.math.dll": "1.2.6"
+        },
+        "compile": {
+          "lib/netstandard2.0/Myra.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/Myra.dll": {}
+        }
+      },
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
@@ -67,10 +158,156 @@
             "related": ".xml"
           }
         }
+      },
+      "StbImageSharp/2.27.13": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/StbImageSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/StbImageSharp.dll": {}
+        }
+      },
+      "StbTrueTypeSharp/1.26.12": {
+        "type": "package",
+        "compile": {
+          "lib/netstandard2.0/StbTrueTypeSharp.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/StbTrueTypeSharp.dll": {}
+        }
+      },
+      "XNAssets.MonoGame/0.7.1": {
+        "type": "package",
+        "dependencies": {
+          "AssetManagementBase": "0.6.7",
+          "Cyotek.Drawing.BitmapFont": "2.0.4",
+          "DdsKtxXna.MonoGame": "0.4.4",
+          "StbImageSharp": "2.27.13"
+        },
+        "compile": {
+          "lib/netstandard2.0/XNAssets.MonoGame.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/XNAssets.MonoGame.dll": {}
+        }
       }
     }
   },
   "libraries": {
+    "AssetManagementBase/0.6.7": {
+      "sha512": "jIaUsU6wazL0S6O0bgIx8Xn2D8rwaSJFb7WlNvKQbEwrx+h6ABl1xxcFKfoMVzNB7CV/+BhEjmeNdKmf3Wm9Ag==",
+      "type": "package",
+      "path": "assetmanagementbase/0.6.7",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "assetmanagementbase.0.6.7.nupkg.sha512",
+        "assetmanagementbase.nuspec",
+        "lib/netstandard2.0/AssetManagementBase.dll"
+      ]
+    },
+    "Cyotek.Drawing.BitmapFont/2.0.4": {
+      "sha512": "iA6WehGVdMUuNbfsQQDq/Bt+mMd/OqHjiMUtKFLIQd/0pyYh4ehT7FEjTxN9/4OXNKQZsp9bAJgltP2nnswUJg==",
+      "type": "package",
+      "path": "cyotek.drawing.bitmapfont/2.0.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "cyotek.drawing.bitmapfont.2.0.4.nupkg.sha512",
+        "cyotek.drawing.bitmapfont.nuspec",
+        "icon.png",
+        "lib/net35/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net35/Cyotek.Drawing.BitmapFont.xml",
+        "lib/net40/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net40/Cyotek.Drawing.BitmapFont.xml",
+        "lib/net452/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net452/Cyotek.Drawing.BitmapFont.xml",
+        "lib/net462/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net462/Cyotek.Drawing.BitmapFont.xml",
+        "lib/net472/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net472/Cyotek.Drawing.BitmapFont.xml",
+        "lib/net48/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net48/Cyotek.Drawing.BitmapFont.xml",
+        "lib/net5.0/Cyotek.Drawing.BitmapFont.dll",
+        "lib/net5.0/Cyotek.Drawing.BitmapFont.xml",
+        "lib/netcoreapp2.1/Cyotek.Drawing.BitmapFont.dll",
+        "lib/netcoreapp2.1/Cyotek.Drawing.BitmapFont.xml",
+        "lib/netcoreapp2.2/Cyotek.Drawing.BitmapFont.dll",
+        "lib/netcoreapp2.2/Cyotek.Drawing.BitmapFont.xml",
+        "lib/netcoreapp3.1/Cyotek.Drawing.BitmapFont.dll",
+        "lib/netcoreapp3.1/Cyotek.Drawing.BitmapFont.xml",
+        "lib/netstandard1.3/Cyotek.Drawing.BitmapFont.dll",
+        "lib/netstandard1.3/Cyotek.Drawing.BitmapFont.xml",
+        "lib/netstandard2.0/Cyotek.Drawing.BitmapFont.dll",
+        "lib/netstandard2.0/Cyotek.Drawing.BitmapFont.xml",
+        "lib/netstandard2.1/Cyotek.Drawing.BitmapFont.dll",
+        "lib/netstandard2.1/Cyotek.Drawing.BitmapFont.xml"
+      ]
+    },
+    "DdsKtxXna.MonoGame/0.4.4": {
+      "sha512": "fafUrTw865cOMn3YwXFPjFPNdhlEBeSCJSjxZB68j9WKp+Mq5s53SaoeRbn8Bq+K8zy5x1KJdOT4/6wfFYpIDQ==",
+      "type": "package",
+      "path": "ddsktxxna.monogame/0.4.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "ddsktxxna.monogame.0.4.4.nupkg.sha512",
+        "ddsktxxna.monogame.nuspec",
+        "lib/netstandard2.0/DdsKtxXna.dll"
+      ]
+    },
+    "FontStashSharp.Base/1.1.9": {
+      "sha512": "/AjkOcPNijs8vyNgcCj3FfBJbVWmsSH744hqkhLfBt8qspDz/tEoD+U09my5u9eRBX6zX+RLQ/gdCvwy+ZBOtg==",
+      "type": "package",
+      "path": "fontstashsharp.base/1.1.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fontstashsharp.base.1.1.9.nupkg.sha512",
+        "fontstashsharp.base.nuspec",
+        "lib/net471/FontStashSharp.Base.dll",
+        "lib/netstandard2.0/FontStashSharp.Base.dll"
+      ]
+    },
+    "FontStashSharp.MonoGame/1.3.6": {
+      "sha512": "Oxu3nX8MoyNvS4bCfz4ntewdQkgsoFfPhPMRnUToLeAZh34yvfDJ5l4mxRbzF9p5/Dx49k66lUhfiNR6CbGh4w==",
+      "type": "package",
+      "path": "fontstashsharp.monogame/1.3.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fontstashsharp.monogame.1.3.6.nupkg.sha512",
+        "fontstashsharp.monogame.nuspec",
+        "lib/netstandard2.0/FontStashSharp.MonoGame.dll"
+      ]
+    },
+    "FontStashSharp.Rasterizers.StbTrueTypeSharp/1.1.9": {
+      "sha512": "yi5iuTERem46uyHC5p+jRi3Jh8dKWzgNWLqcvHciGlyVHD1cWFdERgnxshZU4xWB2hRGnogxaCudCirbMpg4eQ==",
+      "type": "package",
+      "path": "fontstashsharp.rasterizers.stbtruetypesharp/1.1.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "fontstashsharp.rasterizers.stbtruetypesharp.1.1.9.nupkg.sha512",
+        "fontstashsharp.rasterizers.stbtruetypesharp.nuspec",
+        "lib/net471/FontStashSharp.Rasterizers.StbTrueTypeSharp.dll",
+        "lib/netstandard2.0/FontStashSharp.Rasterizers.StbTrueTypeSharp.dll"
+      ]
+    },
+    "info.lundin.math.dll/1.2.6": {
+      "sha512": "rCSUXUISKOmFkpEPd9wZJP9bHsyozEwvid3zO4gByG1QQX9IMAUZ8R9OZmpKp20JWrBMGBMTgoXAuLCSoK6VAQ==",
+      "type": "package",
+      "path": "info.lundin.math.dll/1.2.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "info.lundin.math.dll.1.2.6.nupkg.sha512",
+        "info.lundin.math.dll.nuspec",
+        "lib/net40/info.lundin.math.dll",
+        "lib/netstandard2.0/info.lundin.math.dll"
+      ]
+    },
     "MonoGame.Content.Builder.Task/3.8.1.303": {
       "sha512": "9Ilzzje62LhWElbPNEl7vh7XsRSbze+lvCJdZtTZUGu48FRgvYN6THURwIB9PN98EI33/Wnf6iuShNUtD7hL4Q==",
       "type": "package",
@@ -107,6 +344,18 @@
         "runtimes/win-x86/native/soft_oal.dll"
       ]
     },
+    "Myra/1.5.5": {
+      "sha512": "Iv6JnC3QnpNWXcF10JZRxthm8WfMCh0Iha58ja81MW9MXg8/Oo3WrBjFOt3ZLVzlhkrVbzCGjEpFlJELiyDq1A==",
+      "type": "package",
+      "path": "myra/1.5.5",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/Myra.dll",
+        "myra.1.5.5.nupkg.sha512",
+        "myra.nuspec"
+      ]
+    },
     "Newtonsoft.Json/13.0.3": {
       "sha512": "HrC5BXdl00IP9zeV+0Z848QWPAoCr9P3bDEZguI+gkLcBKAOxix/tLEAAHC+UvDNPv4a2d18lOReHMOagPa+zQ==",
       "type": "package",
@@ -136,12 +385,51 @@
         "newtonsoft.json.nuspec",
         "packageIcon.png"
       ]
+    },
+    "StbImageSharp/2.27.13": {
+      "sha512": "tHnP2RHgFzWbOS96UqvRO/LYU1WmpMT1bKiig45we+rpaXacBr11Fq2IBF+MqlgyLyNXxRz18E66qr4R9YlSbg==",
+      "type": "package",
+      "path": "stbimagesharp/2.27.13",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net471/StbImageSharp.dll",
+        "lib/netstandard2.0/StbImageSharp.dll",
+        "stbimagesharp.2.27.13.nupkg.sha512",
+        "stbimagesharp.nuspec"
+      ]
+    },
+    "StbTrueTypeSharp/1.26.12": {
+      "sha512": "hCc6/OsfcPa5VsLECcEU2m78WOshBrKwK42nAodSm9Z5wH68f7n66SoiRLCdGCkDaqbWz2TlX4zYHIjogj1HJA==",
+      "type": "package",
+      "path": "stbtruetypesharp/1.26.12",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net471/StbTrueTypeSharp.dll",
+        "lib/netstandard2.0/StbTrueTypeSharp.dll",
+        "stbtruetypesharp.1.26.12.nupkg.sha512",
+        "stbtruetypesharp.nuspec"
+      ]
+    },
+    "XNAssets.MonoGame/0.7.1": {
+      "sha512": "bhbw4Cf902F+U5Q9LThTWwp9t/wp9hS7woZCCy05iLMCAu8Ltpu+x/rJ/C6/Q7Eyf2CkHseZ4msrOeIlMTTXcQ==",
+      "type": "package",
+      "path": "xnassets.monogame/0.7.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/netstandard2.0/XNAssets.MonoGame.dll",
+        "xnassets.monogame.0.7.1.nupkg.sha512",
+        "xnassets.monogame.nuspec"
+      ]
     }
   },
   "projectFileDependencyGroups": {
     "net7.0": [
       "MonoGame.Content.Builder.Task >= 3.8.1.303",
       "MonoGame.Framework.DesktopGL >= 3.8.1.303",
+      "Myra >= 1.5.5",
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
@@ -189,6 +477,10 @@
           "MonoGame.Framework.DesktopGL": {
             "target": "Package",
             "version": "[3.8.1.303, )"
+          },
+          "Myra": {
+            "target": "Package",
+            "version": "[1.5.5, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",

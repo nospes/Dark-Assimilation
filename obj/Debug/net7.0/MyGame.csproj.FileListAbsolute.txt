@@ -110,3 +110,14 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net7.0\refint\MyGame.dll
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net7.0\MyGame.pdb
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net7.0\MyGame.genruntimeconfig.cache
 C:\Users\User\Desktop\Dev\monogame\MyGame\obj\Debug\net7.0\ref\MyGame.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\AssetManagementBase.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Cyotek.Drawing.BitmapFont.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\DdsKtxXna.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\FontStashSharp.Base.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\FontStashSharp.MonoGame.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\FontStashSharp.Rasterizers.StbTrueTypeSharp.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\info.lundin.math.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Myra.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\StbImageSharp.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\StbTrueTypeSharp.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\XNAssets.MonoGame.dll
