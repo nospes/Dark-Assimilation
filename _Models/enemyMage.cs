@@ -206,7 +206,7 @@ public class enemyMage : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
-            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _preattacktimer = 0f;
             _recoilingtimer = 0f;

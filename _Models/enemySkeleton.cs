@@ -134,7 +134,7 @@ public class enemySkeleton : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso cancele o pré-ataque ele reduz ou reinicia o temporizador
         if (INVULSTATE)
         {
-            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f;
             if (PREATTACKSTATE && _preattacktimer >= 0.4) _preattacktimer = 0.99f;

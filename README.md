@@ -218,3 +218,10 @@ Versão 0.6.2 -
 Os spawns foram alterados para ficarem mais ou menos do mesmo nivel de habilidade, permitindo com que seja mais clara a coleta de dados.
 
 Agora a alma é ativada usando a caixa de colisão do ataque do heroi e não a o heroi em si.
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+Versão 0.6.3 - 
+
+Adicionado algumas etapas para evitar erros na coleta de dados, inimigos mortos tempo total da luta e tempo de janela de dano, o erro parece persistir com o primeiro Mago(Inimigo tipo 4) morto por gameplay.
+

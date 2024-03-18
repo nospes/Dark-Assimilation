@@ -15,7 +15,7 @@ public class IdleAI : MovementAI
 
         if (totarget < distance || enemy.ALERT)
         {
-            enemy.battleStats.StartBattle(); // Começa o combate
+            if(!enemy.battleStats.inBattle)enemy.battleStats.StartBattle(); // Começa o combate
             enemy.MoveAI = AIenemyType; // Pega a AI padrão do inimigo e aplica nele
             GameManager.EnemyMgr.EnemyEngagement(enemy.CENTER); // Alerta os inimigos próximos dessa unidade
         }

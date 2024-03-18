@@ -152,7 +152,7 @@ public class enemyArcher : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
-            battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f; // Reinicia a duração do recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador

@@ -4,7 +4,7 @@ public class BattleStats
 {
     private TimeSpan TotalBattleTime { get; set; }
     private TimeSpan TimeAfterFirstHit { get; set; }
-    private bool firstHitReceived = false;
+    public bool firstHitReceived = false;
     private DateTime battleStartTime, firstHitTime;
     private int DashCount { get; set; }
     public TimeSpan FinalBattleTime, FinalTimeAfterFirstHit;
@@ -15,11 +15,14 @@ public class BattleStats
     // Starts tracking the battle time
     public void StartBattle()
     {
-        TotalBattleTime = TimeSpan.Zero;
-        TimeAfterFirstHit = TimeSpan.Zero;
-        battleStartTime = DateTime.Now;
-        firstHitReceived = false;
-        inBattle = true;
+        if (!inBattle)
+        {
+            TotalBattleTime = TimeSpan.Zero;
+            TimeAfterFirstHit = TimeSpan.Zero;
+            battleStartTime = DateTime.Now;
+            firstHitReceived = false;
+            inBattle = true;
+        }
     }
 
     // Marks the moment the first hit is received and starts tracking time after first hit
@@ -40,7 +43,7 @@ public class BattleStats
             DashCount++;
             dashend = false;
         }
-        else if(!Hero.DASH) dashend = true;
+        else if (!Hero.DASH) dashend = true;
     }
 
     // Updates the battle and first hit times
