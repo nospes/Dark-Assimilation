@@ -239,6 +239,7 @@ Inimigos agora se adaptam ao perfil do jogador, alterando seus atributos base; e
 > Perfil agressivo: torna os inimigos mais reativos, diminuindo efetividade de investidas diretas.
 > Perfil balanceado: trazem pequenas melhorias variadas, incluindo aumento de vida dos inimigos.
 > Perfil evasivo: torna os inimigos mais rápidos e propensos a atacar diretamente a distancia.
+
 Perfis com contagens altas e similares (margem de 4%) são selecionados aleatoriamente entre si para adicionar variedade ao jogo. (ProfileManager.cs)
 Uma nova tela de Game Over foi adicionada, exibindo gráficos com as estatísticas do jogador e indicando o perfil predominante do mesmo ao final da sessão. (ProfileChartsManager.cs)
 
