@@ -29,7 +29,6 @@ public class enemySkeleton : enemyBase
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
         POSITION = pos;
-        speed = 100f;
         scale = 5;
 
         //Definição inicial de origem e tamanho da caixa de colisão
@@ -40,18 +39,43 @@ public class enemySkeleton : enemyBase
 
         //Pré definição de atributos de combate e animação para evitar bugs
         HP = 150;
+        speed = 100f;
+        DAMAGE = 10;
+        _preattackcdduration = 1f;
+        _preattackduration = 0.8f;
+
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
         DEATHSTATE = false;
         INVULSTATE = false;
+
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+
         enemydataType = 1;
         ALERT = false;
         SPAWN = true;
 
+        switch (ProfileManager.enemyProfileType)
+        {
+            case 1: // Caso seja um player do tipo Berzerk
+                _preattackduration = 0.5f;
+                DAMAGE = 15;
+                break;
+            case 2: // Caso seja um player do tipo Balanced
+                HP = 190;
+                _preattackcdduration = 0.5f;
+                break;
+            case 3:// Caso seja um player do tipo Strategist
+                speed = 140f;
+                _preattackcdduration = 0.8f;
+                _preattackduration = 0.65f;
+                break;
+            default:
+                break;
+        }
     }
 
     //Função de calculo para caixas de colisão
@@ -111,10 +135,10 @@ public class enemySkeleton : enemyBase
     }
 
     //Variaveis para o temporizador entre pré-ataque e ataque
-    float _preattacktimer = 0f, _preattackduration = 0.8f;
+    float _preattacktimer = 0f, _preattackduration;
 
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 1f;
+    float _preattackcdtimer = 0f, _preattackcdduration;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -134,10 +158,10 @@ public class enemySkeleton : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso cancele o pré-ataque ele reduz ou reinicia o temporizador
         if (INVULSTATE)
         {
-            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if (!battleStats.firstHitReceived) battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f;
-            if (PREATTACKSTATE && _preattacktimer >= 0.4) _preattacktimer = 0.99f;
+            if (PREATTACKSTATE && _preattacktimer >= _preattackduration * 0.4f) _preattacktimer = _preattackduration * 0.99f;
         }
         //Temporizador de transição da instancia de pré-ataque para ataque
         else if (PREATTACKSTATE && !ATTACKSTATE && !Recoling)
@@ -159,7 +183,7 @@ public class enemySkeleton : enemyBase
         {
             Vector2 _knockbackdist;
             _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
-            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y);; // Aplica o recuo apenas na horizontal
+            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y); ; // Aplica o recuo apenas na horizontal
             _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
             if (_recoilingtimer >= _recoilingduration)
             {
@@ -248,7 +272,7 @@ public class enemySkeleton : enemyBase
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(POSITION, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror, 0, colorSet());
 
 
     }

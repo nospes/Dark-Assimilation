@@ -11,30 +11,14 @@ def load_base_data(enemy_type):
 
     # Tipo de perfil de acordo com os dados de jogo
     base_data = {
-        '1': { # Esqueleto (Esqueleto com maça)
-            "Average Combat Time": [3, 5, 7, 9],
-            "Damage Window": [1, 2, 3, 4],
-            "Total Dashes": [0, 1, 2, 3],
-            "Player Type": ["Berzerk", "Berzerk", "Berzerk", "Berzerk"]
-        },
-        '2': { # Swarm (Cranios de fogo)
-            "Average Combat Time": [2, 4, 6, 8],
-            "Damage Window": [2, 3, 4, 5],
-            "Total Dashes": [1, 2, 3, 4],
-            "Player Type": ["TypeA", "TypeA", "TypeA", "TypeA"]
-        },
-        '3': { #Arqueiro
-            "Average Combat Time": [2, 4, 6, 8],
-            "Damage Window": [2, 3, 4, 5],
-            "Total Dashes": [1, 2, 3, 4],
-            "Player Type": ["TypeB", "TypeB", "TypeB", "TypeB"]
-        },
-        '4': {  #Mago
-            "Average Combat Time": [2, 4, 6, 8],
-            "Damage Window": [2, 3, 4, 5],
-            "Total Dashes": [1, 2, 3, 4],
-            "Player Type": ["TypeC", "TypeC", "TypeC", "TypeC"]
-        },
+        #Skeleton
+        '1': {"Average Combat Time": [7, 11, 25], "Damage Window": [6, 9, 25], "Total Dashes":[2, 4, 7], "Player Type": ["Aggressive", "Balanced", "Evasive"]},
+        #Swarm
+        '2': {"Average Combat Time": [3, 10, 25], "Damage Window": [3, 8, 20], "Total Dashes":[1, 2, 4], "Player Type": ["Aggressive", "Balanced", "Evasive"]},
+        #Archer
+        '3': {"Average Combat Time": [6, 13, 25], "Damage Window": [5, 9, 22], "Total Dashes":[2, 4, 9], "Player Type": ["Aggressive", "Balanced", "Evasive"]},
+        #Mage
+        '4': {"Average Combat Time": [5, 11, 25], "Damage Window": [4, 8, 19], "Total Dashes":[2, 4, 7], "Player Type": ["Aggressive", "Balanced", "Evasive"]},
     }
     return pd.DataFrame(base_data[str(enemy_type)])
 
@@ -53,22 +37,19 @@ def main():
     # Cria uma lista para armazenar as predições do modelo KNN
     predictions_list = []
 
-    for enemy_type in set(enemy_types):  # Utiliza um 'for' para ter certeza que vai rodar o modelo para CADA TIPO de inimigo
-        df = load_base_data(enemy_type)
-        
-        # Preprocessamento da data do perfil do player
-        
-        # X: Feature set - Esta linha remove a coluna 'Player Type' do dataframe, deixando apenas os recursos (colunas) que serão usados ​​como entrada para o modelo KNN.
-        X = df.drop('Player Type', axis=1)
+    # Filtra as datas corrompidas, no caso os Damage Window e Average Combat Time que sejam iguais a 0
+    valid_indices = [i for i, (dw, act) in enumerate(zip(data["Damage Window"], data["Average Combat Time"])) if dw != 0 and act != 0]
+    # Escolhe data usando como base tipo de inimigo valido
+    valid_enemy_types = [enemy_types[i] for i in valid_indices]
 
-        # y: Variável de destino - Extrai a coluna 'Tipo de jogador' do dataframe e a usa como variável de destino para o modelo KNN. O modelo aprenderá a prever o ‘Tipo de Jogador’ com base nos recursos de entrada fornecidos em X.
-        y = df['Player Type']
-        
-        #Cria uma instância da classe para normalizar valores
-        scaler = StandardScaler()
-        # Normaliza os valores para diferentes tamanhos entre dados não ter pesos maiores que outros
-        X_scaled = scaler.fit_transform(X)
-        
+
+    for enemy_type in set(valid_enemy_types): # Utiliza um 'for' para ter certeza que vai rodar o modelo para CADA TIPO de inimigo VALIDO
+        df = load_base_data(enemy_type)
+        X = df.drop('Player Type', axis=1)  # X: Feature set - Esta linha remove a coluna 'Player Type' do dataframe, deixando apenas os recursos (colunas) que serão usados ​​como entrada para o modelo KNN.
+        y = df['Player Type']  # y: Variável de destino - Extrai a coluna 'Tipo de jogador' do dataframe e a usa como variável de destino para o modelo KNN. O modelo aprenderá a prever o ‘Tipo de Jogador’ com base nos recursos de entrada fornecidos em X.
+
+        scaler = StandardScaler()   #Cria uma instância da classe para normalizar valores
+        X_scaled = scaler.fit_transform(X)  # Normaliza os valores
         
         # Cria uma instância da classe KNeighborsClassifier do scikit-learn
         knn = KNeighborsClassifier(n_neighbors=1)
@@ -80,39 +61,33 @@ def main():
         KNN. y é a variável alvo (por exemplo, 'Tipo de jogador') que o modelo está tentando prever. 
         Esta etapa “ensina” ao modelo o relacionamento entre os recursos de entrada e a variável de destino.
         '''
-        knn.fit(X_scaled, y)    
-        
-        # Constrói um dicionário chamado incoming_data, mapeando cada nome de recurso
-        incoming_data = {
-            "Average Combat Time": data["Average Combat Time"],
-            "Damage Window": data["Damage Window"],
-            "Total Dashes": data["Total Dashes"]
-        }
-        
-        # Gera uma lista de índices para linhas nos dados que correspondem ao tipo de inimigo atual que está sendo processado.
-        # Isso filtra os dados para incluir apenas as instâncias que correspondem ao tipo de inimigo.
-        indices = [i for i, e in enumerate(enemy_types) if e == enemy_type]
-        filtered_data = {k: [v[i] for i in indices] for k, v in incoming_data.items()}
-        
+        # The fit method is called on the knn object
+        knn.fit(X_scaled, y)  
+
+        # Filtrando a data na qual indice estejam corretos
+        indices = [i for i in valid_indices if enemy_types[i] == enemy_type]
+        filtered_data = {k: [v[i] for i in indices] for k, v in data.items() if k in ["Average Combat Time", "Damage Window", "Total Dashes"]}
+
         # Para cada recurso nos dados recebidos filtra os valores não associados ao tipo de inimigo atual.
         # Isso cria um subconjunto dos dados originais com valores apenas para o tipo de inimigo especificado
         samples_df = pd.DataFrame(filtered_data)
+        if samples_df.empty:  # If no data remains after filtering, skip this iteration
+            continue
+
         #Escala os dados filtrados
         samples_scaled = scaler.transform(samples_df)
         
         # Chama o KNN para aplicar a predição na data escalada e organizada por tipo de inimigo
         predictions = knn.predict(samples_scaled)
-        
+
         # Converte os resultados adicionando-os a uma lista
         predictions_list.extend(predictions.tolist())
 
-    # Converte a lista de resultado para um JSON - 'ProcessedData.json', os valores são lidos em C#
+     # Converte a lista de resultado para um JSON - 'ProcessedData.json', os valores são lidos em C#
     with open('ProcessedData.json', 'w') as file:
         json.dump(predictions_list, file)
     
-    # Da o print da lista
-    print(predictions_list)
+    #print(predictions_list)
 
 if __name__ == "__main__":
     main()
-

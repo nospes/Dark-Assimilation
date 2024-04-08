@@ -27,9 +27,9 @@ public class enemyArcher : enemyBase
         _anims.AddAnimation("archer_Hit", new(_textureHit, 4, 1, 0.1f, this, this));
         _anims.AddAnimation("archer_Skill", new(_textureSkill, 4, 1, 0.1f, this, this));
 
-        //Define a posição, velocidade e tamanho do sprite respectivamente
+        //Define a posição e tamanho do sprite respectivamente
         POSITION = pos;
-        speed = 100f;
+
         scale = 3;
 
         //Definição inicial de origem e tamanho da caixa de colisão
@@ -39,19 +39,49 @@ public class enemyArcher : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 90;
+
+        HP = 90; // Vida Base
+        speed = 100f; //Velocidade de movimento base
+        DAMAGE = 10; // Dano dos projeteis
         _dashTotalduration = 4f; // CD do dash
+        _preattackcdduration = 1.15f; //CD do ataque
+
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
         DEATHSTATE = false;
         INVULSTATE = false;
+
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+
         enemydataType = 3;
         ALERT = false;
         SPAWN = true;
+
+        switch (ProfileManager.enemyProfileType)
+        {
+            case 1: // Caso seja um player do tipo Berzerk
+                _dashTotalduration = 2.5f;
+                _preattackcdduration = 1f;
+                HP = 100;
+                break;
+            case 2: // Caso seja um player do tipo Balanced
+                _dashTotalduration = 3f;
+                HP = 120;
+                DAMAGE = 15;
+                break;
+            case 3: // Caso seja um player do tipo Strategist
+                speed = 180f;
+                _preattackcdduration = 0.9f;
+                break;
+            default:
+                break;
+
+        }
+
+        Console.WriteLine(ProfileManager.enemyProfileType);
 
     }
 
@@ -68,7 +98,8 @@ public class enemyArcher : enemyBase
             ProjectileType = "Arrow",
             Scale = 1.75f,
             Speed = 500,
-            Friendly = false
+            Friendly = false,
+            Damage = DAMAGE
         };
         ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciador
         ENEMYSKILL_LOCK = false;    //Ao lançar o projétil ativa a trava impedindo que lance varias flechas 
@@ -97,7 +128,7 @@ public class enemyArcher : enemyBase
             case "hitbox":
                 //Caixa de colisão do monstro
                 //Com base nas coordenadas _Top e _Left cria um retangulo de tamanho pré-definido multiplicado pelo scale
-                return new Rectangle(_left, _top, (int)(basehitboxSize.X * scale), (int)(basehitboxSize.Y * scale));
+                return new Rectangle(_left - 15, _top, (int)(basehitboxSize.X * scale) + 30, (int)(basehitboxSize.Y * scale));
             case "reactionbox":
                 //Caixa de colisão para Reação do monstro
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
@@ -113,7 +144,7 @@ public class enemyArcher : enemyBase
 
     public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
     {
-        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)+34); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2) + 34); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -129,7 +160,7 @@ public class enemyArcher : enemyBase
 
 
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 1.15f;
+    float _preattackcdtimer = 0f, _preattackcdduration;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -152,7 +183,7 @@ public class enemyArcher : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
-            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if (!battleStats.firstHitReceived) battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f; // Reinicia a duração do recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
@@ -160,7 +191,7 @@ public class enemyArcher : enemyBase
             {
                 ATTACKSTATE = false; //Desativa o ataque
                 PREATTACKHITCD = true; //Ativa o tempo de recarga de ataque
-                if (_preattackcdtimer > 0.6) _preattackcdtimer = 0.9f; //Restitue parte do seu tempo
+                _preattackcdtimer = 0.7f; //Restitue parte do seu tempo de recarga
                 _anims.Reset("archer_Attack"); //Reseta a animação de ataque para começar ela do inicio novamente
             }
 
@@ -206,7 +237,7 @@ public class enemyArcher : enemyBase
             ATTACKSTATE = false; // Cancela o ataque
             PREATTACKSTATE = false; // Cancela o pré ataque
             PREATTACKHITCD = true;  //Ativa o CD porem...
-            _preattackcdtimer = 1.6f; //Restitue 100% do tempo de recarga do golpe
+            _preattackcdtimer = _preattackcdduration; //Restitue 100% do tempo de recarga do golpe
             POSITION += Vector2.Normalize(CENTER - HEROATTACKPOS) * 7; // Aplica o recuo durante o DASHSTATE
             _dashcdlock = true; //Ativa o tempo de recarga o dash
 
@@ -291,11 +322,11 @@ public class enemyArcher : enemyBase
     public override void Draw()
     {
         //hitbox test
-        //Rectangle Erect = GetBounds($"reactionbox");
+        //Rectangle Erect = GetBounds($"hitbox");
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(POSITION, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror, 0, colorSet());
 
 
     }

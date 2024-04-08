@@ -67,7 +67,7 @@ namespace MyGame
                     //Caso um frame de golpe do inimigo acerte o player;
                     if (_enemyAttackbounds.Intersects(_heroBounds) && _inimigo.ATTACKHITTIME && _inimigo.HP > 0 && !Hero.RECOIL && !Hero.DASH)
                     {
-                        _hero.HP -= 10;
+                        _hero.HP -= _inimigo.DAMAGE;
                         Hero.lastHitpos = _inimigo.CENTER;
                         Hero.RECOIL = true;
 
@@ -117,14 +117,14 @@ namespace MyGame
                     {
                         if (_projetil.ProjectileType == "Arrow") // Caso seja do tipo 'Arrow'
                         {
-                            _hero.HP -= 10;
+                            _hero.HP -= _projetil.Damage;
                             Hero.lastHitpos = _projetil.Position;
                             Hero.RECOIL = true;
                             _projetil.Lifespan = 0; //Destroe o projétil
                         }
                         else if (_projetil.ProjectileType == "DarkProj" && _projetil.Lifespan > 1) // Caso seja do tipo 'Arrow'
                         {
-                            _hero.HP -= 10;
+                            _hero.HP -= _projetil.Damage;
                             Hero.lastHitpos = _projetil.Position;
                             Hero.RECOIL = true;
                             _projetil.Lifespan = 1; //Destroe o projetil, nesse caso ele para de causar dano no ultimo segundo de vida
@@ -134,7 +134,7 @@ namespace MyGame
                             Hero.SLOWED = true; // Causa lentidão
                             if (_hero.SPEED <= 1) //Caso jogador ainda esteja na area com speed 1 ou menor...
                             {
-                                _hero.HP -= 10; //Causa dano
+                                _hero.HP -= _projetil.Damage; //Causa dano
                                 Hero.SLOWED = false; // Termina a lentidão
                                 Hero.lastHitpos = _projetil.Position;
                                 Hero.RECOIL = true;
@@ -175,10 +175,6 @@ namespace MyGame
                     Soul.UPGRADEMENU = true;
                     Soul.MENUUPDATE = true;
                     GameManager.PAUSE = true;
-                }
-                if (_heroBounds.Intersects(_soulBounds) && _soul.alive)
-                {
-                    Console.WriteLine("soul colide");
                 }
 
             }

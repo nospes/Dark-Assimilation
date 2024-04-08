@@ -9,6 +9,7 @@ public class Game1 : Game
     private GameManager _gameManager;
     public static Texture2D pixel;
     private UpgradeManagerUI _upgradeManager;
+    private ProfileChartsManager _profileChartsManager;
 
 
     public Game1()
@@ -45,6 +46,7 @@ public class Game1 : Game
 
         MyraEnvironment.Game = this;
         _upgradeManager = new UpgradeManagerUI();
+        _profileChartsManager = new ProfileChartsManager();
 
     }
 
@@ -63,6 +65,7 @@ public class Game1 : Game
             Soul.MENUUPDATE = false;
         }
 
+
         base.Update(gameTime);
     }
 
@@ -76,6 +79,7 @@ public class Game1 : Game
 
         _gameManager.Draw();
         if (Soul.UPGRADEMENU) _upgradeManager.Render();
+        if (GameManager.GAMEOVER) { _profileChartsManager.UpdateChartData(); _profileChartsManager.Render(); }
         base.Draw(gameTime);
     }
 }

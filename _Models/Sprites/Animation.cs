@@ -122,7 +122,7 @@ public class Animation
                 if (_frame == _frames - 1) Hero.CAST = false;
 
             }
-            if (_frame == _frames - 1 && Hero.DEATH) Globals.Exitgame = true;
+            if (_frame == _frames - 1 && Hero.DEATH) GameManager.GAMEOVER = true;
         }
         else if (_enemy != null) // ANIMAÇÕES DOS INIMIGOS
         {

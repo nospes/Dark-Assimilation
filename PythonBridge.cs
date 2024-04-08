@@ -41,7 +41,7 @@ namespace MyGame
             data["Average Combat Time"].Add(averageCombatTime);
             data["Damage Window"].Add(damageWindow);
             data["Total Dashes"].Add(totalDashes);
-            data["Enemy Type"].Add(enemyType); 
+            data["Enemy Type"].Add(enemyType);
 
             // Salva o dicionario com a data atualizada no JSON
             string updatedJson = JsonConvert.SerializeObject(data, Formatting.Indented);
@@ -129,15 +129,59 @@ namespace MyGame
             // Checando se funcionou ou não
             if (resultData != null)
             {
-                foreach (var item in resultData) //Para elemento presente na lista...
+                var agressivecount = 0;
+                var balancedcount = 0;
+                var evasivecount = 0;
+
+                // Count each category
+                foreach (var item in resultData)
                 {
-                    Console.WriteLine(item); // faz um print do elemento.
+                    switch (item)
+                    {
+                        case "Aggressive":
+                            agressivecount++;
+                            break;
+                        case "Balanced":
+                            balancedcount++;
+                            break;
+                        case "Evasive":
+                            evasivecount++;
+                            break;
+                    }
                 }
+
+                ProfileManager.aggressiveCount = agressivecount;
+                ProfileManager.balancedCount = balancedcount;
+                ProfileManager.evasiveCount = evasivecount;
+
+                // Print the counts
+                Console.WriteLine($"Aggressive: {ProfileManager.aggressiveCount}");
+                Console.WriteLine($"Balanced: {ProfileManager.balancedCount}");
+                Console.WriteLine($"Evasive: {ProfileManager.evasiveCount}");
             }
             else // Caso não tenha data ele avisa
             {
                 Console.WriteLine("No data!");
             }
+        }
+
+        private static Dictionary<string, int> CountElements(List<string> elements)
+        {
+            var counts = new Dictionary<string, int>();
+
+            foreach (var element in elements)
+            {
+                if (counts.ContainsKey(element))
+                {
+                    counts[element]++;
+                }
+                else
+                {
+                    counts[element] = 1;
+                }
+            }
+
+            return counts;
         }
 
         private static string RunPythonScript(string scriptPath) // Metodo para inicializar o script de python (Modelo KNN)

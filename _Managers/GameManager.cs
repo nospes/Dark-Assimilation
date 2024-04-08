@@ -35,7 +35,7 @@ namespace MyGame
 
             _enemyManager.SpawnEnemy(new Vector2(1300, 1000), EnemyType.Mage); // Cria os primeiros spawns de inimigos
             _enemyManager.SpawnEnemy(new Vector2(1575, 1200), EnemyType.Swarm);
-            
+
             _soulManager.AddSoul(new Vector2(1000, 1200));
 
         }
@@ -65,6 +65,8 @@ namespace MyGame
 
                 CalculateTranslation();
                 _hero._heromatrix = _translation;
+
+                if(GAMEOVER) PauseGame();
             }
 
             // Ui's
@@ -107,7 +109,7 @@ namespace MyGame
         ////////////////////////////////////////////////////////////////////////
 
         //Metodo para Pausar o jogo
-        public static bool PAUSE = false;
+        public static bool PAUSE = false, GAMEOVER = false;
         private static DateTime lastPauseTime = DateTime.MinValue;
         public static void PauseGame()
         {
@@ -148,8 +150,11 @@ namespace MyGame
                 _hero.POSITION = new Vector2(1000, 1000); // Arruma a posição do heroi
                 _hero.HP += _hero.hpRegen; // Regenera Hp do heroi
 
-                await ExecutePythonScriptAsync(); // Executa a predição de perfil
-
+                if (_pentagram.gamearea > 1)
+                {
+                    await ExecutePythonScriptAsync(); // Executa a predição de perfil
+                    ProfileManager.UpdateEnemyProfileType(); // Seleciona o perfil de acordo com as contagens
+                }
                 _enemyManager.DeleteEnemies(); // Deleta os inimigos
                 ProjectileManager.DeleteAll(); // Deleta os projéteis
                 _soulManager.DeleteSouls(); // Delete as almas
@@ -168,6 +173,8 @@ namespace MyGame
                         _enemyManager.EnemyBatch(3);
                         break;
                 }
+
+
 
                 //Atualiza o gerenciador de colisões para as novas unidades
                 _collisionManager = new CollisionManager(_hero, _enemyManager.Enemies, _pentagram, _soulManager._souls);

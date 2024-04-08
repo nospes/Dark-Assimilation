@@ -6,7 +6,7 @@ public class enemySwarm : enemyBase
     private readonly AnimationManager _anims = new();   //Cria uma nova classe de animação
     private static Texture2D _textureIdle_blue, _textureIdle_green, _textureIdle_purple, _textureIdle_yellow, _textureHit_blue, _textureHit_green, _textureHit_purple, _textureHit_yellow, _textureAttack, _texturePreattack, _textureDeath_blue, _textureDeath_yellow, _textureDeath_purple, _textureDeath_green;  //Spritesheets
 
-    private int _colorselect;
+    private int _colorselect, reactionBonusSize;
 
 
     public enemySwarm(Vector2 pos)
@@ -54,7 +54,6 @@ public class enemySwarm : enemyBase
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
         POSITION = pos;
-        speed = 100f;
         scale = 2;
 
         //Definição inicial de origem e tamanho da caixa de colisão
@@ -64,22 +63,50 @@ public class enemySwarm : enemyBase
         origin = new(frameWidth / 2, frameHeight / 2); //Atribui o centro do frame X e Y a um vetor
 
         //Pré definição de atributos de combate e animação para evitar bugs
-        HP = 70;
-        DASHSTATE = false;
-        ATTACKSTATE = false;
-        PREATTACKSTATE = false;
-        DEATHSTATE = false;
-        INVULSTATE = false;
-        PREATTACKHITCD = false;
-        HEROATTACKPOS = Vector2.One;
-        ATTACKTYPE = 1;
-        ATTACKHITTIME = true;
-        enemydataType = 2;
-        ALERT = false;
-        SPAWN = true;
+
+        HP = 70; // Vida total
+        speed = 120f; // Velocidade base
+        DAMAGE = 10; // Dano causado com o corpo
+        reactionBonusSize = 0; // Bonus de alcance para ativar avanço
+        _attackhittimeduration = 2.3f; // CD entre causar dano com o corpo
+        _preattackcdduration = 2f; // CD do avanço
+        _preattackduration = 0.75f; // Duração do carregamento do avanço
+
+        DASHSTATE = false; //Estado Em avançõ
+        ATTACKSTATE = false; // Estado causando dano
+        PREATTACKSTATE = false; // Estado pré avanço
+        DEATHSTATE = false; // Estado Morte
+        INVULSTATE = false; // Estado Invulnerabilidade
+
+        PREATTACKHITCD = false; // Recarga do avanço
+        HEROATTACKPOS = Vector2.One; // Posição do heroi ao causar dano
+        ATTACKTYPE = 1; // Tipo de ataque
+        ATTACKHITTIME = true; // Pode causar dano
+
+        enemydataType = 2; // Tipo de inimigo convertido em int
+        ALERT = false; // Está em alerta 
+        SPAWN = true; // Está spawnado
 
         _colorselect = new Random().Next(1, 3);
 
+        switch (ProfileManager.enemyProfileType)
+        {
+            case 1: // Caso seja um player do tipo Berzerk
+                _attackhittimeduration = 1.8f;
+                speed = 145f;
+                break;
+            case 2: // Caso seja um player do tipo Balanced
+                HP = 90;
+                reactionBonusSize = 25;
+                _preattackduration = 0.55f;
+                break;
+            case 3:// Caso seja um player do tipo Strategist
+                _preattackcdduration = 1.5f;
+                reactionBonusSize = 75;
+                break;
+            default:
+                break;
+        }
     }
 
     //Função de calculo para caixas de colisão
@@ -89,14 +116,13 @@ public class enemySwarm : enemyBase
         int _left = (int)CENTER.X - (int)(basehitboxSize.X * scale) / 2; //Define limites de acordo com centro, parametros da hitbox e sprite
         int _top = (int)CENTER.Y - (int)(basehitboxSize.Y * scale) / 2; //Mesma coisa, porem verticalmente
 
-        int _reactionSize = 125 * scale;  //Tamanho da caixa de colisão
+        int _reactionSize = (200 + reactionBonusSize) * scale;  //Tamanho da caixa de colisão
 
         Vector2 _attackOffset1 = new Vector2(_left - 32, _top - 28); //Define a posição dos golpes utilizando dos limites pré-definidos e valores absolutos definidos pela animação
         Vector2 _attackOffset1M = new Vector2(_left - 114, _top - 28); //Versão espelhada
         Vector2 _attackOffset2 = new Vector2(_left - 80, _top); //Segunda parte do golpe
         Vector2 _attackOffset2M = new Vector2(_left - 114, _top); //Versão espelhada
-        Vector2 _attackSize1 = new Vector2(scale * 45, scale * 25); //Área definida de acordo com valores absolutos de animação e escalonamento de sprite
-        Vector2 _attackSize2 = new Vector2(scale * 54, scale * 20); //Segunda parte do golpe
+
 
         switch (boundType) //Alterna o tipo de colisão de acordo com o valor passado
         {
@@ -118,7 +144,7 @@ public class enemySwarm : enemyBase
     }
     public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
     {
-        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)+100); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2) + 100); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -133,16 +159,16 @@ public class enemySwarm : enemyBase
 
 
     //Variaveis para o temporizador entre pré-ataque e ataque (nesse caso avanço)
-    float _preattacktimer = 0f, _preattackduration = 1f;
+    float _preattacktimer = 0f, _preattackduration;
 
     //Variaveis para o temporizador entre ataques (nesse caso avanços)
-    float _preattackcdtimer = 0f, _preattackcdduration = 2f;
+    float _preattackcdtimer = 0f, _preattackcdduration;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
     //Variaveis entre janela de danos
-    float _attackhittimetimer = 0f, _attackhittimeduration = 2.5f;
+    float _attackhittimetimer = 0f, _attackhittimeduration;
 
     //Variavel para direção do avanço ao jogador
     Vector2 _dashdir;
@@ -164,16 +190,18 @@ public class enemySwarm : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
-            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if (!battleStats.firstHitReceived) battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _recoilingtimer = 0f; // Tempo de recuo
             PREATTACKSTATE = false; // Cancela o pré ataque e seu temporizador
             _preattacktimer = 0f; // Se ele estiver no fim de um pré ataque, restitue parte da recarga
             PREATTACKHITCD = true;
+            ATTACKHITTIME = false;
+            _attackhittimetimer = _attackhittimeduration * 0.8f; // Ao sofrer dano, coloca a janela de dano em um cd de 85% do valor padrão
             if (ATTACKSTATE) //Caso esteja avançando....
             {
                 ATTACKSTATE = false; //Cancela o avanço
-                _preattackcdtimer = 0.5f; //Caso esteja no meio de um avanço, restitue parte da recarga
+                _preattackcdtimer = _preattackcdduration * 0.5f; //Caso esteja no meio de um avanço, restitue 50% da recarga
                 _anims.Reset("swarm_Attack"); //Reinicia a animação de avanço
             }
 
@@ -242,7 +270,7 @@ public class enemySwarm : enemyBase
         }
         else if (ATTACKSTATE && !Recoling) //Ao entrar em estado de Ataque e caso não esteja recebendo Dano...
         {
-            int _dashspeed = 6; //Define velocidade do avanço
+            int _dashspeed = 8; //Define velocidade do avanço
             POSITION -= _dashdir * _dashspeed; //Avança na direção pré definida
         }
 
@@ -360,7 +388,7 @@ public class enemySwarm : enemyBase
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(POSITION, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror, 0, colorSet());
 
         //hitbox test
         //Rectangle Erect = GetBounds($"hitbox");

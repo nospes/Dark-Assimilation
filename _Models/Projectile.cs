@@ -11,6 +11,7 @@ public class Projectile
     public bool Homing, Friendly, enemyHited;
     public string ProjectileType;
     public float Scale, Rotation;
+    public int Damage;
 
     //Enemy Spell
     private static Texture2D _texturearrow, _texturedarkproj, _texturedarkspell;
@@ -30,6 +31,7 @@ public class Projectile
         Position = data.Position; // Posição
         Friendly = data.Friendly; // Se é um projetil do jogador ou não
         enemyHited = false; // Variavel para medir dano em inimigos 
+        Damage = data.Damage;
 
 
 

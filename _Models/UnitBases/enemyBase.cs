@@ -14,8 +14,9 @@ public interface enemyCollection
     //Atributos de indentificação, combate e posição
     int ID { get; set; }
     int HP { get; set; }
-    Vector2 CENTER { get; set; } 
-    Vector2 POSITION {get;set;}
+    int DAMAGE { get; set; }
+    Vector2 CENTER { get; set; }
+    Vector2 POSITION { get; set; }
     Vector2 HEROATTACKPOS { get; set; }
     bool ENEMYSKILL_LOCK { get; set; }
     bool ALERT { get; set; }
@@ -46,7 +47,7 @@ public abstract class enemyBase : enemyCollection
 {
     //Variaveis de posição e movimento e indentificação
     public int ID { get; set; }
-    public Vector2 POSITION {get; set;} //Posição
+    public Vector2 POSITION { get; set; } //Posição
     public Vector2 CENTER { get; set; } // Centro do inimigo
     public float speed;   //Velocidade
     public Vector2 _minPos, _maxPos; // Limites do mapa
@@ -58,6 +59,7 @@ public abstract class enemyBase : enemyCollection
     public int scale;//Tamanho
     public bool walkState; //Estado de 'andar', se for falso não entra no sprite de caminhada
     public bool actionstate; //Estado de ação, se está fazendo ações ele não anda
+    public Color color = Color.White;
 
 
     //Variaveis de estado, todas estão atreladas a interface, usados para acessar mais fácil certas condições dos inimigos
@@ -74,6 +76,7 @@ public abstract class enemyBase : enemyCollection
 
     //Variaveis de colisão e combate
     public int HP { get; set; } // Pontos de vida do inimigo
+    public int DAMAGE { get; set; } // Dano do inimigo
     public Vector2 HEROATTACKPOS { get; set; } //Posição do jogador ao acertar um golpe
     public Vector2 basehitboxSize; // Tamanho base do hitbox
     public Vector2 origin;   //Centro do frame atual no spritesheet
@@ -82,7 +85,20 @@ public abstract class enemyBase : enemyCollection
     public bool ALERT { get; set; } // Variavel usada para inimigos serem alertados por outros
 
 
-
+    protected Color colorSet()
+    {
+        switch (ProfileManager.enemyProfileType)
+        {
+            case 1:
+                return color = Color.OrangeRed;
+            case 2:
+                return color = Color.ForestGreen;
+            case 3:
+                return color = Color.SlateBlue;
+            default:
+                return color = Color.White;
+        }
+    }
 
     //Referencia-se as funções presentes dentro dos portadores dessa herança
     public abstract void Update(); //Função de update dos inimigos

@@ -7,6 +7,7 @@ public class enemyMage : enemyBase
     private static Texture2D _textureIdle, _textureHit, _textureWalk, _textureDeath, _textureAttack, _texturePreattack;  //Spritesheets
 
     private RandomGenerator spellChance;
+    private int castSpellChance;
 
     public enemyMage(Vector2 pos)
     {
@@ -29,7 +30,6 @@ public class enemyMage : enemyBase
 
         //Define a posição, velocidade e tamanho do sprite respectivamente
         POSITION = pos;
-        speed = 100f;
         scale = 3;
 
         //Definição inicial de origem e tamanho da caixa de colisão
@@ -40,17 +40,44 @@ public class enemyMage : enemyBase
 
         //Pré definição de atributos de combate e animação para evitar bugs
         HP = 110;
+        speed = 100f;
+        DAMAGE = 10; // Dano do projétil
+        _preattackcdduration = 1.25f; // CD entre ataques
+        castSpellChance = 50; // Tem 50% de chance de utilizar SLOW(dano fixo) caso contrário usa DARKPROJ
+
         DASHSTATE = false;
         ATTACKSTATE = false;
         PREATTACKSTATE = false;
         DEATHSTATE = false;
         INVULSTATE = false;
+
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+
         enemydataType = 4;
         ALERT = false;
         SPAWN = true;
+
+        
+        switch (ProfileManager.enemyProfileType)
+        {
+            case 1: // Caso seja um player do tipo Berzerk
+                castSpellChance = 70;
+                HP = 140;
+                break;
+            case 2: // Caso seja um player do tipo Balanced
+                DAMAGE = 20;
+                _preattackcdduration = 1f;
+                break;
+            case 3: // Caso seja um player do tipo Strategist
+                speed = 150f;
+                castSpellChance = 30;
+                break;
+            default: // Inimigo base; sem mudanças
+                break;
+        }
+
 
     }
 
@@ -66,7 +93,8 @@ public class enemyMage : enemyBase
             ProjectileType = "DarkProj",
             Scale = 1.75f,
             Speed = 300,
-            Friendly = false
+            Friendly = false,
+            Damage = DAMAGE
         };
         ProjectileManager.AddProjectile(pd);    // Adicionando o projétil ao gerenciador
         ENEMYSKILL_LOCK = false;    //Ao lançar o projétil ativa uma trava, impedindo que lance varios 
@@ -85,7 +113,8 @@ public class enemyMage : enemyBase
             ProjectileType = "DarkSpell",
             Scale = 2f,
             Speed = 0,
-            Friendly = false
+            Friendly = false,
+            Damage = 10
         };
         ProjectileData pd2 = new()
         {
@@ -96,7 +125,8 @@ public class enemyMage : enemyBase
             ProjectileType = "DarkSpell",
             Scale = 2f,
             Speed = 0,
-            Friendly = false
+            Friendly = false,
+            Damage = 10
         };
         ProjectileData pd3 = new()
         {
@@ -107,7 +137,8 @@ public class enemyMage : enemyBase
             ProjectileType = "DarkSpell",
             Scale = 2f,
             Speed = 0,
-            Friendly = false
+            Friendly = false,
+            Damage = 10
         };
         ProjectileData pd4 = new()
         {
@@ -118,7 +149,8 @@ public class enemyMage : enemyBase
             ProjectileType = "DarkSpell",
             Scale = 2f,
             Speed = 0,
-            Friendly = false
+            Friendly = false,
+            Damage = 10
         };
         ProjectileManager.AddProjectile(pd1); //Cria quatro projeteis na área de ação
         ProjectileManager.AddProjectile(pd2);
@@ -148,7 +180,7 @@ public class enemyMage : enemyBase
             case "hitbox":
                 //Caixa de colisão do monstro
                 //Com base nas coordenadas _Top e _Left cria um retangulo de tamanho pré-definido multiplicado pelo scale
-                return new Rectangle(_left+28, _top, (int)(basehitboxSize.X * scale)-60, (int)(basehitboxSize.Y * scale));
+                return new Rectangle(_left + 28, _top, (int)(basehitboxSize.X * scale) - 60, (int)(basehitboxSize.Y * scale));
             case "reactionbox":
                 //Caixa de colisão para Reação do monstro
                 return new Rectangle((int)CENTER.X - _reactionSize / 2, (int)CENTER.Y - _reactionSize / 2, _reactionSize, _reactionSize);
@@ -164,7 +196,7 @@ public class enemyMage : enemyBase
 
     public override void MapBounds(Point mapSize, Point tileSize) // Calcula bordas do mapa
     {
-        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2)-144); //Limite esquerda e cima (limites minimos)
+        _minPos = new((-tileSize.X / 2) - basehitboxSize.X * scale, (-tileSize.Y / 2) - 144); //Limite esquerda e cima (limites minimos)
         _maxPos = new(mapSize.X - (tileSize.X / 2) - CENTER.X - 120, mapSize.Y - (tileSize.X / 2) - CENTER.Y - 110); //Limite direita e baixo (limites minimos)
     }
 
@@ -185,7 +217,7 @@ public class enemyMage : enemyBase
     float _preattacktimer = 0f, _preattackduration = 0f;
 
     //Variaveis para o temporizador entre ataques
-    float _preattackcdtimer = 0f, _preattackcdduration = 1.25f;
+    float _preattackcdtimer = 0f, _preattackcdduration;
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
@@ -206,7 +238,7 @@ public class enemyMage : enemyBase
         //Marcador de contusão; caso inimigo receba dano ele fica invulneravel e recebe Knockback/Recoiling/Recuo, caso seja durante um pré-ataque ele reinicia a ação.
         if (INVULSTATE)
         {
-            if(!battleStats.firstHitReceived)battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
+            if (!battleStats.firstHitReceived) battleStats.MarkFirstHit(); // Inicia o contabilizador de tempo apartir do primeiro golpe recebido
             Recoling = true; //Recuo se torna verdadeiro
             _preattacktimer = 0f;
             _recoilingtimer = 0f;
@@ -238,7 +270,7 @@ public class enemyMage : enemyBase
         {
             Vector2 _knockbackdist;
             _knockbackdist = (Vector2.Normalize(CENTER - HEROATTACKPOS)) / 2; //define a direção do recuo, sendo ela contrária ao atacante
-            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y);; // Aplica o recuo apenas na horizontal
+            if (!ATTACKSTATE) POSITION = new Vector2(POSITION.X + _knockbackdist.X, POSITION.Y); ; // Aplica o recuo apenas na horizontal
             _recoilingtimer += (float)Globals.TotalSeconds; //Por X tempo
             if (_recoilingtimer >= _recoilingduration)
             {
@@ -264,9 +296,9 @@ public class enemyMage : enemyBase
         //Ao terminar a ação de ataque ativa a trava ENEMYSKILL_LOCK disparando uma magia com a função CastProj() ou CastSpell();
         if (ENEMYSKILL_LOCK)
         {
-            if(!ALERT) ALERT = true;
+            if (!ALERT) ALERT = true;
             spellChance = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
-            if (spellChance.NextInt(0, 100) > 45) CastProj();
+            if (spellChance.NextInt(0, 100) > castSpellChance) CastProj();
             else CastSkill();
 
         }
@@ -283,7 +315,7 @@ public class enemyMage : enemyBase
 
         //Define as animações de acordo com os estados
         if (HP <= 0) //Caso de morte
-        {  
+        {
             _anims.Update("necro_Death");
             battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
             await SerializeDataOnDeath();
@@ -335,8 +367,11 @@ public class enemyMage : enemyBase
         //Rectangle Erect = GetBounds($"reactionbox");
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
+
+
+
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(POSITION, scale, mirror);
+        _anims.Draw(POSITION, scale, mirror, 0, colorSet());
 
     }
 }
