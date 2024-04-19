@@ -17,33 +17,30 @@ namespace MyGame
 
         public void AddPrePositionSouls()
         {
-            // Define posições pré-determinadas
-            var positions = new List<Vector2>
+            // Inicializa o gerenciador de aleatoriedade
+            RandomGenerator randomGen = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
+
+            var positions = new List<Vector2> // Cria lista com posições fixas das almas
             {
-                new Vector2(363, 363),
+                new Vector2(1000, 300),
                 new Vector2(363, 1525),
-                new Vector2(1525, 363),
                 new Vector2(1525, 1525)
             };
 
-            var random = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
+            // Organiza a lista com ajuda do gerenciador de aleatoriedade
+            for (int i = positions.Count - 1; i > 0; i--)
+            {
+                int swapIndex = randomGen.NextInt(0, i + 1);
+                Vector2 temp = positions[i];
+                positions[i] = positions[swapIndex];
+                positions[swapIndex] = temp;
+            }
 
-            // Seleciona aleatoriamente posições para soul1_pos
-            int index1 = random.NextInt(0, positions.Count);
-            Vector2 soul1_pos = positions[index1];
-
-            // Remove a posição escolhida para garantir que não haja duplicação
-            positions.RemoveAt(index1);
-
-            // Seleciona aleatoriamente a posição da soul2_pos
-            int index2 = random.NextInt(0, positions.Count);
-            Vector2 soul2_pos = positions[index2];
-
-            // Adiciona as almas nas posições determinadas
+            // adiciona as almas usando as primeiras posições da lista
             lock (_souls)
             {
-                _souls.Add(new Soul(soul1_pos)); // Adiciona uma alma na primeira posição
-                _souls.Add(new Soul(soul2_pos)); // Adiciona uma alma na segunda posição
+                _souls.Add(new Soul(positions[0])); 
+                _souls.Add(new Soul(positions[1])); 
             }
         }
 
@@ -56,16 +53,16 @@ namespace MyGame
                     soul.Update(); // Atualiza Alma em jogo
                 }
 
-                // Remove Almas com tamanho maior que 0
+                // Remove Almas com tamanho menor que 0
                 _souls = _souls.Where(s => s.scale > 0).ToList();
             }
         }
 
-        public void DeleteSouls() 
+        public void DeleteSouls()
         {
             lock (_souls)
             {
-                _souls.RemoveAll(soul => soul.alive);//Delete almas em jogo
+                _souls.RemoveAll(soul => soul.alive);//Deleta almas em jogo
             }
         }
 

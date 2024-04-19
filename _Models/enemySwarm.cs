@@ -82,6 +82,7 @@ public class enemySwarm : enemyBase
         HEROATTACKPOS = Vector2.One; // Posição do heroi ao causar dano
         ATTACKTYPE = 1; // Tipo de ataque
         ATTACKHITTIME = true; // Pode causar dano
+        ENEMYPROJHIT = false;
 
         enemydataType = 2; // Tipo de inimigo convertido em int
         ALERT = false; // Está em alerta 
@@ -116,7 +117,7 @@ public class enemySwarm : enemyBase
         int _left = (int)CENTER.X - (int)(basehitboxSize.X * scale) / 2; //Define limites de acordo com centro, parametros da hitbox e sprite
         int _top = (int)CENTER.Y - (int)(basehitboxSize.Y * scale) / 2; //Mesma coisa, porem verticalmente
 
-        int _reactionSize = (200 + reactionBonusSize) * scale;  //Tamanho da caixa de colisão
+        int _reactionSize = (175 + reactionBonusSize) * scale;  //Tamanho da caixa de colisão
 
         Vector2 _attackOffset1 = new Vector2(_left - 32, _top - 28); //Define a posição dos golpes utilizando dos limites pré-definidos e valores absolutos definidos pela animação
         Vector2 _attackOffset1M = new Vector2(_left - 114, _top - 28); //Versão espelhada
@@ -257,6 +258,7 @@ public class enemySwarm : enemyBase
             if (_recoilingtimer >= _recoilingduration)
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
+                ENEMYPROJHIT = false;
                 _recoilingtimer = 0f;
             }
 

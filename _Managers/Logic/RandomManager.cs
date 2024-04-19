@@ -1,31 +1,31 @@
 namespace MyGame
 {
-    // A simple class to handle random number generation with seeds
+    // Uma classe simples para lidar com a geração de números aleatórios com sementes
     public class RandomGenerator
     {
         private Random _random;
 
-        // Constructor initializes the Random object with a seed
+        // O construtor inicializa o objeto Random com uma semente
         public RandomGenerator(int seed)
         {
             _random = new Random(seed);
         }
 
-        // Generate a random integer between min and max (inclusive)
+        // Gera um número inteiro aleatório entre min e max (inclusivo)
         public int NextInt(int min, int max)
         {
             return _random.Next(min, max);
         }
 
-        // Generate a random float between 0.0 and 1.0
+        // Gera um número flutuante aleatório entre 0.0 e 1.0
         public float NextFloat()
         {
-            // Random.NextDouble returns a double between 0.0 and 1.0
-            // Convert it to float before returning
+            // Random.NextDouble retorna um double entre 0.0 e 1.0
+            // Converte para float antes de retornar
             return (float)_random.NextDouble();
         }
 
-        // Static method to generate a seed from the current time
+        // Método estático para gerar uma semente a partir do horário atual
         public static int GenerateSeedFromCurrentTime()
         {
             return (int)DateTime.Now.Ticks;

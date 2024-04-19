@@ -17,6 +17,7 @@ namespace MyGame
 
         public void Init()
         {
+            ProjectileManager.DeleteAll();
 
             _map = new Map(); // Cria o mapa
 
@@ -33,10 +34,8 @@ namespace MyGame
 
             _hero.MapBounds(_map.MapSize, _map.TileSize); // Limites do mapa
 
-            _enemyManager.SpawnEnemy(new Vector2(1300, 1000), EnemyType.Mage); // Cria os primeiros spawns de inimigos
-            _enemyManager.SpawnEnemy(new Vector2(1575, 1200), EnemyType.Swarm);
-
-            _soulManager.AddSoul(new Vector2(1000, 1200));
+            _enemyManager.EnemyBatch(0); // Inimigos do estagio 0
+            _soulManager.AddPrePositionSouls(); // Adiciona almas no mapa
 
         }
 
@@ -66,7 +65,7 @@ namespace MyGame
                 CalculateTranslation();
                 _hero._heromatrix = _translation;
 
-                if(GAMEOVER) PauseGame();
+                //if(GAMEOVER || !Game1.GAMESTART) PauseGame();
             }
 
             // Ui's
@@ -141,10 +140,15 @@ namespace MyGame
             });
         }
 
+
         //Metodo para completar a mudança de fase
         public async void endChangeArea()
         {
-            if (_pentagram.gamearea > 3) Globals.Exitgame = true; // Termina o jogo ao chegar em certa fase
+            if (_pentagram.gamearea > 2)// Termina o jogo ao chegar em certa fase
+            {
+                _fadeEffectManager.StartFadeOut();
+                GameManager.GAMEOVER = true;
+            }
             else
             {
                 _hero.POSITION = new Vector2(1000, 1000); // Arruma a posição do heroi
@@ -167,10 +171,32 @@ namespace MyGame
                         _enemyManager.EnemyBatch(1);
                         break;
                     case 2:
-                        _enemyManager.EnemyBatch(2);
+                        switch (ProfileManager.enemyProfileType)
+                        {
+                            case 1:
+                                _enemyManager.EnemyBatch(2);
+                                break;
+                            case 2:
+                                _enemyManager.EnemyBatch(3);
+                                break;
+                            case 3:
+                                _enemyManager.EnemyBatch(4);
+                                break;
+                        }
                         break;
                     case 3:
-                        _enemyManager.EnemyBatch(3);
+                        switch (ProfileManager.enemyProfileType)
+                        {
+                            case 1:
+                                _enemyManager.EnemyBatch(3);
+                                break;
+                            case 2:
+                                _enemyManager.EnemyBatch(4);
+                                break;
+                            case 3:
+                                _enemyManager.EnemyBatch(2);
+                                break;
+                        }
                         break;
                 }
 

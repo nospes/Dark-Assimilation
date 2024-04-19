@@ -61,35 +61,49 @@ namespace MyGame
             _desktop.Render(); // Renderização da UI
         }
 
+
         public void UpdatePanelData() // Atualizar os dados do painel, selecionando Melhorias Aleatórias
         {
             var random = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
-            var selectedIndices = new HashSet<int>(); // Para acompanhar os índices de presets selecionados
-            int index;
+            var selectedIndices = new HashSet<int>(); // Para guardar os indices que ja foram selecionados
+            bool specialIndexUsed = false; // Para indicar se alguma magia ja foi selecionada na rolagem
+            int index; // Usado para guardar o resultado da função
 
-            // Selecionando um preset aleatório para o centerPanel
-            do
+            // Função para selecionar qual o aprimoramento do painel
+            int SelectIndex()
             {
-                index = random.NextInt(0, _presets.Count);
-            } while (!selectedIndices.Add(index)); // Tentativa de adicionar índice ao conjunto, loop se já estiver presente (não deve acontecer na primeira iteração)
+                int tempIndex;
+                do // Seleciona um aprimoramento até escolher um que NÃO foi usado nessa rolagem
+                {
+                    tempIndex = random.NextInt(0, _presets.Count);
+                } while (selectedIndices.Contains(tempIndex) || (specialIndexUsed && (tempIndex == 6 || tempIndex == 7 || tempIndex == 8)));
+
+                // Caso seja um aprimoramento desses indexes, que no caso são magias, ativa a trava para evitar que  se repitam entre si
+                if (tempIndex == 6 || tempIndex == 7 || tempIndex == 8)
+                {
+                    specialIndexUsed = true;
+                }
+
+                selectedIndices.Add(tempIndex); // adiciona o numero selecinado no index
+                return tempIndex;
+            }
+
+            // Selecionado preset para painel central
+            index = SelectIndex();
             ApplyPresetToPanel(_presets[index], centerPanel);
 
-            // Selecionando um preset aleatório para o leftPanel
-            do
-            {
-                index = random.NextInt(0, _presets.Count);
-            } while (!selectedIndices.Add(index));
+            // Selecionado preset para painel esquerdo
+            index = SelectIndex();
             ApplyPresetToPanel(_presets[index], leftPanel);
 
-            // Selecionando um preset aleatório para o rightPanel
-            do
-            {
-                index = random.NextInt(0, _presets.Count);
-            } while (!selectedIndices.Add(index));
+            // Selecionado preset para painel direito
+            index = SelectIndex();
             ApplyPresetToPanel(_presets[index], rightPanel);
 
-            selectedIndices.Clear(); // Limpar o índice de painéis selecionados para poder escolher neles na próxima atualização
+            // Limpa os idices para permitir que sejam selecionados novamente na proxima rolagem
+            selectedIndices.Clear();
         }
+
 
         public class PanelPreset // Elementos pré-definidos dos painéis
         {
@@ -201,6 +215,29 @@ namespace MyGame
                     Description = "- Improve attack speed/n- Reduces total cast animation",
                     ButtonAction = () => {UpgradeHero.Upgrade(6);}
                 },
+            new PanelPreset //Icicle
+                {
+                    Image = Globals.Content.Load<Texture2D>("UI/Icons/ICICLE_upgrade"),
+                    Title = "Base Spell",
+                    Description = "- Change spell to Icicle/n- Improve spell damage",
+                    ButtonAction = () => {UpgradeHero.Upgrade(7);}
+                },
+            new PanelPreset //Explosion Spell
+                {
+                    Image = Globals.Content.Load<Texture2D>("UI/Icons/EXPLOSION_upgrade"),
+                    Title = "Explosion Spell",
+                    Description = "- Change spell to Explosion/n- Improve spell damage",
+                    ButtonAction = () => {UpgradeHero.Upgrade(8);}
+                },
+            new PanelPreset //Thunder Spell
+                {
+                    Image = Globals.Content.Load<Texture2D>("UI/Icons/THUNDER_upgrade"),
+                    Title = "Lightning Spell",
+                    Description = "- Change spell to Lightning/n- Improve spell damage",
+                    ButtonAction = () => {UpgradeHero.Upgrade(9);}
+                },
+
+
         };
 
         public class UpgradeHero // Função onde os Botões no Painel aplicam as Mudanças no herói E fecham a UI de Melhorias
@@ -234,13 +271,24 @@ namespace MyGame
                         _hero.hpRegen += 10;
                         break;
                     case 5://Spell Upgrade
-                        _hero.skillTotalCD -= 0.4f;
-                        if (_hero.skillTotalCD == 3.6f) _hero.spellTier = 2;
-                        if (_hero.skillTotalCD == 3.2f) _hero.spellTier = 3;
+                        _hero.spellTier += 1;
+                        _hero.skillTotalCD -= 0.3f;
                         break;
                     case 6://Attack Speed Upgrade
                         _hero.atkSpeed -= 0.005f;
                         _hero.castSpeed -= 0.005f;
+                        break;
+                    case 7:
+                        _hero.spellType = "IceProj";
+                        _hero.heroSpelldmg += 6;
+                        break;
+                    case 8:
+                        _hero.spellType = "Explosion";
+                        _hero.heroSpelldmg += 6;
+                        break;
+                    case 9:
+                        _hero.spellType = "ThunderStrike";
+                        _hero.heroSpelldmg += 6;
                         break;
                 }
                 Soul.UPGRADEMENU = false; // Fecha o menu de aprimoramento

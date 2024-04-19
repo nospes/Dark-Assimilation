@@ -11,6 +11,6 @@ public sealed class ProjectileData
     public bool Homing { get; set; } //Se é um projétil perseguidor
     public bool Friendly {get; set;} //Se é do jogador
     public string ProjectileType { get; set; } //O tipo de projétil
-    public int Damage {get; set;}
+    public int Damage {get; set;} // Dano do projétil
 
 }

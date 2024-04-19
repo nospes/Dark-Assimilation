@@ -156,66 +156,79 @@ namespace MyGame
         {
             var pos1 = 363;
             var pos2 = 1525;
+            var pos3 = new Vector2(1000, 300);
 
             switch (spawnType)
             {
-                case 1:
-                    SpawnEnemy(new Vector2(pos1, pos1), EnemyType.Skeleton);
-                    SpawnEnemy(new Vector2(pos1, pos1), EnemyType.Archer);
-                    SpawnEnemy(new Vector2(pos1, pos1), EnemyType.Swarm);
+                case 0: // Fase 1
+                    SpawnEnemy(pos3, EnemyType.Skeleton);
+                    SpawnEnemy(pos3, EnemyType.Swarm);
 
-                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Skeleton);
-                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Mage);
                     SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Swarm);
-
-                    SpawnEnemy(new Vector2(pos2, pos1), EnemyType.Mage);
-                    SpawnEnemy(new Vector2(pos2, pos1 + 100), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2 + 75, pos1 + 100), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2 - 75, pos1 + 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos1 - 100, pos2 - 100), EnemyType.Mage);
 
                     SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Archer);
                     SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Mage);
                     break;
-                case 2:
-                    SpawnEnemy(new Vector2(pos1, pos1), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos1 - 12, pos1 + 50), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos1 - 73, pos1 + 132), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos1 + 125, pos1 + 50), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos1 + 173, pos1 + 87), EnemyType.Swarm);
+                case 1: // Fase 2
+                    SpawnEnemy(pos3, EnemyType.Skeleton);
+                    SpawnEnemy(pos3, EnemyType.Archer);
+                    SpawnEnemy(pos3, EnemyType.Swarm);
 
-                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos1 + 100, pos2 + 50), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos1 - 50, pos2 - 50), EnemyType.Swarm);
                     SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Skeleton);
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Mage);
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Swarm);
 
-                    SpawnEnemy(new Vector2(pos2, pos1), EnemyType.Archer);
-                    SpawnEnemy(new Vector2(pos2 - 50, pos1 + 25), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2, pos1), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2 + 100, pos1), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 - 100, pos2 - 100), EnemyType.Mage);
+                    SpawnEnemy(new Vector2(pos2, pos2 + 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 + 75, pos2 + 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 - 75, pos2 + 100), EnemyType.Swarm);
+                    break;
+                case 2: // Variação 1
+                    SpawnEnemy(pos3, EnemyType.Archer);
+                    SpawnEnemy(pos3, EnemyType.Skeleton);
+                    SpawnEnemy(new Vector2(pos3.X + 50, pos3.Y + 25), EnemyType.Archer);
 
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Skeleton);
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Mage);
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos1 + 50, pos2 + 25), EnemyType.Swarm);
+
+                    SpawnEnemy(new Vector2(pos2 + 40, pos2), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 - 40, pos2), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2, pos2 + 40), EnemyType.Archer);
+                    SpawnEnemy(new Vector2(pos2 - 100, pos2 - 100), EnemyType.Mage);
+                    break;
+                case 3: // Variação 2
+                    SpawnEnemy(pos3, EnemyType.Skeleton);
+                    SpawnEnemy(pos3, EnemyType.Mage);
+                    SpawnEnemy(new Vector2(pos3.X + 50, pos3.Y + 25), EnemyType.Skeleton);
+
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Skeleton);
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos1 - 50, pos2 - 50), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos1 - 100, pos2 - 100), EnemyType.Mage);
+
+                    SpawnEnemy(new Vector2(pos2 - 100, pos2 - 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 - 50, pos2 - 50), EnemyType.Swarm);
                     SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2 + 100, pos2 - 35), EnemyType.Skeleton);
                     SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Skeleton);
                     break;
-                case 3:
-                    SpawnEnemy(new Vector2(pos1, pos1), EnemyType.Archer);
-                    SpawnEnemy(new Vector2(pos1 + 100, pos1 - 100), EnemyType.Archer);
-                    SpawnEnemy(new Vector2(pos1 + 50, pos1), EnemyType.Swarm);
+                case 4: // Variação 3
+                    SpawnEnemy(pos3, EnemyType.Skeleton);
+                    SpawnEnemy(pos3, EnemyType.Archer);
+                    SpawnEnemy(pos3, EnemyType.Mage);
 
-
+                    SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Archer);
                     SpawnEnemy(new Vector2(pos1, pos2), EnemyType.Mage);
-                    SpawnEnemy(new Vector2(pos1 + 100, pos2 - 100), EnemyType.Mage);
-                    SpawnEnemy(new Vector2(pos1 + 42, pos2 - 32), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos1 + 25, pos2), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos1 - 25, pos2), EnemyType.Swarm);
 
-                    SpawnEnemy(new Vector2(pos2, pos1), EnemyType.Skeleton);
-                    SpawnEnemy(new Vector2(pos2 + 50, pos1 - 50), EnemyType.Archer);
-                    SpawnEnemy(new Vector2(pos2 + 42, pos1 - 32), EnemyType.Swarm);
-                    SpawnEnemy(new Vector2(pos2 - 42, pos1 + 32), EnemyType.Swarm);
-
-                    SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Skeleton);
-                    SpawnEnemy(new Vector2(pos2 + 50, pos2 - 50), EnemyType.Archer);
-                    SpawnEnemy(new Vector2(pos2, pos2), EnemyType.Mage);
+                    SpawnEnemy(new Vector2(pos2 + 100, pos2), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 + 75, pos2 + 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 - 75, pos2 + 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 + 75, pos2 - 100), EnemyType.Swarm);
+                    SpawnEnemy(new Vector2(pos2 - 75, pos2 - 100), EnemyType.Swarm);
                     break;
             }
         }

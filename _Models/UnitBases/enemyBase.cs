@@ -20,6 +20,7 @@ public interface enemyCollection
     Vector2 HEROATTACKPOS { get; set; }
     bool ENEMYSKILL_LOCK { get; set; }
     bool ALERT { get; set; }
+    bool ENEMYPROJHIT { get; set;}
     //Estados
     MovementAI MoveAI { get; set; }
     bool DEATHSTATE { get; set; }
@@ -29,6 +30,7 @@ public interface enemyCollection
     int ATTACKTYPE { get; set; }
     bool DASHSTATE { get; set; }
     bool SPAWN { get; set; }
+
     //Temporizadores
     bool ATTACKHITTIME { get; set; }
     bool PREATTACKHITCD { get; set; }
@@ -72,6 +74,7 @@ public abstract class enemyBase : enemyCollection
     public bool PREATTACKHITCD { get; set; }//Trava para tempo de recarga entre ataques
     public bool DASHSTATE { get; set; }//Estado de Avanço - Presente em alguns inimigos
     public bool SPAWN { get; set; } //Se o inimigo está Spawnado
+    public bool ENEMYPROJHIT { get; set; } // Se foi afetado por um projétil em campo
 
 
     //Variaveis de colisão e combate
@@ -92,7 +95,7 @@ public abstract class enemyBase : enemyCollection
             case 1:
                 return color = Color.OrangeRed;
             case 2:
-                return color = Color.ForestGreen;
+                return color = Color.GreenYellow;
             case 3:
                 return color = Color.SlateBlue;
             default:

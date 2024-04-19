@@ -45,12 +45,12 @@ public class Pentagram
 
     public void Update()
     {
-        if (gamearea == 0 && enemyCount >= 1) // Fase 1 > 2
+        if (gamearea == 0 && enemyCount >= 3) // Fase 1 > 2
         {
             _anims.Update("pentagram_on");
             teleportON = true;
         }
-        else if (gamearea == 1 && enemyCount >= 4) // Fase 2 > 3 
+        else if (gamearea == 1 && enemyCount >= 5) // Fase 2 > 3 
         {
             _anims.Update("pentagram_on");
             teleportON = true;
@@ -60,7 +60,7 @@ public class Pentagram
             _anims.Update("pentagram_on");
             teleportON = true;
         }
-        else if (gamearea == 3 && enemyCount >= 8) // Fase 4 > FIM
+        else if (gamearea == 3 && enemyCount >= 7) // Fase 4 > FIM
         {
             _anims.Update("pentagram_on");
             teleportON = true;

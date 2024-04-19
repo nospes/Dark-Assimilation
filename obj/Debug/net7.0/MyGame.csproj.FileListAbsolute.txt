@@ -121,3 +121,13 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Myra.dll
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\StbImageSharp.dll
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\StbTrueTypeSharp.dll
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\XNAssets.MonoGame.dll
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Logo.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells\spell_explosion_cast.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells\spell_explosion_casted.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells\spell_explosion_end.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells\spell_thunder_cast.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells\spell_thunder_casted.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells\spell_thunder_end.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Icons\EXPLOSION_upgrade.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Icons\ICICLE_UPGRADE.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Icons\THUNDER_upgrade.xnb

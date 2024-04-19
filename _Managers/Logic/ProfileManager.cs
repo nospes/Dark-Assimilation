@@ -55,6 +55,7 @@ public static class ProfileManager
         aggressiveCount = 0;
         balancedCount = 0;
         evasiveCount = 0;
+        enemyProfileType = 0;
     }
 
     

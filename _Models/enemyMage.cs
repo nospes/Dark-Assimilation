@@ -54,6 +54,7 @@ public class enemyMage : enemyBase
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+        ENEMYPROJHIT = false;
 
         enemydataType = 4;
         ALERT = false;
@@ -275,6 +276,7 @@ public class enemyMage : enemyBase
             if (_recoilingtimer >= _recoilingduration)
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
+                ENEMYPROJHIT = false;
                 _recoilingtimer = 0f;
             }
 

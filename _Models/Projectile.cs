@@ -12,11 +12,14 @@ public class Projectile
     public string ProjectileType;
     public float Scale, Rotation;
     public int Damage;
+    
 
     //Enemy Spell
     private static Texture2D _texturearrow, _texturedarkproj, _texturedarkspell;
     //Player Spell
-    private static Texture2D _texture_icespell_cast, _texture_icespell_proj, _texture_icespell_hit;
+    private static Texture2D _texture_iceSpell_cast, _texture_iceSpell_proj, _texture_iceSpell_hit;
+    private static Texture2D _texture_thunderSpell_cast, _texture_thunderSpell_casted, _texture_thunderSpell_end;
+    private static Texture2D _texture_fireSpell_cast, _texture_fireSpell_casted, _texture_fireSpell_end;
 
 
     public Projectile(ProjectileData data)
@@ -30,8 +33,8 @@ public class Projectile
         Direction = data.Direction; //Direção do projétil
         Position = data.Position; // Posição
         Friendly = data.Friendly; // Se é um projetil do jogador ou não
-        enemyHited = false; // Variavel para medir dano em inimigos 
-        Damage = data.Damage;
+        enemyHited = false; // Variavel para medir colisão em inimigos 
+        Damage = data.Damage; // Dano do projétil
 
 
 
@@ -56,14 +59,34 @@ public class Projectile
             _anims.AddAnimation("darkspell_spr", new(_texturedarkspell, 16, 1, 0.3f));
         }
 
-        if (!_anims.ContainsAnimation("icespell_cast"))
+        if (!_anims.ContainsAnimation("iceSpell_cast"))
         {
-            _texture_icespell_cast ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_ice_cast");
-            _texture_icespell_proj ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_ice_proj");
-            _texture_icespell_hit ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_ice_hit");
-            _anims.AddAnimation("icespell_cast", new(_texture_icespell_cast, 3, 1, 0.1f));
-            _anims.AddAnimation("icespell_proj", new(_texture_icespell_proj, 10, 1, 0.1f));
-            _anims.AddAnimation("icespell_hit", new(_texture_icespell_hit, 7, 1, 0.1f));
+            _texture_iceSpell_cast ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_ice_cast");
+            _texture_iceSpell_proj ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_ice_proj");
+            _texture_iceSpell_hit ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_ice_hit");
+            _anims.AddAnimation("iceSpell_cast", new(_texture_iceSpell_cast, 3, 1, 0.1f));
+            _anims.AddAnimation("iceSpell_proj", new(_texture_iceSpell_proj, 10, 1, 0.1f));
+            _anims.AddAnimation("iceSpell_hit", new(_texture_iceSpell_hit, 7, 1, 0.1f));
+        }
+
+        if (!_anims.ContainsAnimation("thunderSpell_cast"))
+        {
+            _texture_thunderSpell_cast ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_thunder_cast");
+            _texture_thunderSpell_casted ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_thunder_casted");
+            _texture_thunderSpell_end ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_thunder_end");
+            _anims.AddAnimation("thunderSpell_cast", new(_texture_thunderSpell_cast, 5, 1, 0.4f));
+            _anims.AddAnimation("thunderSpell_casted", new(_texture_thunderSpell_casted, 4, 1, 0.4f));
+            _anims.AddAnimation("thunderSpell_end", new(_texture_thunderSpell_end, 4, 1, 0.4f));
+        }
+
+        if (!_anims.ContainsAnimation("fireSpell_cast"))
+        {
+            _texture_fireSpell_cast ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_explosion_cast");
+            _texture_fireSpell_casted ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_explosion_casted");
+            _texture_fireSpell_end ??= Globals.Content.Load<Texture2D>("Player/Spells/spell_explosion_end");
+            _anims.AddAnimation("fireSpell_cast", new(_texture_fireSpell_cast, 7, 1, 0.1f));
+            _anims.AddAnimation("fireSpell_casted", new(_texture_fireSpell_casted, 7, 1, 0.1f));
+            _anims.AddAnimation("fireSpell_end", new(_texture_fireSpell_end, 4, 1, 0.1f));
         }
 
     }
@@ -101,6 +124,12 @@ public class Projectile
                 return new Rectangle((int)Position.X - 14, (int)Position.Y - 12, 28, 28);
             case "IceProj":
                 return new Rectangle((int)Position.X - 8, (int)Position.Y - 8, 16, 16);
+            case "ThunderStrike":
+                if (Lifespan < 0.6 && Lifespan > 0.3) return new Rectangle((int)Position.X - 32, (int)Position.Y, 64, 64);
+                else return new Rectangle(0, 0, 0, 0); ;
+            case "Explosion":
+                if (Lifespan < 1 && Lifespan > 0.3) return new Rectangle((int)Position.X - (int)(20*Scale), (int)(Position.Y-12*Scale), (int)(40*Scale), (int)(32*Scale));
+                else return new Rectangle(0, 0, 0, 0); ;
             default:
                 throw new InvalidOperationException($"Tipo de caixa de colisão desconhecido: {ProjectileType}");
         }
@@ -124,12 +153,53 @@ public class Projectile
                     _anims.Update("darkprojEnd_spr"); //Começa animação de fim
                     speed = 0; //Tira velocidade do projétil
                 }
-                if(Lifespan <= 0.1)_anims.Reset("darkprojEnd_spr");
+                if (Lifespan <= 0.1) _anims.Reset("darkprojEnd_spr");
                 break;
             case "IceProj":
-                _anims.Update("icespell_proj");
-                if (Lifespan < 0.5) { _anims.Update("icespell_hit"); speed = 0; }
-                else _anims.Reset("icespell_hit");
+                _anims.Update("iceSpell_proj");
+                if (Lifespan < 0.5) { _anims.Update("iceSpell_hit"); speed = 0; }
+                else _anims.Reset("iceSpell_hit");
+                break;
+            case "ThunderStrike":
+                if (Lifespan > 1) _anims.Reset("thunderSpell_end");
+
+                _anims.Update("thunderSpell_cast");
+
+                if (Lifespan < 0.6f)
+                {
+                    _anims.Update("thunderSpell_casted");
+                }
+
+                if (Lifespan < 0.3f)
+                {
+                    _anims.Update("thunderSpell_end");
+                }
+
+                if (Lifespan <= 0.1f)
+                {
+                    _anims.Reset("thunderSpell_casted");
+                    _anims.Reset("thunderSpell_cast");
+                }
+                break;
+            case "Explosion":
+                if (Lifespan > 1) _anims.Reset("fireSpell_end");
+
+                _anims.Update("fireSpell_cast");
+
+                if (Lifespan < 1f)
+                {
+                    _anims.Update("fireSpell_casted");
+                }
+                if (Lifespan < 0.3f)
+                {
+                    _anims.Update("fireSpell_end");
+                }
+                if (Lifespan <= 0.1f)
+                {
+                    _anims.Reset("fireSpell_cast");
+                    _anims.Reset("fireSpell_casted");
+                }
+
                 break;
             default:
                 throw new InvalidOperationException($"Tipo de projétil desconhecido: {ProjectileType}"); ;

@@ -51,6 +51,7 @@ public class enemyArcher : enemyBase
         PREATTACKSTATE = false;
         DEATHSTATE = false;
         INVULSTATE = false;
+        ENEMYPROJHIT = false;
 
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
@@ -81,7 +82,6 @@ public class enemyArcher : enemyBase
 
         }
 
-        Console.WriteLine(ProfileManager.enemyProfileType);
 
     }
 
@@ -226,6 +226,7 @@ public class enemyArcher : enemyBase
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
                 _recoilingtimer = 0f;
+                ENEMYPROJHIT = false;
                 if (!_dashcdlock) DASHSTATE = true; //Entra em modo de dash após receber dano
             }
         }

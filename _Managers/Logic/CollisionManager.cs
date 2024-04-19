@@ -83,24 +83,28 @@ namespace MyGame
                         if (_projetil.Friendly)
                         {
                             Rectangle _projectileBounds = _projetil.GetBounds(); // hitbox dos inimigos
-                            if (_projectileBounds.Intersects(_enemybounds) && !_inimigo.DEATHSTATE) // Caso entre em contato com HITBOX inimiga...
+                            if (_projectileBounds.Intersects(_enemybounds) && !_inimigo.DEATHSTATE && !_inimigo.ENEMYPROJHIT && !_projetil.enemyHited) // Caso entre em contato com HITBOX inimiga, não esteja morto, não tenha levado dano mágico...
                             {
-                                if (!_projetil.enemyHited)
-                                {
-                                    critHit = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
-                                    if (critHit.NextInt(0, 100) < _hero.critChance / 2) // Calculo de critico
-                                    {
-                                        var totaldmg = Math.Round(_hero.heroSpelldmg * _hero.critMult);
-                                        _inimigo.HP -= (int)totaldmg;
-                                    }
-                                    else _inimigo.HP -= _hero.heroSpelldmg;
 
-                                    _projetil.enemyHited = true; // Evita que o mesmo projetil causa dano mais de uma vez
-                                    _inimigo.HEROATTACKPOS = _hero.CENTER; // Posição do heroi para o knockback inimigo
-                                    _inimigo.SetInvulnerableTemporarily(300); // Ivulnerabilidade do inimigo
-                                    _projetil.Lifespan = 0.5f; // Ativa a animação de 'morte' do projétil
-                                    _inimigo.ALERT = true; // Alerta o inimigo
+                                critHit = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
+                                if (critHit.NextInt(0, 100) < _hero.critChance / 2) // Calculo de critico
+                                {
+                                    var totaldmg = Math.Round(_hero.heroSpelldmg * _hero.critMult);
+                                    _inimigo.HP -= (int)totaldmg;
                                 }
+                                else _inimigo.HP -= _hero.heroSpelldmg;
+
+
+                                _inimigo.HEROATTACKPOS = _hero.CENTER; // Posição do heroi para o knockback inimigo
+                                _inimigo.SetInvulnerableTemporarily(300); // Ivulnerabilidade do inimigo
+                                _inimigo.ENEMYPROJHIT = true;
+                                if (_projetil.ProjectileType == "IceProj")
+                                {
+                                    _projetil.Lifespan = 0.5f; // Dissipa o projetil caso seja uma magia de gelo
+                                    _projetil.enemyHited = true; // impede que ela cause dano
+                                }; 
+                                _inimigo.ALERT = true; // Alerta o inimigo
+
 
                             }
                         }

@@ -59,9 +59,15 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Hurt.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/hero.Run.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_explosion_cast.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_explosion_casted.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_explosion_end.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_cast.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_hit.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_ice_proj.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_thunder_cast.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_thunder_casted.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Player/Spells/spell_thunder_end.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/baseFont.spritefont</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/border_UI.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/A.png</File>
@@ -74,12 +80,26 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Buttons/W.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/CRIT_upgrade.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/DMG_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/EXPLOSION_upgrade.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/FIERCE_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/ICICLE_UPGRADE.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/SPEED_upgrade.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/SPELL_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/THUNDER_upgrade.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Icons/VIT_upgrade.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Logo.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

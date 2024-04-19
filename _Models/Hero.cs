@@ -26,7 +26,10 @@ public class Hero
     //Atributos de combate
     public int HP, heroAAdmg, heroSpelldmg, baseSpeed, spellTier, hpRegen; //Vida
     public float atkSpeed, castSpeed, dashTotalCD, critChance, critMult, skillTotalCD;
+    public string spellType;
+
     public static Vector2 lastHitpos; //Guarda posição do ultimo inimigo que acertou o heroi, utilizado no calculo de Knockback
+
 
     //Gerenciadores de tempo de recarga
     public static SkillManager dashCD, skillCD, attackCD; //Gerenciadores
@@ -53,9 +56,10 @@ public class Hero
         atkSpeed = 0.075f;
         castSpeed = 0.06f;
         spellTier = 1;
-        skillTotalCD = 4f;
+        skillTotalCD = 4f; // cd base de 4 segundos
         critChance = 5f;
         critMult = 1.4f;
+        spellType = "IceProj";
 
         //Definindo texturas
         _textureIdle ??= Globals.Content.Load<Texture2D>("Player/hero.Idle");
@@ -180,58 +184,152 @@ public class Hero
             mousePosition = Vector2.Transform(mousePosition, Matrix.Invert(_heromatrix));
             // Calcula a direção do centro do herói até a posição do mouse
             Vector2 direction = mousePosition - CENTER;
+
             // Normaliza o vetor caso não seja Vector.Zero
             if (direction != Vector2.Zero)
             {
                 direction.Normalize();
             }
-
-            if (spellTier >= 1)
+            if (spellType == "IceProj")
             {
-                //Definindo atributos do projétil
+                if (spellTier >= 1)
+                {
+                    //Definindo atributos do projétil
+                    ProjectileData pd = new()
+                    {
+                        Position = CENTER,
+                        Direction = direction,
+                        Lifespan = 3,
+                        Homing = false,
+                        ProjectileType = spellType,
+                        Scale = 1.75f,
+                        Speed = 300,
+                        Friendly = true
+                    };
+                    ProjectileManager.AddProjectile(pd);// Adicionando o projétil ao gerenciado
+                }
+                if (spellTier >= 2)
+                {
+                    ProjectileData pd2 = new()
+                    {
+                        Position = CENTER,
+                        Direction = RotateVector(direction, -angleOffset),
+                        Lifespan = 3,
+                        Homing = false,
+                        ProjectileType = spellType,
+                        Scale = 1.75f,
+                        Speed = 300,
+                        Friendly = true
+                    };
+                    ProjectileManager.AddProjectile(pd2);// Adicionando o projétil ao gerenciado
+                }
+                if (spellTier >= 3)
+                {
+                    //Definindo atributos do projétil
+                    ProjectileData pd3 = new()
+                    {
+                        Position = CENTER,
+                        Direction = RotateVector(direction, angleOffset),
+                        Lifespan = 3,
+                        Homing = false,
+                        ProjectileType = spellType,
+                        Scale = 1.75f,
+                        Speed = 300,
+                        Friendly = true
+                    };
+                    ProjectileManager.AddProjectile(pd3);// Adicionando o projétil ao gerenciado
+                }
+            }
+            else if (spellType == "ThunderStrike")
+            {
+                float[] ranges = { 125, 225, 325, 425 };  // Alcance dos raios
+                Vector2[] thunderPositions = new Vector2[ranges.Length];  // Array com posições dos raios
+                Vector2 directionToMouse = Vector2.Normalize(mousePosition - CENTER); // Posição do Mouse
+
+                int offsetMagnitude = 100 - (spellTier * 20); // Define a aleatoriedade de acordo com spelltier
+                offsetMagnitude = Math.Max(offsetMagnitude, 20); // Garante que o minimo seja 20
+
+                for (int i = 0; i < ranges.Length; i++)
+                {
+                    float randomDirectionOffset = rnd.Next(-offsetMagnitude, offsetMagnitude); // Cria aleatoriedade de acordo com o spellTier
+                    Vector2 randomDirectionPosition = new Vector2(randomDirectionOffset, randomDirectionOffset); // coloca os numeros em um Vetor
+                    thunderPositions[i] = (CENTER + directionToMouse * ranges[i]) + randomDirectionPosition; // Aplica essa diferença na posição do raio
+                }
+
+
                 ProjectileData pd = new()
                 {
-                    Position = CENTER,
-                    Direction = direction,
-                    Lifespan = 3,
+                    Position = thunderPositions[0],
+                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
+                    Lifespan = 1.1f,
                     Homing = false,
-                    ProjectileType = "IceProj",
-                    Scale = 1.75f,
-                    Speed = 300,
+                    ProjectileType = spellType,
+                    Scale = 2f,
+                    Speed = 0,
                     Friendly = true
                 };
-                ProjectileManager.AddProjectile(pd);// Adicionando o projétil ao gerenciado
-            }
-            if (spellTier >= 2)
-            {
+
                 ProjectileData pd2 = new()
                 {
-                    Position = CENTER,
-                    Direction = RotateVector(direction, -angleOffset),
-                    Lifespan = 3,
+                    Position = thunderPositions[1],
+                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
+                    Lifespan = 1.1f,
                     Homing = false,
-                    ProjectileType = "IceProj",
-                    Scale = 1.75f,
-                    Speed = 300,
+                    ProjectileType = spellType,
+                    Scale = 2f,
+                    Speed = 0,
                     Friendly = true
                 };
-                ProjectileManager.AddProjectile(pd2);// Adicionando o projétil ao gerenciado
-            }
-            if (spellTier >= 3)
-            {
-                //Definindo atributos do projétil
+
                 ProjectileData pd3 = new()
                 {
-                    Position = CENTER,
-                    Direction = RotateVector(direction, angleOffset),
-                    Lifespan = 3,
+                    Position = thunderPositions[2],
+                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
+                    Lifespan = 1.1f,
                     Homing = false,
-                    ProjectileType = "IceProj",
-                    Scale = 1.75f,
-                    Speed = 300,
+                    ProjectileType = spellType,
+                    Scale = 2f,
+                    Speed = 0,
                     Friendly = true
                 };
-                ProjectileManager.AddProjectile(pd3);// Adicionando o projétil ao gerenciado
+
+                ProjectileData pd4 = new()
+                {
+                    Position = thunderPositions[3],
+                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
+                    Lifespan = 1.1f,
+                    Homing = false,
+                    ProjectileType = spellType,
+                    Scale = 2f,
+                    Speed = 0,
+                    Friendly = true
+                };
+
+
+                ProjectileManager.AddProjectile(pd);
+                ProjectileManager.AddProjectile(pd2);
+                ProjectileManager.AddProjectile(pd3);
+                ProjectileManager.AddProjectile(pd4);
+
+            }
+            else if (spellType == "Explosion")
+            {
+
+                // Calculate the direction from the hero's center to the mouse position
+
+
+                ProjectileData pd = new()
+                {
+                    Position = mousePosition,
+                    Direction = RotateVector(mousePosition, angleOffset * (1)),
+                    Lifespan = 1.7f,
+                    Homing = false,
+                    ProjectileType = spellType,
+                    Scale = Math.Min(spellTier+1, 4),
+                    Speed = 0,
+                    Friendly = true,
+                };
+                ProjectileManager.AddProjectile(pd);
             }
             CASTLOCK = true;
         }
@@ -428,7 +526,7 @@ public class Hero
     public void Draw()
     {
 
-
+        //Console.WriteLine(POSITION);
         //hitbox check
         //Rectangle rect = AttackBounds();
         //if (ATTACKHITTIME) Globals.SpriteBatch.Draw(Game1.pixel, rect, Color.Red);
@@ -455,7 +553,7 @@ public class Hero
         if (textpos.X < -60) textpos.X = -60;
         if (textpos.Y < -60) textpos.Y = -60;
         if (textpos.X > 820) textpos.X = 820;
-        if (textpos.Y > 1400) textpos.Y = 1400;
+        if (textpos.Y > 1375) textpos.Y = 1375;
         //MOSTRA HP
         Globals.SpriteBatch.DrawString(font, "HP: " + HP.ToString(), textpos, Color.Red, 0, Vector2.Zero, 2f, SpriteEffects.None, 0);
         //MOSTRA O FPS
@@ -474,24 +572,17 @@ public class Hero
     int fps = 0;
     public void FpsCounter()
     {
-        // Increase frame count
         frameCount++;
 
-        // Increase elapsed time
         elapsedTime += Globals.TotalSeconds;
 
-        // If one second has passed
         if (elapsedTime >= 1.0)
         {
-            // Update FPS value to match the number of frames rendered in the last second
             fps = frameCount;
-
-            // Reset for the next second
             frameCount = 0;
             elapsedTime = 0;
         }
 
-        // Other game update logic...
     }
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

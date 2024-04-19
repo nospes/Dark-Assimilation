@@ -10,6 +10,8 @@ public class Game1 : Game
     public static Texture2D pixel;
     private UpgradeManagerUI _upgradeManager;
     private ProfileChartsManager _profileChartsManager;
+    private MainMenu _mainmenu;
+    public static bool GAMESTART = false, GAMEEXIT = false;
 
 
     public Game1()
@@ -32,8 +34,13 @@ public class Game1 : Game
 
         Globals.Content = Content;
 
+        PythonBridge.ClearJsonData("All");
+        ProfileManager.ClearCounts();
+
         _gameManager = new();
         _gameManager.Init();
+        GameManager.PauseGame();
+
 
 
         base.Initialize();
@@ -47,6 +54,7 @@ public class Game1 : Game
         MyraEnvironment.Game = this;
         _upgradeManager = new UpgradeManagerUI();
         _profileChartsManager = new ProfileChartsManager();
+        _mainmenu = new MainMenu();
 
     }
 
@@ -65,6 +73,8 @@ public class Game1 : Game
             Soul.MENUUPDATE = false;
         }
 
+        if (GAMEEXIT) this.Exit();
+
 
         base.Update(gameTime);
     }
@@ -73,13 +83,24 @@ public class Game1 : Game
 
     protected override void Draw(GameTime gameTime)
     {
-        GraphicsDevice.Clear(Color.CornflowerBlue);
+        GraphicsDevice.Clear(Color.Black);
         pixel = new Texture2D(GraphicsDevice, 1, 1);
         pixel.SetData(new[] { Color.Red });
 
         _gameManager.Draw();
         if (Soul.UPGRADEMENU) _upgradeManager.Render();
-        if (GameManager.GAMEOVER) { _profileChartsManager.UpdateChartData(); _profileChartsManager.Render(); }
+        if (GameManager.GAMEOVER)
+        {
+
+            _profileChartsManager.UpdateChartData();
+            _profileChartsManager.Render();
+
+            _gameManager = new();
+            _gameManager.Init();
+
+
+        }
+        if (!GAMESTART) _mainmenu.Render();
         base.Draw(gameTime);
     }
 }

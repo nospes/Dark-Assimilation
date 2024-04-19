@@ -26,11 +26,10 @@ namespace MyGame
 
             int chartPanelWidth = 600;
             int chartPanelHeight = 300;
-            int frameThickness = 10; // Thickness of the frame
+            int frameThickness = 10;
             Texture2D panelBackground = Globals.Content.Load<Texture2D>("UI/border_UI");
 
-            // Initialize the chart panel
-            // Initialize the frame panel
+            // Inicializa o painel que envolve os gráficos
             framePanel = new Panel
             {
                 Background = new TextureRegion(panelBackground),
@@ -41,7 +40,7 @@ namespace MyGame
                 Top = -25
             };
 
-            // Initialize the chart panel
+            // Inicializa o painel que contem grafico em barras.
             chartPanel = new Panel
             {
                 Width = chartPanelWidth,
@@ -51,7 +50,7 @@ namespace MyGame
                 Top = framePanel.Top - 15
             };
 
-            //Title of the menu
+            // Titulo do menu de gameover
             titleLabel = new Label
             {
                 Text = "GAME OVER",
@@ -61,50 +60,51 @@ namespace MyGame
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Top,
                 TextAlign = FontStashSharp.RichText.TextHorizontalAlignment.Center,
-                Top = 25, // Margin from the top of the screen,
+                Top = 20, 
                 Scale = new Vector2(2f)
             };
 
-            // Little description about the menu
+            // Texto para descrição do que contem nessa tela
             synopsisLabel = new Label
             {
-                Text = "The session has concluded, but you can still analyze your gameplay. This screen features a graph displaying summarized data from your encounters with enemies, categorizing your performance into three distinct profiles. These stats influence the attributes in subsequent encounters, adjusting based on the total points you've accumulated in each category. /nNote: When the averages across profiles are close, the profile that affects future encounters is chosen randomly from the top-performing categories. ",
+                Text = "The session has concluded, this screen features a graph displaying summarized data from your encounters with enemies, categorizing your performance into three distinct profiles. These stats influence the attributes in subsequent encounters, adjusting based on the total points you've accumulated in each category. /n/nClick anywhere in the screen to return to Main menu.",
                 Width = _screenWidth,
                 Wrap = true,
                 TextColor = Color.White,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Top,
                 TextAlign = FontStashSharp.RichText.TextHorizontalAlignment.Center,
-                Top = titleLabel.Top + 40 // Margin from the top of the screen
+                Top = titleLabel.Top + 40 
             };
 
-            // Player profile Name
+            // Tipo de perfil do jogador
             playerprofileLabel = new Label
             {
-                Text = "Player Profile", // Temporary text
+                Text = "Not enough data!", 
                 Width = _screenWidth,
                 Wrap = true,
                 TextColor = Color.White,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 TextAlign = FontStashSharp.RichText.TextHorizontalAlignment.Center,
-                Top = 175, // Margin from the top of the screen
+                Top = 175, 
                 Scale = new Vector2(1.5f)
             };
 
-            // Player Profile Description 
+            // Descrição do jogador do perfil do jogador 
             descriptionLabel = new Label
             {
-                Text = "The play style description based in the profile", // Temporary text
+                Text = "Seems like you were unable to generate enough data to define your playing style. You can press the '0' key to manually calculate your profile, but note that this data will not be reliable!", 
                 Width = _screenWidth,
                 Wrap = true,
                 TextColor = Color.White,
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center,
                 TextAlign = FontStashSharp.RichText.TextHorizontalAlignment.Center,
-                Top = playerprofileLabel.Top + 60 // Positioned below the title label
+                Top = playerprofileLabel.Top + 60 
             };
 
+            //Adicionando todos os elementos visuais no meu renderizador
             _desktop.Widgets.Add(titleLabel);
             _desktop.Widgets.Add(synopsisLabel);
             _desktop.Widgets.Add(framePanel);
@@ -115,42 +115,44 @@ namespace MyGame
 
         }
 
+        //Metodo para desenhar as barras gráficas
         public void DrawBarChart(List<(int ProfileType, double Percentage)> profilePercentages)
         {
-            chartPanel.Widgets.Clear(); // Clear existing widgets in the chart panel
+            chartPanel.Widgets.Clear(); // Limpa barras já existentes
 
+            // Inicializador das barras
             int totalWidth = chartPanel.Bounds.Width;
-            int spacing = 10; // Space between bars
+            int spacing = 10;
             int availableWidth = totalWidth - (spacing * (profilePercentages.Count - 1));
             var barWidth = availableWidth / profilePercentages.Count;
             var totalHeight = chartPanel.Bounds.Height;
 
+            // Para cada tipo de porcentagem de perfil cria uma barra
             for (int i = 0; i < profilePercentages.Count; i++)
             {
                 var profile = profilePercentages[i];
                 var barHeight = (int)(totalHeight * profile.Percentage);
                 var panel = new Panel
                 {
-                    Left = i * (barWidth + spacing), // Add spacing between bars
+                    Left = i * (barWidth + spacing), 
                     Width = barWidth,
                     Height = barHeight,
-                    Top = totalHeight - barHeight // Align to bottom
+                    Top = totalHeight - barHeight 
                 };
 
-                // Set the color of the bar based on the profile type
                 Color barColor;
                 string profileLabel;
                 switch (profile.ProfileType)
                 {
-                    case 1: // Aggressive
+                    case 1: 
                         barColor = Color.Red;
                         profileLabel = "Aggressive";
                         break;
-                    case 2: // Balanced
+                    case 2: 
                         barColor = Color.Green;
                         profileLabel = "Balanced";
                         break;
-                    case 3: // Evasive
+                    case 3: 
                         barColor = Color.Blue;
                         profileLabel = "Evasive";
                         break;
@@ -161,35 +163,36 @@ namespace MyGame
                 }
                 panel.Background = new SolidBrush(barColor);
 
-                // Add label below each bar
+                // Titulo que define cada barra
                 var label = new Label
                 {
                     Text = profileLabel,
                     Width = barWidth,
-                    Top = totalHeight, // Position below the bar
+                    Top = totalHeight, 
                     Left = panel.Left + barWidth / 3,
                     TextColor = Color.White,
                     HorizontalAlignment = HorizontalAlignment.Left,
                 };
 
+                // Adiciona as barras e descrições na tela
                 chartPanel.Widgets.Add(panel);
                 chartPanel.Widgets.Add(label);
 
 
             }
 
-            // Sort the profile percentages in descending order
-            var orderedProfiles = profilePercentages.OrderByDescending(p => p.Percentage).ToList();
-            const double threshold = 0.04; // 5% percent
 
-            // Check if there are at least two profiles and if the top two are within the threshold
+            var orderedProfiles = profilePercentages.OrderByDescending(p => p.Percentage).ToList(); // Organiza as porcentagens em ordem decrescente
+            const double threshold = 0.04; // Limiar de proximidade para definir a jogabilidade como balanceada
+
+            //Caso esteja no limiar é do tipo balanceadeo
             if (orderedProfiles.Count > 1 && Math.Abs(orderedProfiles[0].Percentage - orderedProfiles[1].Percentage) <= threshold)
             {
                 UpdateTitleAndDescription("Balanced");
             }
-            else
+            else // Caso não, o maior valor é definido como perfil
             {
-                // Otherwise, we take the first profile as the dominant profile
+
                 var dominantProfile = orderedProfiles.First();
                 string profileTypeName = dominantProfile.ProfileType switch
                 {
@@ -198,13 +201,13 @@ namespace MyGame
                     3 => "Evasive",
                     _ => "Unknown"
                 };
-                // Update the title and description
-                UpdateTitleAndDescription(profileTypeName);
+
+                UpdateTitleAndDescription(profileTypeName); // Atualiza a descrição e o titulo de acordo com o perfil
             }
 
         }
 
-        public void UpdateChartData()
+        public void UpdateChartData() // Atualiza os conteudos nas barras
         {
             int aggressiveCount = ProfileManager.aggressiveCount;
             int balancedCount = ProfileManager.balancedCount;
@@ -224,46 +227,44 @@ namespace MyGame
                 (3, evasivePercentage)
             };
 
-                // Now use profilePercentages to draw the bar chart
-                DrawBarChart(profilePercentages);
+
+                DrawBarChart(profilePercentages); // Desenha as barras de acordo com o valores gerados
             }
 
 
         }
 
-        public void UpdateTitleAndDescription(string profileType)
+        public void UpdateTitleAndDescription(string profileType) // Atualiza as Descrições e os titulos de acordo com o tipo de perfil
         {
-            // Update the text of the title label based on the profile type
+            // Texto do tipo de perfil
             playerprofileLabel.Text = $"You've been an {profileType} Player";
 
-            // Set the title color and description text based on the profile type
+            // Descrição do tipo de perfil
             switch (profileType)
             {
                 case "Aggressive":
                     playerprofileLabel.TextColor = Color.Red;
-                    descriptionLabel.Text = "Your playstyle is marked by boldness and aggression. You engage enemies swiftly, often finishing fights in shorter times. Your damage window is narrow, indicating quick, decisive strikes soon after engagement. With fewer dashes, you tend to stand your ground, relying on direct confrontation rather than long fights.";
+                    descriptionLabel.Text = "Your playstyle is marked by boldness and aggression. You engage enemies swiftly, often finishing fights in shorter times. Your damage window is narrow, indicating quick, decisive strikes soon after engagement prioritizing direct confrontation rather than long fights.";
                     break;
                 case "Balanced":
                     playerprofileLabel.TextColor = Color.Green;
-                    descriptionLabel.Text = "You adopt a balanced playstyle, expertly navigating between aggression and caution. Your combat times and damage windows show a strategic mix of patience and decisiveness, engaging enemies with a calculated approach. With a moderate number of dashes, you balance between repositioning for tactical advantages and engaging directly.";
+                    descriptionLabel.Text = "You adopt a balanced playstyle, navigating between aggression and caution. Your combat times and damage windows show a strategic mix of patience and decisiveness, engaging enemies with a calculated approach balancing between repositioning for tactical advantages and engaging directly.";
                     break;
                 case "Evasive":
                     playerprofileLabel.TextColor = Color.Blue;
-                    descriptionLabel.Text = "Your strategy emphasizes evasion and cunning, preferring to outmaneuver rather than outfight your enemies. With the longest average combat times and damage windows, you carefully choose when to strike, often after studying enemy patterns. A higher number of dashes reflects your preference for mobility, using strategic positioning to your advantage.";
+                    descriptionLabel.Text = "Your strategy emphasizes evasion and cunning, preferring to outmaneuver rather than outfight your enemies. With longests combat times you use this time to carefully choose when to strike. A higher number of dashes reflects your preference for mobility, using strategic positioning to your advantage.";
                     break;
                 default:
                     playerprofileLabel.TextColor = Color.Gray;
                     descriptionLabel.Text = "Your play style is unique, so unique that you broke the game!";
-                    descriptionLabel.TextColor = Color.Gray; // Set the description color
                     break;
             }
         }
 
-        public void Render()
+        public void Render() // Metodo que ao ser chamado renderiza todos os elementos graficos criados na tela
         {
             _desktop.Render();
         }
 
-        // Assuming you have other methods for handling game logic and updates
     }
 }

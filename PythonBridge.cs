@@ -99,24 +99,47 @@ namespace MyGame
             throw new IOException($"Failed to read from {filePath} after {maxRetries} attempts.");
         }
 
-        public static async void ClearJsonData()
+        public static async void ClearJsonData(string jsonToClear) //Limpa os Json de acordo com a string recebida
         {
-
-            using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-            using (var writer = new StreamWriter(stream))
+            switch (jsonToClear)
             {
-                await writer.WriteAsync("");
-            }
+                case "Player Data":
+                    using (var stream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    using (var writer = new StreamWriter(stream))
+                    {
+                        await writer.WriteAsync("");
+                    }
+                    break;
 
-            using (var stream = new FileStream(processedPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
-            using (var writer = new StreamWriter(stream))
-            {
-                await writer.WriteAsync("");
+                case "Processed Data":
+                    using (var stream = new FileStream(processedPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    using (var writer = new StreamWriter(stream))
+                    {
+                        await writer.WriteAsync("");
+                    }
+                    break;
+
+                case "All":
+                    using (var stream1 = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    using (var writer1 = new StreamWriter(stream1))
+                    {
+                        await writer1.WriteAsync("");
+                    }
+                    using (var stream2 = new FileStream(processedPath, FileMode.Create, FileAccess.Write, FileShare.ReadWrite))
+                    using (var writer2 = new StreamWriter(stream2))
+                    {
+                        await writer2.WriteAsync("");
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("O Json especificado não existe!");
+                    break;
             }
         }
 
 
-        public static void ExecutePythonScript()
+        public static void ExecutePythonScript() // Metodo para executar o script do python para seleção de perfil
         {
 
 
@@ -165,25 +188,6 @@ namespace MyGame
             }
         }
 
-        private static Dictionary<string, int> CountElements(List<string> elements)
-        {
-            var counts = new Dictionary<string, int>();
-
-            foreach (var element in elements)
-            {
-                if (counts.ContainsKey(element))
-                {
-                    counts[element]++;
-                }
-                else
-                {
-                    counts[element] = 1;
-                }
-            }
-
-            return counts;
-        }
-
         private static string RunPythonScript(string scriptPath) // Metodo para inicializar o script de python (Modelo KNN)
         {
             ProcessStartInfo start = new ProcessStartInfo()
@@ -223,5 +227,44 @@ namespace MyGame
                 return result;
             }
         }
+
+        public static async Task AggregatePlayerDataAsync()//Metodo para salvar toda a data coletada da sessão
+        {
+            var newData = new Dictionary<string, List<int>>();
+            string aggregateFilePath = "AllData.json"; // Caminho do arquivo com todas as sessões salvas
+
+            // Le a data da sessão atual e salva o conteudo no dicinario
+            string currentJson = await ReadFromFileWithRetryAsync(filePath);
+            if (!string.IsNullOrEmpty(currentJson))
+            {
+                newData = JsonConvert.DeserializeObject<Dictionary<string, List<int>>>(currentJson);
+            }
+
+            // Checa se já existe um Json com todas as datas salvas, caso sim, salva a data dele no dicionario.
+            Dictionary<string, List<List<int>>> aggregatedData = new Dictionary<string, List<List<int>>>();
+            if (File.Exists(aggregateFilePath))
+            {
+                string aggregatedJson = await ReadFromFileWithRetryAsync(aggregateFilePath);
+                aggregatedData = JsonConvert.DeserializeObject<Dictionary<string, List<List<int>>>>(aggregatedJson) ?? aggregatedData;
+            }
+
+            // Agrega a nova data dentro do dicinario ja criado.
+            foreach (var key in newData.Keys)
+            {
+                if (!aggregatedData.ContainsKey(key))
+                {
+                    aggregatedData[key] = new List<List<int>>();
+                }
+                aggregatedData[key].Add(newData[key]);
+            }
+
+            // Converte e Salva a data organizada do dicionario dentro do JSON
+            string updatedAggregateJson = JsonConvert.SerializeObject(aggregatedData, Formatting.Indented);
+            await WriteToFileWithRetryAsync(aggregateFilePath, updatedAggregateJson);
+
+            //Limpa o PlayerData.json para as proximas sessões
+            
+        }
+
     }
 }

@@ -250,3 +250,28 @@ Perfis com contagens altas e similares (margem de 4%) são selecionados aleatori
 
 Uma nova tela de Game Over foi adicionada, exibindo gráficos com as estatísticas do jogador e indicando o perfil predominante do mesmo ao final da sessão. (ProfileChartsManager.cs)
 
+//////////////////////////////////////////////////////////////////////////////////////
+Versão 0.8 -
+
+A funcionalidade de entrada e fluxo dos menus foi implementada.
+
+Os dados do jogador agora são guardados em um arquivo aparte e deletados automaticamente ao final de cada sessão.
+
+Os spawns de inimigos foram ajustados de acordo com o perfil do jogador depois do estágio 2 para criar desafios personalizados.
+
+O número de spawns foi reduzido para três, as unidades em cada um deles foram alteradas. Agora, Os requisitos de inimigos por fase foram ajustados para equilibrar a progressão e o desafio ao longo do jogo. Almas ainda aparecem em dois spawns por estágio.
+
+Introdução de novas magias:
+> Explosão: Causa dano na posição do mouse, aumenta o tamanho de acordo com spellTier. 
+> Raios: Cria 4 trovões na direção alvo com posicionamento levemente aleatorios, diminui a aleatoriedade de acordo com o spellTier deixando eles cada vez mais alinhados. 
+
+As magias foram adicionadas às rolagens e não é possivel tirar mais de um tipo diferente por rolagem de aprimoramento, aprimorar magias aumenta levemente o SpellDamage do heroi.
+
+As magias foram aprimoradas para afetar múltiplos inimigos dentro do alcance de dano, proporcionando maior eficácia em combate (esta alteração não se aplica a projéteis).
+
+um boss com padrão modificado pelo perfil
+
+
+
+
+

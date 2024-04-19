@@ -53,6 +53,7 @@ public class enemySkeleton : enemyBase
         PREATTACKHITCD = false;
         HEROATTACKPOS = Vector2.One;
         ATTACKTYPE = 1;
+        ENEMYPROJHIT = false;
 
         enemydataType = 1;
         ALERT = false;
@@ -188,6 +189,7 @@ public class enemySkeleton : enemyBase
             if (_recoilingtimer >= _recoilingduration)
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
+                ENEMYPROJHIT = false;
                 _recoilingtimer = 0f;
             }
 

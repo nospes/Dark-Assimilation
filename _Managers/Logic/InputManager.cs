@@ -19,10 +19,18 @@ public static class InputManager
         //Verifica se o teclado tem alguma tecla pressonada
         var keyboardState = Keyboard.GetState();
         var mouseState = Mouse.GetState();
+        if (mouseState.LeftButton == ButtonState.Pressed && GameManager.GAMEOVER)
+        {
+            GameManager.GAMEOVER = false;
+            Game1.GAMESTART = false;
+            Task.Run(async () => await PythonBridge.AggregatePlayerDataAsync()).Wait();
+            PythonBridge.ClearJsonData("All");
+            ProfileManager.ClearCounts();
+            
+        }
 
-        
         //Caso o numero de teclas pressionadas seja maior que 0 e seja alguma da lista ele toma ações de acordo com cada caso
-        if (!Hero.CAST && !Hero.ATTACKING && !Hero.KNOCKBACK && !Hero.DEATH)
+        if (!Hero.CAST && !Hero.ATTACKING && !Hero.KNOCKBACK && !Hero.DEATH && Game1.GAMESTART)
         {
 
 
@@ -31,7 +39,7 @@ public static class InputManager
                 if (mouseState.LeftButton == ButtonState.Pressed) Hero.ATTACKING = true;
                 else
                 {
-                    
+
                     if (mouseState.RightButton == ButtonState.Pressed && !Hero.skillCD.CheckCooldown)
                     {
                         Hero.CAST = true;
@@ -48,7 +56,7 @@ public static class InputManager
                 if (_direction != Vector2.Zero) _lastdir = _direction;
 
             }
-            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.MiddleButton == ButtonState.Pressed )
+            if (keyboardState.IsKeyDown(Keys.Space) || mouseState.MiddleButton == ButtonState.Pressed)
             {
 
                 if (!Hero.dashCD.CheckCooldown && !Hero.DASH)
@@ -59,10 +67,10 @@ public static class InputManager
             }
         }
 
-        if(keyboardState.IsKeyDown(Keys.D0)) PythonBridge.ExecutePythonScript();
-        if(keyboardState.IsKeyDown(Keys.D9)) PythonBridge.ClearJsonData();
+        if (keyboardState.IsKeyDown(Keys.D0)) PythonBridge.ExecutePythonScript();
+        //if (keyboardState.IsKeyDown(Keys.D9)) PythonBridge.ClearJsonData("All");
 
-        if(keyboardState.IsKeyDown(Keys.P)) GameManager.PauseGame();
+        if (keyboardState.IsKeyDown(Keys.P) && !GameManager.GAMEOVER && Game1.GAMESTART) GameManager.PauseGame();
     }
 
 
