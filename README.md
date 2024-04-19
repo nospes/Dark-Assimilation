@@ -270,8 +270,6 @@ As magias foram adicionadas às rolagens e não é possivel tirar mais de um tip
 
 As magias foram aprimoradas para afetar múltiplos inimigos dentro do alcance de dano, proporcionando maior eficácia em combate (esta alteração não se aplica a projéteis).
 
-um boss com padrão modificado pelo perfil
-
 
 
 
