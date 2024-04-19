@@ -251,6 +251,7 @@ Perfis com contagens altas e similares (margem de 4%) são selecionados aleatori
 Uma nova tela de Game Over foi adicionada, exibindo gráficos com as estatísticas do jogador e indicando o perfil predominante do mesmo ao final da sessão. (ProfileChartsManager.cs)
 
 //////////////////////////////////////////////////////////////////////////////////////
+
 Versão 0.8 -
 
 A funcionalidade de entrada e fluxo dos menus foi implementada.
