@@ -21,10 +21,10 @@ namespace MyGame
 
             _map = new Map(); // Cria o mapa
 
-            _hero = new Hero(new Vector2(1000, 1000)); // Cria o jogador
+            _hero = new Hero(new Vector2(1005, 838)); // Cria o jogador
             _enemyManager = new EnemyManager(_hero, _map); // Passa parametros de mapa e jogador para o gerenciador de inimigos
 
-            _pentagram = new Pentagram(new Vector2(1000, 800)); // Cria o teleportador
+            _pentagram = new Pentagram(new Vector2(975, 785)); // Cria o teleportador
 
             _soulManager = new SoulManager();
             UpgradeManagerUI.UpgradeHero.Init(_hero);
@@ -35,7 +35,10 @@ namespace MyGame
             _hero.MapBounds(_map.MapSize, _map.TileSize); // Limites do mapa
 
             _enemyManager.EnemyBatch(0); // Inimigos do estagio 0
-            _soulManager.AddPrePositionSouls(); // Adiciona almas no mapa
+
+
+            _soulManager.AddPrePositionSouls(3); // Adiciona almas no mapa
+            _fadeEffectManager.StartFadeIn();
 
         }
 
@@ -144,17 +147,17 @@ namespace MyGame
         //Metodo para completar a mudança de fase
         public async void endChangeArea()
         {
-            if (_pentagram.gamearea > 2)// Termina o jogo ao chegar em certa fase
+            if (_pentagram.gamearea > 4)// Termina o jogo ao chegar em certa fase
             {
                 _fadeEffectManager.StartFadeOut();
                 GameManager.GAMEOVER = true;
             }
             else
             {
-                _hero.POSITION = new Vector2(1000, 1000); // Arruma a posição do heroi
+                _hero.POSITION = new Vector2(1005, 838); // Arruma a posição do heroi
                 _hero.HP += _hero.hpRegen; // Regenera Hp do heroi
 
-                if (_pentagram.gamearea > 1)
+                if (_pentagram.gamearea > 1 && _pentagram.gamearea<4)
                 {
                     await ExecutePythonScriptAsync(); // Executa a predição de perfil
                     ProfileManager.UpdateEnemyProfileType(); // Seleciona o perfil de acordo com as contagens
@@ -163,7 +166,7 @@ namespace MyGame
                 ProjectileManager.DeleteAll(); // Deleta os projéteis
                 _soulManager.DeleteSouls(); // Delete as almas
 
-                _soulManager.AddPrePositionSouls(); // Adiciona almas da fase
+                if (_pentagram.gamearea != 4) _soulManager.AddPrePositionSouls(2); // Adiciona almas da fase
 
                 switch (_pentagram.gamearea) // Adiciona leva de inimigos de acordo com a fase
                 {
@@ -184,6 +187,7 @@ namespace MyGame
                                 break;
                         }
                         break;
+                        /*
                     case 3:
                         switch (ProfileManager.enemyProfileType)
                         {
@@ -197,6 +201,10 @@ namespace MyGame
                                 _enemyManager.EnemyBatch(2);
                                 break;
                         }
+                        break;
+                        */
+                    case 4:
+                        _enemyManager.EnemyBatch(5);
                         break;
                 }
 
@@ -232,5 +240,10 @@ namespace MyGame
         }
 
         ////////////////////////////////////////////////////////////////////////////////
+
+        public static void SummonEnemy()
+        {
+            _enemyManager.SummonEnemy();
+        }
     }
 }

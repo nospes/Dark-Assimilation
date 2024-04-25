@@ -60,7 +60,7 @@ public class enemyMage : enemyBase
         ALERT = false;
         SPAWN = true;
 
-        
+
         switch (ProfileManager.enemyProfileType)
         {
             case 1: // Caso seja um player do tipo Berzerk
@@ -222,6 +222,8 @@ public class enemyMage : enemyBase
 
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
+    //Recarga entre danos recebidos de projeteis
+    float _projHitTimer = 0f;
 
 
     public override async void Update()
@@ -276,7 +278,6 @@ public class enemyMage : enemyBase
             if (_recoilingtimer >= _recoilingduration)
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
-                ENEMYPROJHIT = false;
                 _recoilingtimer = 0f;
             }
 
@@ -295,6 +296,17 @@ public class enemyMage : enemyBase
 
         }
 
+        //Recarga entre danos recebidos de projeteis
+        if (ENEMYPROJHIT)
+        {
+            _projHitTimer += (float)Globals.TotalSeconds;
+            if (_projHitTimer >= 1)
+            {
+                ENEMYPROJHIT = false;
+                _projHitTimer = 0f;
+            }
+        }
+
         //Ao terminar a ação de ataque ativa a trava ENEMYSKILL_LOCK disparando uma magia com a função CastProj() ou CastSpell();
         if (ENEMYSKILL_LOCK)
         {
@@ -305,7 +317,7 @@ public class enemyMage : enemyBase
 
         }
 
-        //Trava para evitar bugs relacionado a ordem de carregamento do jogo
+        //Aplica um comportamento ao inimigo definido pelo EnemyManager.cs
         if (MoveAI != null)
         {
             //Aplica um comportamento ao inimigo definido pelo GameManager.cs

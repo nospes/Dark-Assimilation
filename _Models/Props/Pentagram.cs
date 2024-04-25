@@ -60,7 +60,17 @@ public class Pentagram
             _anims.Update("pentagram_on");
             teleportON = true;
         }
-        else if (gamearea == 3 && enemyCount >= 7) // Fase 4 > FIM
+        /*else if (gamearea == 3 && enemyCount >= 7) // Fase 4 > FIM
+        {
+            _anims.Update("pentagram_on");
+            teleportON = true;
+        }*/
+        else if (gamearea == 3 && enemyCount >= 0) // Fase 4 > FIM
+        {
+            _anims.Update("pentagram_on");
+            teleportON = true;
+        }
+        else if (gamearea == 4 && enemyCount >= 3) // Fase 4 > FIM
         {
             _anims.Update("pentagram_on");
             teleportON = true;
@@ -70,6 +80,7 @@ public class Pentagram
             _anims.Update("pentagram_off");
             teleportON = false;
         }
+
     }
 
     public void Draw()

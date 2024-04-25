@@ -7,6 +7,7 @@ public class enemySwarm : enemyBase
     private static Texture2D _textureIdle_blue, _textureIdle_green, _textureIdle_purple, _textureIdle_yellow, _textureHit_blue, _textureHit_green, _textureHit_purple, _textureHit_yellow, _textureAttack, _texturePreattack, _textureDeath_blue, _textureDeath_yellow, _textureDeath_purple, _textureDeath_green;  //Spritesheets
 
     private int _colorselect, reactionBonusSize;
+    private bool _summoned = false;
 
 
     public enemySwarm(Vector2 pos)
@@ -90,24 +91,34 @@ public class enemySwarm : enemyBase
 
         _colorselect = new Random().Next(1, 3);
 
-        switch (ProfileManager.enemyProfileType)
+        if (!enemyBoss.BOSSBATTLE)
         {
-            case 1: // Caso seja um player do tipo Berzerk
-                _attackhittimeduration = 1.8f;
-                speed = 145f;
-                break;
-            case 2: // Caso seja um player do tipo Balanced
-                HP = 90;
-                reactionBonusSize = 25;
-                _preattackduration = 0.55f;
-                break;
-            case 3:// Caso seja um player do tipo Strategist
-                _preattackcdduration = 1.5f;
-                reactionBonusSize = 75;
-                break;
-            default:
-                break;
+            switch (ProfileManager.enemyProfileType)
+            {
+                case 1: // Caso seja um player do tipo Berzerk
+                    _attackhittimeduration = 1.8f;
+                    speed = 145f;
+                    break;
+                case 2: // Caso seja um player do tipo Balanced
+                    HP = 90;
+                    reactionBonusSize = 25;
+                    _preattackduration = 0.55f;
+                    break;
+                case 3:// Caso seja um player do tipo Strategist
+                    _preattackcdduration = 1.5f;
+                    reactionBonusSize = 75;
+                    break;
+                default:
+                    break;
+            }
         }
+        else
+        {
+            HP = 50;
+            speed = 100;
+            ALERT = true;
+            _summoned = true;
+        };
     }
 
     //Função de calculo para caixas de colisão
@@ -170,6 +181,9 @@ public class enemySwarm : enemyBase
 
     //Variaveis entre janela de danos
     float _attackhittimetimer = 0f, _attackhittimeduration;
+
+    //Recarga entre danos recebidos de projeteis
+    float _projHitTimer = 0f;
 
     //Variavel para direção do avanço ao jogador
     Vector2 _dashdir;
@@ -236,6 +250,17 @@ public class enemySwarm : enemyBase
 
         }
 
+        //Recarga entre danos recebidos de projeteis
+        if (ENEMYPROJHIT)
+        {
+            _projHitTimer += (float)Globals.TotalSeconds;
+            if (_projHitTimer >= 1)
+            {
+                ENEMYPROJHIT = false;
+                _projHitTimer = 0f;
+            }
+        }
+
         //Esta unidade causa dano ao tocar no heroi estando em instancia de ataque ou não, ela tem tempo de recarga entre os danos causados no heroi.
         if (!ATTACKHITTIME)
         {
@@ -258,7 +283,6 @@ public class enemySwarm : enemyBase
             if (_recoilingtimer >= _recoilingduration)
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
-                ENEMYPROJHIT = false;
                 _recoilingtimer = 0f;
             }
 
@@ -279,7 +303,7 @@ public class enemySwarm : enemyBase
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
         if (MoveAI != null)
         {
-            //Aplica um comportamento ao inimigo definido pelo GameManager.cs
+            //Aplica um comportamento ao inimigo definido pelo EnemyManager.cs
             MoveAI.Move(this);
         }
 
@@ -358,7 +382,7 @@ public class enemySwarm : enemyBase
         if (HP <= 0)
         {
             battleStats.EndBattle(); // Termina a batalha e contabiliza o tempo total
-            await SerializeDataOnDeath();
+            if(!_summoned)await SerializeDataOnDeath();
         }
 
         //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
@@ -390,7 +414,8 @@ public class enemySwarm : enemyBase
         //Globals.SpriteBatch.Draw(Game1.pixel, Erect, Color.Red);
 
         //Passa os parametros para o AnimationManager animar o Spritesheet
-        _anims.Draw(POSITION, scale, mirror, 0, colorSet());
+        if (!_summoned) _anims.Draw(POSITION, scale, mirror, 0, colorSet());
+        else _anims.Draw(POSITION, scale, mirror, 0, Color.White);
 
         //hitbox test
         //Rectangle Erect = GetBounds($"hitbox");

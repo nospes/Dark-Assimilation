@@ -144,6 +144,9 @@ public class enemySkeleton : enemyBase
     //Variaveis para tempo de recuo do knockback
     float _recoilingtimer = 0f, _recoilingduration = 0.1f;
 
+    //Recarga entre danos recebidos de projeteis
+    float _projHitTimer = 0f;
+
     public override async void Update()
     {
 
@@ -189,7 +192,6 @@ public class enemySkeleton : enemyBase
             if (_recoilingtimer >= _recoilingduration)
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
-                ENEMYPROJHIT = false;
                 _recoilingtimer = 0f;
             }
 
@@ -208,10 +210,21 @@ public class enemySkeleton : enemyBase
 
         }
 
+        //Recarga entre danos recebidos de projeteis
+        if (ENEMYPROJHIT)
+        {
+            _projHitTimer += (float)Globals.TotalSeconds;
+            if (_projHitTimer >= 1)
+            {
+                ENEMYPROJHIT = false;
+                _projHitTimer = 0f;
+            }
+        }
+
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
         if (MoveAI != null)
         {
-            //Aplica um comportamento ao inimigo definido pelo GameManager.cs
+            //Aplica um comportamento ao inimigo definido pelo EnemyManager.cs
             MoveAI.Move(this);
         }
 

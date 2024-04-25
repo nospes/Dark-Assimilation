@@ -131,3 +131,15 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Player\Spells
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Icons\EXPLOSION_upgrade.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Icons\ICICLE_UPGRADE.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\UI\Icons\THUNDER_upgrade.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianBlue_attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianBlue_death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianBlue_hurt.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianBlue_idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianPurple_attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianPurple_death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianPurple_hurt.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianPurple_idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_attack.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_death.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_hurt.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_idle.xnb

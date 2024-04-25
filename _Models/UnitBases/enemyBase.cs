@@ -5,7 +5,8 @@ public enum EnemyType
     Mage,
     Archer,
     Swarm,
-    Skeleton
+    Skeleton,
+    Boss
 }
 
 public interface enemyCollection
@@ -20,7 +21,7 @@ public interface enemyCollection
     Vector2 HEROATTACKPOS { get; set; }
     bool ENEMYSKILL_LOCK { get; set; }
     bool ALERT { get; set; }
-    bool ENEMYPROJHIT { get; set;}
+    bool ENEMYPROJHIT { get; set; }
     //Estados
     MovementAI MoveAI { get; set; }
     bool DEATHSTATE { get; set; }
@@ -125,7 +126,7 @@ public abstract class enemyBase : enemyCollection
     //Passa os dados coletados para serem convertidos em um JSON no PythonBridge.cs
     protected async Task SerializeDataOnDeath()
     {
-        if (!_dataPassed)
+        if (!_dataPassed && enemydataType != 5)
         {
             // Use actual metrics from battleStats
             var averageCombatTime = (int)battleStats.FinalBattleTime.TotalSeconds; // Tempo total de combate
@@ -136,6 +137,12 @@ public abstract class enemyBase : enemyCollection
             await PythonBridge.UpdateCombatDataAsync(enemydataType, averageCombatTime, timeAfterFirstHit, totalDashes); //Passando os dados
             Pentagram.enemyCount += 1; // Variavel para portal
             _dataPassed = true;
+        }
+        else if (!_dataPassed)
+        {
+            Pentagram.enemyCount += 1; // Variavel para portal
+            _dataPassed = true;
+            EnemyManager.attackInterval += 0.4f;
         }
     }
 

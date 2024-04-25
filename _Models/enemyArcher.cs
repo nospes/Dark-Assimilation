@@ -168,6 +168,9 @@ public class enemyArcher : enemyBase
     //Variaveis para recarga do avanço/dash
     float _dashtimer = 0f, _dashTotalduration; bool _dashcdlock = false;
 
+    //Recarga entre danos recebidos de projeteis
+    float _projHitTimer = 0;
+
     public override async void Update()
     {
 
@@ -226,10 +229,11 @@ public class enemyArcher : enemyBase
             {
                 Recoling = false;//No fim da duração, para de sofrer Recuo.
                 _recoilingtimer = 0f;
-                ENEMYPROJHIT = false;
+
                 if (!_dashcdlock) DASHSTATE = true; //Entra em modo de dash após receber dano
             }
         }
+
 
 
         //Ao entrar em DASHSTATE  faz um recuo e aplica tempo de recarga dele
@@ -255,6 +259,17 @@ public class enemyArcher : enemyBase
             }
         }
 
+        //Recarga entre danos recebidos de projeteis
+        if (ENEMYPROJHIT)
+        {
+            _projHitTimer += (float)Globals.TotalSeconds;
+            if (_projHitTimer >= 1)
+            {
+                ENEMYPROJHIT = false;
+                _projHitTimer = 0f;
+            }
+        }
+
         //Ao terminar a ação de ataque ativa a trava ENEMYSKILL_LOCK disparando uma flecha com a função Fire();
         if (ENEMYSKILL_LOCK) Fire();
 
@@ -262,7 +277,7 @@ public class enemyArcher : enemyBase
         //Trava para evitar bugs relacionado a ordem de carregamento do jogo
         if (MoveAI != null)
         {
-            //Aplica um comportamento ao inimigo definido pelo GameManager.cs
+            //Aplica um comportamento ao inimigo definido pelo EnemyManager.cs
             MoveAI.Move(this);
         }
 

@@ -15,7 +15,7 @@ namespace MyGame
             lock (_souls) _souls.Add(new Soul(position)); // Adiciona uma alma na posição chamada
         }
 
-        public void AddPrePositionSouls()
+        public void AddPrePositionSouls(int qnt)
         {
             // Inicializa o gerenciador de aleatoriedade
             RandomGenerator randomGen = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
@@ -39,8 +39,25 @@ namespace MyGame
             // adiciona as almas usando as primeiras posições da lista
             lock (_souls)
             {
-                _souls.Add(new Soul(positions[0])); 
-                _souls.Add(new Soul(positions[1])); 
+                switch (qnt)
+                {
+                    case 1:
+                        _souls.Add(new Soul(positions[0]));
+
+                        break;
+                    case 2:
+                        _souls.Add(new Soul(positions[0]));
+                        _souls.Add(new Soul(positions[1]));
+                        break;
+                    case 3:
+                        _souls.Add(new Soul(positions[0]));
+                        _souls.Add(new Soul(positions[1]));
+                        _souls.Add(new Soul(positions[2]));
+                        break;
+                }
+
+
+
             }
         }
 

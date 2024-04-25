@@ -99,8 +99,15 @@ public class Game1 : Game
             _gameManager.Init();
 
 
+
         }
-        if (!GAMESTART) _mainmenu.Render();
+        if (!GAMESTART)
+        {
+            _mainmenu.Render();
+            _gameManager = new();
+            _gameManager.Init();
+
+        }
         base.Draw(gameTime);
     }
 }

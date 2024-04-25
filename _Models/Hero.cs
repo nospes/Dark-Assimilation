@@ -47,19 +47,25 @@ public class Hero
 
         //Definição de Atributos do jogador
         POSITION = pos;
+
         HP = 100;
         hpRegen = 10;
+
         baseSpeed = 250;
-        heroAAdmg = 10;
-        heroSpelldmg = 10;
         dashTotalCD = 0.95f;
+
+        heroAAdmg = 10;
         atkSpeed = 0.075f;
+
+        critChance = 5f;
+        critMult = 1.4f;
+
+        heroSpelldmg = 10;
         castSpeed = 0.06f;
         spellTier = 1;
         skillTotalCD = 4f; // cd base de 4 segundos
-        critChance = 5f;
-        critMult = 1.4f;
         spellType = "IceProj";
+
 
         //Definindo texturas
         _textureIdle ??= Globals.Content.Load<Texture2D>("Player/hero.Idle");
@@ -249,74 +255,32 @@ public class Hero
                 int offsetMagnitude = 100 - (spellTier * 20); // Define a aleatoriedade de acordo com spelltier
                 offsetMagnitude = Math.Max(offsetMagnitude, 20); // Garante que o minimo seja 20
 
-                for (int i = 0; i < ranges.Length; i++)
+                for (int i = 0; i < ranges.Length; i++) // Loop para definir posições dos raios
                 {
                     float randomDirectionOffset = rnd.Next(-offsetMagnitude, offsetMagnitude); // Cria aleatoriedade de acordo com o spellTier
                     Vector2 randomDirectionPosition = new Vector2(randomDirectionOffset, randomDirectionOffset); // coloca os numeros em um Vetor
                     thunderPositions[i] = (CENTER + directionToMouse * ranges[i]) + randomDirectionPosition; // Aplica essa diferença na posição do raio
                 }
 
-
-                ProjectileData pd = new()
+                for (int i = 0; i < thunderPositions.Length; i++) // Loop para criação dos raios
                 {
-                    Position = thunderPositions[0],
-                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
-                    Lifespan = 1.1f,
-                    Homing = false,
-                    ProjectileType = spellType,
-                    Scale = 2f,
-                    Speed = 0,
-                    Friendly = true
-                };
-
-                ProjectileData pd2 = new()
-                {
-                    Position = thunderPositions[1],
-                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
-                    Lifespan = 1.1f,
-                    Homing = false,
-                    ProjectileType = spellType,
-                    Scale = 2f,
-                    Speed = 0,
-                    Friendly = true
-                };
-
-                ProjectileData pd3 = new()
-                {
-                    Position = thunderPositions[2],
-                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
-                    Lifespan = 1.1f,
-                    Homing = false,
-                    ProjectileType = spellType,
-                    Scale = 2f,
-                    Speed = 0,
-                    Friendly = true
-                };
-
-                ProjectileData pd4 = new()
-                {
-                    Position = thunderPositions[3],
-                    Direction = RotateVector(directionToMouse, angleOffset * (1)),
-                    Lifespan = 1.1f,
-                    Homing = false,
-                    ProjectileType = spellType,
-                    Scale = 2f,
-                    Speed = 0,
-                    Friendly = true
-                };
-
-
-                ProjectileManager.AddProjectile(pd);
-                ProjectileManager.AddProjectile(pd2);
-                ProjectileManager.AddProjectile(pd3);
-                ProjectileManager.AddProjectile(pd4);
-
+                    ProjectileData pd = new()
+                    {
+                        Position = thunderPositions[i],
+                        Direction = RotateVector(directionToMouse, angleOffset * (1)),
+                        Lifespan = 1.1f,
+                        Homing = false,
+                        ProjectileType = spellType,
+                        Scale = 2f,
+                        Speed = 0,
+                        Friendly = true,
+                        Wave = i + 1
+                    };
+                    ProjectileManager.AddProjectile(pd);
+                }
             }
             else if (spellType == "Explosion")
             {
-
-                // Calculate the direction from the hero's center to the mouse position
-
 
                 ProjectileData pd = new()
                 {
@@ -325,7 +289,7 @@ public class Hero
                     Lifespan = 1.7f,
                     Homing = false,
                     ProjectileType = spellType,
-                    Scale = Math.Min(spellTier+1, 4),
+                    Scale = Math.Min(spellTier + 1, 4),
                     Speed = 0,
                     Friendly = true,
                 };
@@ -344,7 +308,6 @@ public class Hero
 
     public void Update()
     {
-
 
         if (RECOIL)
         {

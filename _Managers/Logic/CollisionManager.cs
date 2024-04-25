@@ -78,38 +78,41 @@ namespace MyGame
 
 
                     //Projeteis aliados
-                    foreach (var _projetil in _projeteis)
+                    lock (_projeteis)
                     {
-                        if (_projetil.Friendly)
+                        foreach (var _projetil in _projeteis)
                         {
-                            Rectangle _projectileBounds = _projetil.GetBounds(); // hitbox dos inimigos
-                            if (_projectileBounds.Intersects(_enemybounds) && !_inimigo.DEATHSTATE && !_inimigo.ENEMYPROJHIT && !_projetil.enemyHited) // Caso entre em contato com HITBOX inimiga, não esteja morto, não tenha levado dano mágico...
+                            if (_projetil.Friendly)
                             {
-
-                                critHit = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
-                                if (critHit.NextInt(0, 100) < _hero.critChance / 2) // Calculo de critico
+                                Rectangle _projectileBounds = _projetil.GetBounds(); // hitbox dos inimigos
+                                if (_projectileBounds.Intersects(_enemybounds) && !_inimigo.DEATHSTATE && !_inimigo.ENEMYPROJHIT && !_projetil.enemyHited) // Caso entre em contato com HITBOX inimiga, não esteja morto, não tenha levado dano mágico...
                                 {
-                                    var totaldmg = Math.Round(_hero.heroSpelldmg * _hero.critMult);
-                                    _inimigo.HP -= (int)totaldmg;
+
+                                    critHit = new RandomGenerator(RandomGenerator.GenerateSeedFromCurrentTime());
+                                    if (critHit.NextInt(0, 100) < _hero.critChance / 2) // Calculo de critico
+                                    {
+                                        var totaldmg = Math.Round(_hero.heroSpelldmg * _hero.critMult);
+                                        _inimigo.HP -= (int)totaldmg;
+                                    }
+                                    else _inimigo.HP -= _hero.heroSpelldmg;
+
+
+                                    _inimigo.HEROATTACKPOS = _hero.CENTER; // Posição do heroi para o knockback inimigo
+                                    _inimigo.SetInvulnerableTemporarily(300); // Ivulnerabilidade do inimigo
+                                    _inimigo.ENEMYPROJHIT = true; // Impede que o inimigo receba dano de projeteis temporariamente
+                                    if (_projetil.ProjectileType == "IceProj") //caso seja uma magia de gelo
+                                    {
+                                        _projetil.Lifespan = 0.5f; // Dissipa o projetil 
+                                        _projetil.enemyHited = true; // impede que o projetil continue a causar dano
+                                        _inimigo.ENEMYPROJHIT = false; // Essa trava permite que diversos projeteis de gelo acertem o mesmo alvo
+                                    };
+                                    _inimigo.ALERT = true; // Alerta o inimigo
+
+
                                 }
-                                else _inimigo.HP -= _hero.heroSpelldmg;
-
-
-                                _inimigo.HEROATTACKPOS = _hero.CENTER; // Posição do heroi para o knockback inimigo
-                                _inimigo.SetInvulnerableTemporarily(300); // Ivulnerabilidade do inimigo
-                                _inimigo.ENEMYPROJHIT = true;
-                                if (_projetil.ProjectileType == "IceProj")
-                                {
-                                    _projetil.Lifespan = 0.5f; // Dissipa o projetil caso seja uma magia de gelo
-                                    _projetil.enemyHited = true; // impede que ela cause dano
-                                }; 
-                                _inimigo.ALERT = true; // Alerta o inimigo
-
-
                             }
                         }
                     }
-
                 }
             }
             lock (_projeteis)
@@ -140,10 +143,21 @@ namespace MyGame
                             {
                                 _hero.HP -= _projetil.Damage; //Causa dano
                                 Hero.SLOWED = false; // Termina a lentidão
-                                Hero.lastHitpos = _projetil.Position;
                                 Hero.RECOIL = true;
                             }
 
+                        }
+                        else if (_projetil.ProjectileType == "IceProj" && _projetil.Lifespan > 0.5) // Caso seja do tipo 'Arrow'
+                        {
+                            _hero.HP -= _projetil.Damage;
+                            Hero.lastHitpos = _projetil.Position;
+                            Hero.RECOIL = true;
+                            _projetil.Lifespan = 0.5f; //Destroe o projetil
+                        }
+                        else if (_projetil.ProjectileType == "Explosion")
+                        {
+                            _hero.HP -= _projetil.Damage;
+                            Hero.RECOIL = true;
                         }
 
                     }

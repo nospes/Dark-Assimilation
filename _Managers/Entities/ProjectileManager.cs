@@ -5,8 +5,9 @@ public static class ProjectileManager
     private static AnimationManager _anims = new AnimationManager();
     public static List<Projectile> Projectiles { get; } = new(); //Cria lista de projeteis para serem gerenciados e colocados no campo com Gamemanager
 
-    public static void AddProjectile(ProjectileData data)
+    public static void AddProjectile(ProjectileData data, float delay = 0)
     {
+        
         lock (Projectiles)
         {
             Projectiles.Add(new(data)); //Adicona o projétil a lista com os atributos passados pelo Data

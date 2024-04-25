@@ -251,6 +251,7 @@ Perfis com contagens altas e similares (margem de 4%) são selecionados aleatori
 Uma nova tela de Game Over foi adicionada, exibindo gráficos com as estatísticas do jogador e indicando o perfil predominante do mesmo ao final da sessão. (ProfileChartsManager.cs)
 
 //////////////////////////////////////////////////////////////////////////////////////
+
 Versão 0.8 -
 
 A funcionalidade de entrada e fluxo dos menus foi implementada.
@@ -267,10 +268,37 @@ Introdução de novas magias:
 
 As magias foram adicionadas às rolagens e não é possivel tirar mais de um tipo diferente por rolagem de aprimoramento, aprimorar magias aumenta levemente o SpellDamage do heroi.
 
-As magias foram aprimoradas para afetar múltiplos inimigos dentro do alcance de dano, proporcionando maior eficácia em combate (esta alteração não se aplica a projéteis).
+As magias foram aprimoradas para afetar múltiplos inimigos dentro do alcance de dano(esta alteração não se aplica a projéteis).
 
-um boss com padrão modificado pelo perfil
+//////////////////////////////////////////////////////////////////////////////////////
 
+Versão 0.9 -
+
+Corrigido o bug que os inimigos continuavam com os atributos do perfil após o game over.
+
+Corrigido o bug em que 'Explosão' e 'Trovoes' causavam dano no mesmo inimigo mais de uma vez por conjuro. (Magias de projéteis ainda pode acertar o mesmo inimigo com mais de um projétil por conjuro)
+
+Posição inicial do heroi e do portal para mudar de estágio foram atualizados.
+
+Reduzido o tempo total que projeteis perseguidores seguem o jogador, eles ainda continuam seguindo a ultima posição recebida até o fim da duração.
+
+Reduzido a força dos aprimoramentos de chance critica, valores de dano critico não foi alterado
+
+Chefão final adicionado: 
+
+>é um combate que contem 3 inimigos estáticos que ficam alternando entre si para lançar habilidades, cada um tem um ataque unico que usam em todos os combates porem de acordo com o perfil do jogador um deles é selecionado para ter mais vida e usar uma habilidade mais forte apos uma certa quantidade de conjuros.
+
+Habilidades dos chefes:
+
+> Mago Vermelho cria explosões, na versão melhorada cria diversas delas em pontos próximos. 
+> Mago Azul lança uma saraivada de projeteis, lança diversas ondas de projeteis na versão melhorada. 
+> Mago roxo lança áreas de lentidão e um projétil perseguidor, na versão melhorada o projétil perseguidor é substituido por um inimigo frágil. 
+
+Fluxo das fases alterados, Nova ordem:
+
+>Fase 1 contem 3 almas > Fase 2 contem 2 almas > fase 3 contem inimigos alterados e 2 almas > fase do chefão não contem almas > Fim do jogo.
+
+Atualmente o jogo trava se o jogador vai direto para fase do chefe enquanto faz os calculos do perfil, para lidar com o problema foi adicionado uma fase entre elas para fazer o calculo antes de entrar no estágio final, essa fase não tem requerimento minimo de inimigos então o jogador passa dela automaticamente.
 
 
 

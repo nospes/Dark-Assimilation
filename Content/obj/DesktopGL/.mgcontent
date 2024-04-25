@@ -18,6 +18,18 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/BigSkeleton/bigskel_Idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/BigSkeleton/bigskel_Preattack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/BigSkeleton/bigskel_Walk.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianBlue_attack.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianBlue_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianBlue_hurt.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianBlue_idle.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianPurple_attack.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianPurple_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianPurple_hurt.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianPurple_idle.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianRed_attack.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianRed_death.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianRed_hurt.png</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Boss/mageguardianRed_idle.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Death.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Necromancer/necro_Hit.png</File>
@@ -90,6 +102,18 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Logo.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

@@ -57,7 +57,7 @@ namespace MyGame
                     VerticalAlignment = VerticalAlignment.Center,
                 }
             };
-            button1.Click += (s, a) => { Game1.GAMESTART = true; GameManager.PauseGame();};
+            button1.Click += (s, a) => { Game1.GAMESTART = true; GameManager.PauseGame(); };
             panel.Widgets.Add(button1); // Adiciona a tela de renderização
 
             // Define botao de sair do jogo

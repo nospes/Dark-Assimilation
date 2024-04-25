@@ -262,9 +262,9 @@ namespace MyGame
                         if (_hero.baseSpeed == 310) _hero.dashTotalCD -= 0.15f;
                         break;
                     case 3://Critical Upgrade
-                        _hero.critChance += 5;
-                        if (_hero.critChance == 15) _hero.critMult = 1.7f;
-                        if (_hero.critChance == 30) _hero.critMult = 2f;
+                        _hero.critChance += 2.5f;
+                        if (_hero.critChance == 10) _hero.critMult = 1.7f;
+                        if (_hero.critChance == 20) _hero.critMult = 2f;
                         break;
                     case 4://Vitality Upgrade
                         _hero.HP += 20;
