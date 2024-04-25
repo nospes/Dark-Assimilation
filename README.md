@@ -303,3 +303,4 @@ Atualmente o jogo trava se o jogador vai direto para fase do chefe enquanto faz 
 
 
 
+
