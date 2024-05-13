@@ -7,6 +7,7 @@ public class Game1 : Game
     private GraphicsDeviceManager _graphics;
     public static SpriteBatch _spriteBatch;
     private GameManager _gameManager;
+    private MusicManager _musicManager;
     public static Texture2D pixel;
     private UpgradeManagerUI _upgradeManager;
     private ProfileChartsManager _profileChartsManager;
@@ -38,7 +39,7 @@ public class Game1 : Game
         ProfileManager.ClearCounts();
 
         _gameManager = new();
-        _gameManager.Init();
+        _gameManager.Init(_musicManager);
         GameManager.PauseGame();
 
 
@@ -55,6 +56,7 @@ public class Game1 : Game
         _upgradeManager = new UpgradeManagerUI();
         _profileChartsManager = new ProfileChartsManager();
         _mainmenu = new MainMenu();
+        _musicManager = new MusicManager();
 
     }
 
@@ -91,21 +93,22 @@ public class Game1 : Game
         if (Soul.UPGRADEMENU) _upgradeManager.Render();
         if (GameManager.GAMEOVER)
         {
-
+            _musicManager.PlayMusic("GameOver");
             _profileChartsManager.UpdateChartData();
             _profileChartsManager.Render();
 
             _gameManager = new();
-            _gameManager.Init();
+            _gameManager.Init(_musicManager);
 
 
 
         }
         if (!GAMESTART)
         {
+            _musicManager.PlayMusic("Menu");
             _mainmenu.Render();
             _gameManager = new();
-            _gameManager.Init();
+            _gameManager.Init(_musicManager);
 
         }
         base.Draw(gameTime);

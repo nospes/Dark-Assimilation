@@ -13,6 +13,30 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin BGM/BossFight.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BGM/BossFight.mp3
+
+#begin BGM/Castle.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BGM/Castle.mp3
+
+#begin BGM/GameOver.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BGM/GameOver.mp3
+
+#begin BGM/Title.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:BGM/Title.mp3
+
 #begin Creatures/Archer/archer_Attack.png
 /importer:TextureImporter
 /processor:TextureProcessor

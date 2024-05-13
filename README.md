@@ -294,13 +294,17 @@ Habilidades dos chefes:
 > Mago Azul lança uma saraivada de projeteis, lança diversas ondas de projeteis na versão melhorada. 
 > Mago roxo lança áreas de lentidão e um projétil perseguidor, na versão melhorada o projétil perseguidor é substituido por um inimigo frágil. 
 
-Fluxo das fases alterados, Nova ordem:
+Fluxo das fases alterados, nova ordem:
 
 >Fase 1 contem 3 almas > Fase 2 contem 2 almas > fase 3 contem inimigos alterados e 2 almas > fase do chefão não contem almas > Fim do jogo.
 
 Atualmente o jogo trava se o jogador vai direto para fase do chefe enquanto faz os calculos do perfil, para lidar com o problema foi adicionado uma fase entre elas para fazer o calculo antes de entrar no estágio final, essa fase não tem requerimento minimo de inimigos então o jogador passa dela automaticamente.
 
+//////////////////////////////////////////////////////////////////////////////////////
 
+Versão 1.0 -
 
-
+Musicas
+Novo chão de acordo com a fase mapa
+Corrigido bug que enemySkeleton mudava de direção durante o ataque
 

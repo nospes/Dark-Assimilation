@@ -4,6 +4,10 @@
   <Platform>DesktopGL</Platform>
   <Config />
   <SourceFiles>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/BGM/BossFight.mp3</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/BGM/Castle.mp3</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/BGM/GameOver.mp3</File>
+    <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/BGM/Title.mp3</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Attack.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Dash.png</File>
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/Creatures/Archer/archer_Death.png</File>
@@ -102,6 +106,10 @@
     <File>C:/Users/User/Desktop/Dev/monogame/MyGame/Content/UI/Logo.png</File>
   </SourceFiles>
   <DestFiles>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />
     <File xsi:nil="true" />

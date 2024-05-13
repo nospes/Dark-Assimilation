@@ -143,3 +143,11 @@ C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Bos
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_death.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_hurt.xnb
 C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\Creatures\Boss\mageguardianRed_idle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\BossFight.ogg
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\BossFight.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\Castle.ogg
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\Castle.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\GameOver.ogg
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\GameOver.xnb
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\Title.ogg
+C:\Users\User\Desktop\Dev\monogame\MyGame\bin\Debug\net7.0\Content\BGM\Title.xnb

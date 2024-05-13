@@ -27,7 +27,7 @@ public class Map
 
         // Use a specific sprite for the first row
         Texture2D specificTexture = Globals.Content.Load<Texture2D>($"Map/Wall");
-        
+
         for (int y = 0; y < _mapTileSize.Y; y++)
         {
             for (int x = 0; x < _mapTileSize.X; x++)
@@ -39,14 +39,26 @@ public class Map
                 }
                 else
                 {
-                    // Textura do chão
-                    int r = random.Next(0, textures.Count); 
-                    _tiles[x, y] = new staticSprite(textures[3], new Vector2(x * TileSize.X, y * TileSize.Y));
+                    _tiles[x, y] = new staticSprite(textures[0], new Vector2(x * TileSize.X, y * TileSize.Y));
                 }
             }
         }
     }
+    public void ChangeMapTextures(int stage) // Atualiza o chão de acordo com o estágio
+    {
+        Texture2D groundTexture = Globals.Content.Load<Texture2D>($"Map/tile{stage+1}");
 
+        for (int y = 0; y < _mapTileSize.Y; y++)
+        {
+            for (int x = 0; x < _mapTileSize.X; x++)
+            {
+                if (y != 0)
+                {
+                    _tiles[x, y] = new staticSprite(groundTexture, new Vector2(x * TileSize.X, y * TileSize.Y));
+                }
+            }
+        }
+    }
     public void Draw()
     {
         for (int y = 0; y < _mapTileSize.Y; y++)
@@ -57,4 +69,5 @@ public class Map
             }
         }
     }
+
 }

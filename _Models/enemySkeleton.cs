@@ -259,11 +259,14 @@ public class enemySkeleton : enemyBase
             _anims.Update("bigskel_Idle");
         };
 
-        //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador
-        if (Globals.HEROLASTPOS.X - CENTER.X > 0 && !ATTACKSTATE)
-            mirror = false;
-        else if (Globals.HEROLASTPOS.X - CENTER.X < 0 && !ATTACKSTATE)
-            mirror = true;
+        //Gerenciador de espelhamento, faz com que o inimigo sempre fique em direção ao jogador caso não esteja atacando
+        if (!ATTACKSTATE && !PREATTACKSTATE)
+        {
+            if (Globals.HEROLASTPOS.X - CENTER.X > 0)
+                mirror = false;
+            else if (Globals.HEROLASTPOS.X - CENTER.X < 0)
+                mirror = true;
+        }
 
         //////////////////////////////////////////////////////////////////////////////////////////
 

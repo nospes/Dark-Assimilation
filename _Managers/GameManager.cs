@@ -11,11 +11,12 @@ namespace MyGame
         private Matrix _translation;
         //Referencia aos gerenciadores de jogo
         private CollisionManager _collisionManager;
+        private MusicManager _musicManager;
         private static FadeEffectManager _fadeEffectManager;
         private static EnemyManager _enemyManager;
         public static EnemyManager EnemyMgr => _enemyManager;
 
-        public void Init()
+        public void Init(MusicManager musicmanager)
         {
             ProjectileManager.DeleteAll();
 
@@ -28,7 +29,7 @@ namespace MyGame
 
             _soulManager = new SoulManager();
             UpgradeManagerUI.UpgradeHero.Init(_hero);
-
+            _musicManager = musicmanager;
             _fadeEffectManager = new FadeEffectManager(); // Gerenciador de fade de tela
             _collisionManager = new CollisionManager(_hero, _enemyManager.Enemies, _pentagram, _soulManager._souls); // Gerenciador de colisões
 
@@ -48,6 +49,9 @@ namespace MyGame
 
             if (!PAUSE) // Caso não esteja pausado, atualiza todas as unidades do jogo
             {
+                if (_pentagram.gamearea == 0) _musicManager.PlayMusic("InGame"); // Musica dos estágios
+                if (_pentagram.gamearea == 4) _musicManager.PlayMusic("BossFight"); // Musica do chefe
+
                 Globals.HEROLASTPOS = _hero.CENTER;
                 _hero.Update();
 
@@ -154,10 +158,13 @@ namespace MyGame
             }
             else
             {
+
+                _map.ChangeMapTextures(_pentagram.gamearea);
+
                 _hero.POSITION = new Vector2(1005, 838); // Arruma a posição do heroi
                 _hero.HP += _hero.hpRegen; // Regenera Hp do heroi
 
-                if (_pentagram.gamearea > 1 && _pentagram.gamearea<4)
+                if (_pentagram.gamearea > 1 && _pentagram.gamearea < 4)
                 {
                     await ExecutePythonScriptAsync(); // Executa a predição de perfil
                     ProfileManager.UpdateEnemyProfileType(); // Seleciona o perfil de acordo com as contagens
@@ -187,22 +194,22 @@ namespace MyGame
                                 break;
                         }
                         break;
-                        /*
-                    case 3:
-                        switch (ProfileManager.enemyProfileType)
-                        {
-                            case 1:
-                                _enemyManager.EnemyBatch(3);
-                                break;
-                            case 2:
-                                _enemyManager.EnemyBatch(4);
-                                break;
-                            case 3:
-                                _enemyManager.EnemyBatch(2);
-                                break;
-                        }
-                        break;
-                        */
+                    /*
+                case 3:
+                    switch (ProfileManager.enemyProfileType)
+                    {
+                        case 1:
+                            _enemyManager.EnemyBatch(3);
+                            break;
+                        case 2:
+                            _enemyManager.EnemyBatch(4);
+                            break;
+                        case 3:
+                            _enemyManager.EnemyBatch(2);
+                            break;
+                    }
+                    break;
+                    */
                     case 4:
                         _enemyManager.EnemyBatch(5);
                         break;
