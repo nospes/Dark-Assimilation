@@ -8,11 +8,15 @@ Projeto para desenvolvimento da minha iniciação cientifica: APLICABILIDADE DE 
 
 Versão 0.1- foi implementado os inputs de movimento(WASD), controladores básicos do jogo e de animações. O jogador atualmente anda e fica parado
 
+//////////////////////////////////////////////////////////////////////////////////////
+
 Versão 0.2- foi implementado o input de ataque básico(K), animação de soco, sistema para alternar entre golpes e movimento, primeiro inimigo, esqueletos(ainda sem animação) e uma lista para poder adicionar diversos inimigos do mesmo tipo.
 
 Versão 0.2.1- Atualizando alguns parametros para poder utilizar em outras máquinas, agora é possivel mexer no código e no repositorio remotamente de outros pontos.
 
 Versão 0.2.2- esqueletos agora tem animação, foi implementado o lógica básica para detectar colisões(ainda precisa ser aprimorado).
+
+//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.3 - Sistema de detecção e as Areas de colisões foram aprimorados, foi implementado um sistema para ver área de colisões das unidades.
 
@@ -35,7 +39,6 @@ Foi implementado tilesets, camera e limitações do mapa, agora o jogador tem um
 
 Tambem foram adicionados os comportamentos básicos para inimigos e sua herança relacionada, agora inimigos podem ter entre 3 comportamentos pré-definidos, entre eles; 'GuardMovement', que protege uma área especifica e sempre retorna a ela ao sair do alcance, 'FollowHero', que segue inimigo independente do alcance, e 'DistanceMovement', que segue o heroi com uma distancia minima entre eles.
 
-////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.4.1 -
 
@@ -47,7 +50,6 @@ Também foi refinado a lógica na prioridade de ações, caixas e tempo de colis
 Agora os inimigos têm uma caixa de colisão para reações fazendo com que ao herói entrar na área eles ativem o estado de PRÉ-ATAQUE, caso o ataque esteja fora do tempo de recarga, geralmente acionando um intervalo antes do ataque real. Após o intervalo o inimigo entra em estado de ATAQUE criando caixas de colisão em momentos especificos, similar ao sistema implementado no heroi nessa mesma atualização, caso entre em contato com a caixa de colisão do heroi faz com que o mesmo receba dano. 
 Foi implementado nos tempos de recarga a lógica de 'Action' e 'Invoke', permitindo que ao ser chamado ele possa executar alguma ação especifica quando terminar o seu Cooldown.
 
-////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.4.2 -
 
@@ -58,7 +60,6 @@ Foi adicionado a animação de morte do heroi, quando ele recebe dano suficiente
 
 Dash agora ignora frames de colisão durante o avanço.
 
-////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.4.3 -
 
@@ -69,7 +70,6 @@ Foi adicionado o enemyArcher, ele mantem a distancia do personagem entrando em e
 
 Foi adicionado o enemySwarm, são inimigos que geralmente andam acompanhados, eles causam dano só de entrar em contato com o heroi com seu corpo, ao entrar no alcance de ataque eles avançam em sua direção após um curto intervalo, seu avanço e preparo podem ser parados com golpes. Atualmente esses inimigos  podem ser gerados com 3 tipos de cores diferentes, mas futuramente suas cores vão ser usadas para diferenciar suas variações selecionadas pela IA.
 
-////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.4.4 -
 
@@ -93,7 +93,6 @@ Versão 0.5 -
 
 Foi adicionado a Inteligencia Artificial para selecionar o perfil do jogador de acordo com os dados coletados durante a gameplay. Atualmente ele apenas recebe dados criados do C#, processa via Python e retorna o perfil do jogador. P modelo leva em consideração os seguintes parametros para definir o perfil; As médias de: tempo total, tempo para derrotar o inimigo depois do primeiro golpe, quantidade de dash's, durante o combate com cada tipo de inimigo. Nas atualizações futuras os dados vão ser coletados in-game e o perfil do jogador será utilizado para definição dos inimigos, que serão pequenas variações com atributos ou habilidades alteradas.
 
-////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.1 -
 
@@ -103,7 +102,6 @@ A ação de Cast/Conjuração agora lança um projétil na direção do mouse co
 Foi adicionado os controles com o mouse, agora botão esquerdo da o ataque básico, o do meio usa o avanço e o direito usa magias, todos os controles se usam de orientação a posição do mouse
 Está sendo adicionado o sistema para receber dados dos inimigos mas atualmente ocorre um erro por tentar acessar o arquivo de muitas partes do codigo.
 
-////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.2 -
 
@@ -118,7 +116,6 @@ Foram ajustados o alcance de ativação da IA de combate de todos os inimigos e 
 
 Os projéteis do Enemymage agora perdem efeito de seguir o jogador ao colidir com o mesmo enquanto ele está durante alguma ivulnerabilidade(DASH ou RECOIL).
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.3 -
 
@@ -150,7 +147,6 @@ Corrigidos e ajustados diversos inputs do jogador, incluindo:
 >Corrigido o bug de avanço inconsistente; agora, ele tem duração de 0.3 segundos, velocidade de 700, e o cooldown do dash foi aumentado de 0.7 para 0.9 segundos.
 >Ajustado o bug da conjuração sempre seguir o mouse; agora, leva em consideração a orientação no momento do conjuro.
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.4 -
 
@@ -166,7 +162,6 @@ Adicionado interface temporaria de feedback para o jogador, contendo vida, tempo
 
 Foi implementado um sistema que dificulta o agrupamento de inimigos na mesma posição.
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.5.5 -
 
@@ -207,11 +202,9 @@ Junto ao Soul.cs tambem foi criado um SoulManager.cs para gerenciar as funções
 
 Agora collisionManagers.cs é chamado entre as trocas de fase para manipular suas listas de colisão de forma coesa.
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.6.1 - Redução no tempo de recarga da magia em 1 segundo.
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.6.2 - 
 
@@ -219,7 +212,6 @@ Os spawns foram alterados para ficarem mais ou menos do mesmo nivel de habilidad
 
 Agora a alma é ativada usando a caixa de colisão do ataque do heroi e não a o heroi em si.
 
-//////////////////////////////////////////////////////////////////////////////////////
 
 Versão 0.6.3 - 
 
@@ -304,7 +296,10 @@ Atualmente o jogo trava se o jogador vai direto para fase do chefe enquanto faz 
 
 Versão 1.0 -
 
-Musicas
-Novo chão de acordo com a fase mapa
-Corrigido bug que enemySkeleton mudava de direção durante o ataque
+Implementado a Soundtrack do jogo para cada tela, incluindo menu, game over, in-game e sala final.
+
+Texturas do cenário agora alteram de acordo com a fase.
+
+Corrigido bug que enemySkeleton mudava de direção durante o ataque, agora é possivel esquivar do seu golpe indo para direção oposta dele.
+
 
