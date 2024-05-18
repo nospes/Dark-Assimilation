@@ -4,7 +4,7 @@ Monogame + AI
 
 Projeto para desenvolvimento da minha iniciação cientifica: APLICABILIDADE DE INTELIGÊNCIA ARTIFICIAL NA CUSTOMIZAÇÃO DE CENÁRIOS E AGENTES EM JOGOS DIGITAIS
 
-![image](https://github.com/nospes/Monogame/assets/57772398/ca974406-1c68-4ce2-9438-1ef752751e42)
+![image](![cronograma](https://github.com/nospes/Dark-Assimilation/assets/57772398/1468189e-9ef1-4a84-9cfd-1aa571fb19cf))
 
 Versão 0.1- foi implementado os inputs de movimento(WASD), controladores básicos do jogo e de animações. O jogador atualmente anda e fica parado
 
