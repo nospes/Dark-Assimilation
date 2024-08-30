@@ -17,6 +17,8 @@ Avanço - Botão do meio do mouse ou barra de espaço
 
 ![cronograma](https://github.com/nospes/Dark-Assimilation/assets/57772398/4501cb85-e7fb-4a43-96bf-9da11e35de4a)
 
+NOTAS DE ATUALIZAÇÃO
+
 Versão 0.1- foi implementado os inputs de movimento(WASD), controladores básicos do jogo e de animações. O jogador atualmente anda e fica parado
 
 //////////////////////////////////////////////////////////////////////////////////////
