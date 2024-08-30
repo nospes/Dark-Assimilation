@@ -4,6 +4,12 @@ Monogame + AI
 
 Projeto para desenvolvimento da minha iniciação cientifica: APLICABILIDADE DE INTELIGÊNCIA ARTIFICIAL NA CUSTOMIZAÇÃO DE CENÁRIOS E AGENTES EM JOGOS DIGITAIS
 
+Controles - O jogador leva em consideração a posição do mouse para atacar, lançar habilidades e avançar.
+Movimento - A W S D 
+Ataque com espada - Botão Esquerdo do mouse
+Ataque com magia - Botão direito do mouse
+Avanço - Botão do meio do mouse ou barra de espaço
+
 ![cronograma](https://github.com/nospes/Dark-Assimilation/assets/57772398/4501cb85-e7fb-4a43-96bf-9da11e35de4a)
 
 Versão 0.1- foi implementado os inputs de movimento(WASD), controladores básicos do jogo e de animações. O jogador atualmente anda e fica parado
